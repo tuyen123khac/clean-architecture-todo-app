@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+
+import '../../../../application/resource/colors/app_colors.dart';
+import '../../../../application/resource/fonts/app_font.dart';
+import '../../../../application/resource/strings/app_strings.dart';
+import '../../../../application/resource/styles/app_text_style.dart';
+import '../../../../application/resource/value_manager.dart';
+import '../../../../domain/entities/sales_team/sales_person_entity.dart';
+import '../../../custom_widgets/button/custom_filled_button.dart';
+import 'profile_image.dart';
+
+class SalesPersonCard extends StatelessWidget {
+  final SalesPersonEntity salesPerson;
+  final VoidCallback? onFavoritePressed;
+  final VoidCallback? onCallPressed;
+
+  const SalesPersonCard({
+    super.key,
+    required this.salesPerson,
+    this.onFavoritePressed,
+    this.onCallPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: MarginApp.m16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: OpacityApp.opa10),
+            blurRadius: BlurRadiusApp.b10,
+            offset: OffsetApp.o04,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(PaddingApp.p16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            const SizedBox(height: SizeApp.s12),
+            _buildDescription(),
+            const SizedBox(height: SizeApp.s16),
+            _buildCallButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ProfileImage(imageUrl: salesPerson.imageUrl, age: salesPerson.age),
+        const SizedBox(width: SizeApp.s16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                salesPerson.name,
+                style: AppTextStyles.semiBold(
+                  fontSize: AppFontSize.s18,
+                  color: AppColors.textBlack,
+                ),
+              ),
+              const SizedBox(height: SizeApp.s4),
+              Row(
+                children: [
+                  Icon(
+                    Icons.phone_outlined,
+                    size: SizeApp.s16,
+                    color: AppColors.textDarkGray,
+                  ),
+                  const SizedBox(width: SizeApp.s6),
+                  Text(
+                    salesPerson.phone,
+                    style: AppTextStyles.regular(
+                      fontSize: AppFontSize.s14,
+                      color: AppColors.textDarkGray,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: onFavoritePressed,
+          child: Icon(
+            salesPerson.isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: salesPerson.isFavorite ? Colors.red : AppColors.textGray,
+            size: SizeApp.s24,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDescription() {
+    return Text(
+      salesPerson.description,
+      style: AppTextStyles.regular(
+        fontSize: AppFontSize.s14,
+        color: AppColors.textDarkGray,
+        lineHeight: 20,
+      ),
+    );
+  }
+
+  Widget _buildCallButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: ButtonSizeApp.height,
+      child: CustomFilledButton(
+        label: AppStrings.callNow,
+        icon: Icons.phone,
+        onPressed: onCallPressed,
+      ),
+    );
+  }
+}
