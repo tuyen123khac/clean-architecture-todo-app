@@ -11,13 +11,11 @@ import 'profile_image.dart';
 
 class SalesPersonCard extends StatelessWidget {
   final SalesPersonEntity salesPerson;
-  final VoidCallback? onFavoritePressed;
   final VoidCallback? onCallPressed;
 
   const SalesPersonCard({
     super.key,
     required this.salesPerson,
-    this.onFavoritePressed,
     this.onCallPressed,
   });
 
@@ -90,15 +88,42 @@ class SalesPersonCard extends StatelessWidget {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: onFavoritePressed,
-          child: Icon(
-            salesPerson.isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: salesPerson.isFavorite ? Colors.red : AppColors.textGray,
-            size: SizeApp.s24,
-          ),
-        ),
+        _buildGenderBadge(),
       ],
+    );
+  }
+
+  Widget _buildGenderBadge() {
+    final isMale = salesPerson.gender == Gender.male;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PaddingApp.p8,
+        vertical: PaddingApp.p4,
+      ),
+      decoration: BoxDecoration(
+        color: isMale
+            ? Colors.blue.withValues(alpha: 0.1)
+            : Colors.pink.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isMale ? Icons.male : Icons.female,
+            size: SizeApp.s16,
+            color: isMale ? Colors.blue : Colors.pink,
+          ),
+          const SizedBox(width: SizeApp.s4),
+          Text(
+            isMale ? AppStrings.male : AppStrings.female,
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s12,
+              color: isMale ? Colors.blue : Colors.pink,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

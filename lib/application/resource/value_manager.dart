@@ -103,10 +103,10 @@ class ButtonSizeApp {
 }
 
 class ScreenPaddingApp {
-  static const double left = PaddingApp.p24;
-  static const double right = PaddingApp.p24;
-  static const double bottom = PaddingApp.p24;
-  static const double horizontal = PaddingApp.p24;
+  static const double left = PaddingApp.p16;
+  static const double right = PaddingApp.p16;
+  static const double bottom = PaddingApp.p16;
+  static const double horizontal = PaddingApp.p16;
 }
 
 class ElevationApp {

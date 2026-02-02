@@ -11,19 +11,32 @@ class SalesTeamStatusSelector
     super.key,
     required Widget Function(SalesTeamScreenStatus) builder,
   }) : super(
-         selector: (state) => state.screenStatus,
-         builder: (_, status) => builder(status),
-       );
+          selector: (state) => state.screenStatus,
+          builder: (_, status) => builder(status),
+        );
 }
 
 class SalesTeamListSelector
-    extends
-        BlocSelector<SalesTeamBloc, SalesTeamState, List<SalesPersonEntity>> {
+    extends BlocSelector<SalesTeamBloc, SalesTeamState, List<SalesPersonEntity>> {
   SalesTeamListSelector({
     super.key,
     required Widget Function(List<SalesPersonEntity>) builder,
   }) : super(
-         selector: (state) => state.salesTeam,
-         builder: (_, salesTeamList) => builder(salesTeamList),
-       );
+          selector: (state) => state.salesTeam,
+          builder: (_, salesTeamList) => builder(salesTeamList),
+        );
+}
+
+class SalesTeamPaginationSelector
+    extends BlocSelector<SalesTeamBloc, SalesTeamState, ({bool hasMore, bool isLoadingMore})> {
+  SalesTeamPaginationSelector({
+    super.key,
+    required Widget Function(bool hasMore, bool isLoadingMore) builder,
+  }) : super(
+          selector: (state) => (
+            hasMore: state.hasMoreData,
+            isLoadingMore: state.screenStatus == SalesTeamScreenStatus.loadingMore,
+          ),
+          builder: (_, data) => builder(data.hasMore, data.isLoadingMore),
+        );
 }

@@ -8,6 +8,8 @@ import '../../navigation/app_routes.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
+  static const String heroAppIconTag = 'app_icon';
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -29,7 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void _routeToHome() async {
     // Simulate logic
     await Future.delayed(const Duration(seconds: 1));
-    AppNavigation.popAllAndRouteTo(context, AppRoutes.home);
+    if (!mounted) return;
+    AppNavigation.popAllAndRouteTo(
+      context,
+      AppRoutes.home,
+      transitionDuration: const Duration(milliseconds: 1200),
+    );
   }
 
   @override
@@ -52,7 +59,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: kToolbarHeight),
       child: Center(
-        child: Image.asset(AppImages.appIcon, width: 100, height: 100),
+        child: Hero(
+          tag: SplashScreen.heroAppIconTag,
+          child: Image.asset(AppImages.appIcon, width: 100, height: 100),
+        ),
       ),
     );
   }

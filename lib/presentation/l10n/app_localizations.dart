@@ -110,10 +110,16 @@ abstract class AppLocalizations {
   /// **'Jewellogic'**
   String get appName;
 
+  /// No description provided for @appSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Where Elegance Meets Eternity'**
+  String get appSlogan;
+
   /// No description provided for @appDesc.
   ///
   /// In en, this message translates to:
-  /// **'copyright by Công ty vàng bạc đá quý Joblogic - Jewellogic'**
+  /// **'Copyright by Công ty vàng bạc đá quý Joblogic - Jewellogic'**
   String get appDesc;
 
   /// No description provided for @contactSalesTeam.
@@ -151,6 +157,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call now'**
   String get callNow;
+
+  /// No description provided for @salesTeamSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet our expert jewelry consultants'**
+  String get salesTeamSubtitle;
+
+  /// No description provided for @buyJewelrySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse our jewelry collection'**
+  String get buyJewelrySubtitle;
+
+  /// No description provided for @sellYourJewelrySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the best value for your pieces'**
+  String get sellYourJewelrySubtitle;
+
+  /// No description provided for @jewelry.
+  ///
+  /// In en, this message translates to:
+  /// **'Jewelry'**
+  String get jewelry;
+
+  /// No description provided for @itemsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items available'**
+  String itemsAvailable(int count);
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @refineYourSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Refine your search'**
+  String get refineYourSearch;
+
+  /// No description provided for @showFavoritesOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Favorites Only'**
+  String get showFavoritesOnly;
+
+  /// No description provided for @wishlistedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Wishlisted Items'**
+  String get wishlistedItems;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get priceRange;
+
+  /// No description provided for @allPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'All Prices'**
+  String get allPrices;
+
+  /// No description provided for @under10m.
+  ///
+  /// In en, this message translates to:
+  /// **'< 10 triệu'**
+  String get under10m;
+
+  /// No description provided for @from10mTo30m.
+  ///
+  /// In en, this message translates to:
+  /// **'10 - 30 triệu'**
+  String get from10mTo30m;
+
+  /// No description provided for @from30mTo50m.
+  ///
+  /// In en, this message translates to:
+  /// **'30 - 50 triệu'**
+  String get from30mTo50m;
+
+  /// No description provided for @above50m.
+  ///
+  /// In en, this message translates to:
+  /// **'> 50 triệu'**
+  String get above50m;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allCategories;
+
+  /// No description provided for @vangSJC.
+  ///
+  /// In en, this message translates to:
+  /// **'Vàng SJC'**
+  String get vangSJC;
+
+  /// No description provided for @vang24K.
+  ///
+  /// In en, this message translates to:
+  /// **'Vàng 24K'**
+  String get vang24K;
+
+  /// No description provided for @vang18K.
+  ///
+  /// In en, this message translates to:
+  /// **'Vàng 18K'**
+  String get vang18K;
+
+  /// No description provided for @vang14K.
+  ///
+  /// In en, this message translates to:
+  /// **'Vàng 14K'**
+  String get vang14K;
+
+  /// No description provided for @vangTrang.
+  ///
+  /// In en, this message translates to:
+  /// **'Vàng Trắng'**
+  String get vangTrang;
+
+  /// No description provided for @daQuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Đá Quý'**
+  String get daQuy;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort By'**
+  String get sortBy;
+
+  /// No description provided for @nameAZ.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get nameAZ;
+
+  /// No description provided for @priceLowToHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: Low to High'**
+  String get priceLowToHigh;
+
+  /// No description provided for @priceHighToLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: High to Low'**
+  String get priceHighToLow;
+
+  /// No description provided for @resetAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All'**
+  String get resetAll;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @allItems.
+  ///
+  /// In en, this message translates to:
+  /// **'All Items'**
+  String get allItems;
+
+  /// No description provided for @wishlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Wishlist'**
+  String get wishlist;
+
+  /// No description provided for @ageRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Age Range'**
+  String get ageRange;
+
+  /// No description provided for @yearsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'years old'**
+  String get yearsOld;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @noMoreData.
+  ///
+  /// In en, this message translates to:
+  /// **'No more data'**
+  String get noMoreData;
+
+  /// No description provided for @consultantsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} consultants available'**
+  String consultantsAvailable(int count);
 }
 
 class _AppLocalizationsDelegate

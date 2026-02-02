@@ -7,10 +7,13 @@ import '../../../application/resource/colors/app_colors.dart';
 import '../../../application/resource/fonts/app_font.dart';
 import '../../../application/resource/styles/app_text_style.dart';
 import '../../../application/resource/value_manager.dart';
+import '../../custom_widgets/app_bar/custom_app_bar.dart';
+import '../../navigation/app_navigation.dart';
 import 'bloc/sales_team_bloc.dart';
 import 'bloc/sales_team_bloc_selector.dart';
 import 'bloc/sales_team_state.dart';
 import 'widgets/sales_person_card.dart';
+import 'widgets/sales_team_filter_bottom_sheet.dart';
 
 class SalesTeamScreen extends StatefulWidget {
   const SalesTeamScreen({super.key});
@@ -21,17 +24,27 @@ class SalesTeamScreen extends StatefulWidget {
 
 class _SalesTeamScreenState extends State<SalesTeamScreen> {
   final SalesTeamBloc _bloc = serviceLocator.get<SalesTeamBloc>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _bloc.initState();
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _bloc.close();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      _bloc.loadMore();
+    }
   }
 
   @override
@@ -40,6 +53,7 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
       value: _bloc,
       child: Scaffold(
         backgroundColor: AppColors.bgWhite,
+        appBar: _buildAppBar(),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,32 +64,81 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
     );
   }
 
+  CustomAppBar _buildAppBar() {
+    return CustomAppBar(
+      backgroundColor: AppColors.bgWhite,
+      centerTitle: true,
+      marginLeftIcon: MarginApp.m8,
+      leadingWidget: Icon(
+        Icons.arrow_back_ios,
+        color: AppColors.textBlack,
+        size: SizeApp.s20,
+      ),
+      titleWidget: Text(
+        AppStrings.salesTeam,
+        style: AppTextStyles.bold(
+          fontSize: AppFontSize.s32,
+          color: AppColors.textBlack,
+        ),
+      ),
+      onPressLeftIcon: () => AppNavigation.back(context),
+    );
+  }
+
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: ScreenPaddingApp.horizontal,
-        vertical: PaddingApp.p16,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            AppStrings.salesTeam,
-            style: AppTextStyles.bold(
-              fontSize: AppFontSize.s32,
-              color: AppColors.textBlack,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.expertJewelryConsultants,
+                style: AppTextStyles.bold(
+                  fontSize: AppFontSize.s16,
+                  color: AppColors.textDarkGray,
+                ),
+              ),
+              const SizedBox(height: SizeApp.s4),
+              SalesTeamListSelector(
+                builder: (salesTeam) => Text(
+                  AppStrings.consultantsAvailable(salesTeam.length),
+                  style: AppTextStyles.regular(
+                    fontSize: AppFontSize.s14,
+                    color: AppColors.textGray,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: SizeApp.s4),
-          Text(
-            AppStrings.expertJewelryConsultants,
-            style: AppTextStyles.regular(
-              fontSize: AppFontSize.s14,
-              color: AppColors.textDarkGray,
-            ),
-          ),
+          _buildFilterButton(),
         ],
       ),
+    );
+  }
+
+  Widget _buildFilterButton() {
+    return SizedBox(
+      width: SizeApp.s48,
+      height: SizeApp.s48,
+      child: IconButton(
+        onPressed: _showFilterBottomSheet,
+        icon: Icon(Icons.tune, color: AppColors.primary, size: SizeApp.s24),
+      ),
+    );
+  }
+
+  void _showFilterBottomSheet() {
+    SalesTeamFilterBottomSheet.show(
+      context,
+      initialFilter: _bloc.state.filterState,
+      onApply: (filterState) {
+        _bloc.applyFilters(filterState);
+      },
     );
   }
 
@@ -87,6 +150,7 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
             case SalesTeamScreenStatus.loading:
               return _buildLoadingView();
             case SalesTeamScreenStatus.success:
+            case SalesTeamScreenStatus.loadingMore:
               return _buildSalesTeamListView();
             case SalesTeamScreenStatus.error:
               return _buildErrorView();
@@ -109,18 +173,50 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
   Widget _buildSalesTeamListView() {
     return SalesTeamListSelector(
       builder: (salesTeam) => ListView.builder(
+        controller: _scrollController,
         padding: const EdgeInsets.symmetric(
           horizontal: ScreenPaddingApp.horizontal,
+          vertical: PaddingApp.p16,
         ),
-        itemCount: salesTeam.length,
+        itemCount: salesTeam.length + 1,
         itemBuilder: (context, index) {
+          if (index == salesTeam.length) {
+            return _buildLoadMoreIndicator();
+          }
           return SalesPersonCard(
             salesPerson: salesTeam[index],
-            onFavoritePressed: () => _bloc.toggleFavorite(index),
             onCallPressed: () => _callPhone(salesTeam[index].phone),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildLoadMoreIndicator() {
+    return SalesTeamPaginationSelector(
+      builder: (hasMore, isLoadingMore) {
+        if (isLoadingMore) {
+          return const Padding(
+            padding: EdgeInsets.all(PaddingApp.p16),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (!hasMore) {
+          return Padding(
+            padding: const EdgeInsets.all(PaddingApp.p16),
+            child: Center(
+              child: Text(
+                AppStrings.noMoreData,
+                style: AppTextStyles.regular(
+                  fontSize: AppFontSize.s14,
+                  color: AppColors.textGray,
+                ),
+              ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

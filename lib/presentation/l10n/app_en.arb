@@ -1,11 +1,66 @@
 {
   "home": "Home",
   "appName": "Jewellogic",
-  "appDesc": "copyright by Công ty vàng bạc đá quý Joblogic - Jewellogic",
+  "appSlogan": "Where Elegance Meets Eternity",
+  "appDesc": "Copyright by Công ty vàng bạc đá quý Joblogic - Jewellogic",
   "contactSalesTeam": "Contact Sales Team",
   "buyJewelry": "Buy Jewelry",
   "sellYourJewelry": "Sell Your Jewelry",
   "salesTeam": "Sales Team",
   "expertJewelryConsultants": "Expert jewelry consultants",
-  "callNow": "Call now"
+  "callNow": "Call now",
+  "salesTeamSubtitle": "Meet our expert jewelry consultants",
+  "buyJewelrySubtitle": "Browse our jewelry collection",
+  "sellYourJewelrySubtitle": "Get the best value for your pieces",
+  "jewelry": "Jewelry",
+  "itemsAvailable": "{count} items available",
+  "@itemsAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "view": "View",
+  "filters": "Filters",
+  "refineYourSearch": "Refine your search",
+  "showFavoritesOnly": "Show Favorites Only",
+  "wishlistedItems": "Wishlisted Items",
+  "priceRange": "Price Range",
+  "allPrices": "All Prices",
+  "under10m": "< 10 triệu",
+  "from10mTo30m": "10 - 30 triệu",
+  "from30mTo50m": "30 - 50 triệu",
+  "above50m": "> 50 triệu",
+  "category": "Category",
+  "allCategories": "All",
+  "vangSJC": "Vàng SJC",
+  "vang24K": "Vàng 24K",
+  "vang18K": "Vàng 18K",
+  "vang14K": "Vàng 14K",
+  "vangTrang": "Vàng Trắng",
+  "daQuy": "Đá Quý",
+  "sortBy": "Sort By",
+  "nameAZ": "Name (A-Z)",
+  "priceLowToHigh": "Price: Low to High",
+  "priceHighToLow": "Price: High to Low",
+  "resetAll": "Reset All",
+  "applyFilters": "Apply Filters",
+  "allItems": "All Items",
+  "wishlist": "Wishlist",
+  "ageRange": "Age Range",
+  "yearsOld": "years old",
+  "gender": "Gender",
+  "all": "All",
+  "male": "Male",
+  "female": "Female",
+  "noMoreData": "No more data",
+  "consultantsAvailable": "{count} consultants available",
+  "@consultantsAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

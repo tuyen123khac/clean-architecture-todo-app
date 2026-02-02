@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/buy_jewelry/buy_jewelry_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/sales_team/sales_team_screen.dart';
 import '../screens/splash/splash_screen.dart';
@@ -37,11 +38,32 @@ class AppNavigation {
           settings: routeSettings,
         );
 
+      case AppRoutes.buyJewelry:
+        return MaterialPageRoute(
+          builder: (_) => const BuyJewelryScreen(),
+          settings: routeSettings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => const Placeholder(),
           settings: routeSettings,
         );
+    }
+  }
+
+  static Widget _buildPageForRoute(String name, Object? args) {
+    switch (name) {
+      case AppRoutes.splash:
+        return const SplashScreen();
+      case AppRoutes.home:
+        return const HomeScreen();
+      case AppRoutes.salesTeam:
+        return const SalesTeamScreen();
+      case AppRoutes.buyJewelry:
+        return const BuyJewelryScreen();
+      default:
+        return const Placeholder();
     }
   }
 
@@ -71,16 +93,39 @@ class AppNavigation {
     return Navigator.of(context).maybePop(result);
   }
 
-  /// route to screen and remove all the routes from navigator
+  /// Clears stack and pushes [name]. When [transitionDuration] is set, uses a
+  /// custom transition (e.g. for Hero); otherwise uses the default route.
+  /// This function is in experimental stage, use with caution.
   static Future<T?> popAllAndRouteTo<T extends Object?>(
     BuildContext context,
     String name, {
     Object? agrs,
+    Duration? transitionDuration,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transitionsBuilder,
   }) {
-    return Navigator.of(context).pushNamedAndRemoveUntil(
-      name,
+    if (transitionDuration == null) {
+      return Navigator.of(context).pushNamedAndRemoveUntil<T>(
+        name,
+        (Route<dynamic> route) => false,
+        arguments: agrs,
+      );
+    }
+    final routeSettings = RouteSettings(name: name, arguments: agrs);
+    return Navigator.of(context).pushAndRemoveUntil<T>(
+      PageRouteBuilder<T>(
+        settings: routeSettings,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            _buildPageForRoute(name, agrs),
+        transitionDuration: transitionDuration,
+        reverseTransitionDuration: transitionDuration,
+        transitionsBuilder:
+            transitionsBuilder ??
+            (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+      ),
       (Route<dynamic> route) => false,
-      arguments: agrs,
     );
   }
 
