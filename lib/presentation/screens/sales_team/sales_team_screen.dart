@@ -92,32 +92,33 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppStrings.expertJewelryConsultants,
-                style: AppTextStyles.bold(
-                  fontSize: AppFontSize.s16,
-                  color: AppColors.textDarkGray,
-                ),
-              ),
-              const SizedBox(height: SizeApp.s4),
-              SalesTeamListSelector(
-                builder: (salesTeam) => Text(
-                  AppStrings.consultantsAvailable(salesTeam.length),
-                  style: AppTextStyles.regular(
-                    fontSize: AppFontSize.s14,
-                    color: AppColors.textGray,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          _buildFilterButton(),
-        ],
+        children: [_buildConsultantsInfo(), _buildFilterButton()],
       ),
+    );
+  }
+
+  Widget _buildConsultantsInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppStrings.expertJewelryConsultants,
+          style: AppTextStyles.bold(
+            fontSize: AppFontSize.s16,
+            color: AppColors.textDarkGray,
+          ),
+        ),
+        const SizedBox(height: SizeApp.s4),
+        SalesTeamTotalSelector(
+          builder: (total) => Text(
+            AppStrings.consultantsAvailable(total),
+            style: AppTextStyles.regular(
+              fontSize: AppFontSize.s14,
+              color: AppColors.textGray,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -151,6 +152,7 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
               return _buildLoadingView();
             case SalesTeamScreenStatus.success:
             case SalesTeamScreenStatus.loadingMore:
+            case SalesTeamScreenStatus.loadMoreFailed:
               return _buildSalesTeamListView();
             case SalesTeamScreenStatus.error:
               return _buildErrorView();
@@ -167,7 +169,49 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
   }
 
   Widget _buildErrorView() {
-    return const Center(child: Text('Error'));
+    return SalesTeamErrorSelector(
+      builder: (errorMessage) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(PaddingApp.p24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: SizeApp.s64,
+                color: AppColors.textGray,
+              ),
+              const SizedBox(height: SizeApp.s16),
+              Text(
+                errorMessage ?? AppStrings.somethingWentWrong,
+                style: AppTextStyles.medium(
+                  fontSize: AppFontSize.s16,
+                  color: AppColors.textDarkGray,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: SizeApp.s24),
+              ElevatedButton.icon(
+                onPressed: () => _bloc.retry(),
+                icon: const Icon(Icons.refresh),
+                label: Text(AppStrings.retry),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PaddingApp.p24,
+                    vertical: PaddingApp.p12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildSalesTeamListView() {
@@ -194,11 +238,36 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
 
   Widget _buildLoadMoreIndicator() {
     return SalesTeamPaginationSelector(
-      builder: (hasMore, isLoadingMore) {
+      builder: (hasMore, isLoadingMore, loadMoreFailed, errorLoadMore) {
         if (isLoadingMore) {
           return const Padding(
             padding: EdgeInsets.all(PaddingApp.p16),
             child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (loadMoreFailed) {
+          return Padding(
+            padding: const EdgeInsets.all(PaddingApp.p16),
+            child: Column(
+              children: [
+                Text(
+                  errorLoadMore ?? AppStrings.failedToLoadMore,
+                  style: AppTextStyles.regular(
+                    fontSize: AppFontSize.s14,
+                    color: AppColors.textGray,
+                  ),
+                ),
+                const SizedBox(height: SizeApp.s8),
+                TextButton.icon(
+                  onPressed: () => _bloc.retryLoadMore(),
+                  icon: const Icon(Icons.refresh, size: SizeApp.s16),
+                  label: Text(AppStrings.retry),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
           );
         }
         if (!hasMore) {

@@ -233,25 +233,25 @@ abstract class AppLocalizations {
   /// No description provided for @under10m.
   ///
   /// In en, this message translates to:
-  /// **'< 10 triệu'**
+  /// **'< 10M'**
   String get under10m;
 
   /// No description provided for @from10mTo30m.
   ///
   /// In en, this message translates to:
-  /// **'10 - 30 triệu'**
+  /// **'10 - 30M'**
   String get from10mTo30m;
 
   /// No description provided for @from30mTo50m.
   ///
   /// In en, this message translates to:
-  /// **'30 - 50 triệu'**
+  /// **'30 - 50M'**
   String get from30mTo50m;
 
   /// No description provided for @above50m.
   ///
   /// In en, this message translates to:
-  /// **'> 50 triệu'**
+  /// **'> 50M'**
   String get above50m;
 
   /// No description provided for @category.
@@ -266,41 +266,41 @@ abstract class AppLocalizations {
   /// **'All'**
   String get allCategories;
 
-  /// No description provided for @vangSJC.
+  /// No description provided for @sjcGold.
   ///
   /// In en, this message translates to:
-  /// **'Vàng SJC'**
-  String get vangSJC;
+  /// **'SJC Gold'**
+  String get sjcGold;
 
-  /// No description provided for @vang24K.
+  /// No description provided for @gold24K.
   ///
   /// In en, this message translates to:
-  /// **'Vàng 24K'**
-  String get vang24K;
+  /// **'24K Gold'**
+  String get gold24K;
 
-  /// No description provided for @vang18K.
+  /// No description provided for @gold18K.
   ///
   /// In en, this message translates to:
-  /// **'Vàng 18K'**
-  String get vang18K;
+  /// **'18K Gold'**
+  String get gold18K;
 
-  /// No description provided for @vang14K.
+  /// No description provided for @gold14K.
   ///
   /// In en, this message translates to:
-  /// **'Vàng 14K'**
-  String get vang14K;
+  /// **'14K Gold'**
+  String get gold14K;
 
-  /// No description provided for @vangTrang.
+  /// No description provided for @whiteGold.
   ///
   /// In en, this message translates to:
-  /// **'Vàng Trắng'**
-  String get vangTrang;
+  /// **'White Gold'**
+  String get whiteGold;
 
-  /// No description provided for @daQuy.
+  /// No description provided for @gemstone.
   ///
   /// In en, this message translates to:
-  /// **'Đá Quý'**
-  String get daQuy;
+  /// **'Gemstone'**
+  String get gemstone;
 
   /// No description provided for @sortBy.
   ///
@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// **'Female'**
   String get female;
 
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
   /// No description provided for @noMoreData.
   ///
   /// In en, this message translates to:
@@ -397,6 +403,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} consultants available'**
   String consultantsAvailable(int count);
+
+  /// No description provided for @salesTitleSalesManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales Manager'**
+  String get salesTitleSalesManager;
+
+  /// No description provided for @salesTitleSalesSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales Specialist'**
+  String get salesTitleSalesSpecialist;
+
+  /// No description provided for @salesTitleSeniorSalesRep.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior Sales Rep'**
+  String get salesTitleSeniorSalesRep;
+
+  /// No description provided for @salesTitleSalesTeamLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales Team Lead'**
+  String get salesTitleSalesTeamLead;
+
+  /// No description provided for @salesTitleSalesRep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales Rep'**
+  String get salesTitleSalesRep;
+
+  /// No description provided for @networkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection'**
+  String get networkError;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @failedToLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load more'**
+  String get failedToLoadMore;
 }
 
 class _AppLocalizationsDelegate

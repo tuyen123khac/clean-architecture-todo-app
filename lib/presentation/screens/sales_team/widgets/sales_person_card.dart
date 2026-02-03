@@ -5,12 +5,13 @@ import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
-import '../../../../domain/entities/sales_team/sales_person_entity.dart';
+import '../../../../domain/entities/sales_member/sales_gender_enum_entity.dart';
+import '../../../../domain/entities/sales_member/sales_member_entity.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
 import 'profile_image.dart';
 
 class SalesPersonCard extends StatelessWidget {
-  final SalesPersonEntity salesPerson;
+  final SalesMemberEntity salesPerson;
   final VoidCallback? onCallPressed;
 
   const SalesPersonCard({
@@ -94,7 +95,7 @@ class SalesPersonCard extends StatelessWidget {
   }
 
   Widget _buildGenderBadge() {
-    final isMale = salesPerson.gender == Gender.male;
+    final isMale = salesPerson.gender == SalesGenderEnumEntity.male;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: PaddingApp.p8,

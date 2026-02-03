@@ -78,16 +78,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get allPrices => 'All Prices';
 
   @override
-  String get under10m => '< 10 triệu';
+  String get under10m => '< 10M';
 
   @override
-  String get from10mTo30m => '10 - 30 triệu';
+  String get from10mTo30m => '10 - 30M';
 
   @override
-  String get from30mTo50m => '30 - 50 triệu';
+  String get from30mTo50m => '30 - 50M';
 
   @override
-  String get above50m => '> 50 triệu';
+  String get above50m => '> 50M';
 
   @override
   String get category => 'Category';
@@ -96,22 +96,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get allCategories => 'All';
 
   @override
-  String get vangSJC => 'Vàng SJC';
+  String get sjcGold => 'Vàng SJC';
 
   @override
-  String get vang24K => 'Vàng 24K';
+  String get gold24K => 'Vàng 24K';
 
   @override
-  String get vang18K => 'Vàng 18K';
+  String get gold18K => 'Vàng 18K';
 
   @override
-  String get vang14K => 'Vàng 14K';
+  String get gold14K => 'Vàng 14K';
 
   @override
-  String get vangTrang => 'Vàng Trắng';
+  String get whiteGold => 'Vàng Trắng';
 
   @override
-  String get daQuy => 'Đá Quý';
+  String get gemstone => 'Đá Quý';
 
   @override
   String get sortBy => 'Sort By';
@@ -150,10 +150,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get male => 'Male';
+  String get male => 'Nam';
 
   @override
-  String get female => 'Female';
+  String get female => 'Nữ';
+
+  @override
+  String get other => 'Khác';
 
   @override
   String get noMoreData => 'No more data';
@@ -162,4 +165,31 @@ class AppLocalizationsVi extends AppLocalizations {
   String consultantsAvailable(int count) {
     return '$count consultants available';
   }
+
+  @override
+  String get salesTitleSalesManager => 'Trưởng phòng Kinh doanh';
+
+  @override
+  String get salesTitleSalesSpecialist => 'Chuyên viên Kinh doanh';
+
+  @override
+  String get salesTitleSeniorSalesRep => 'Nhân viên Kinh doanh Cấp cao';
+
+  @override
+  String get salesTitleSalesTeamLead => 'Trưởng nhóm Kinh doanh';
+
+  @override
+  String get salesTitleSalesRep => 'Nhân viên Kinh doanh';
+
+  @override
+  String get networkError => 'Please check your internet connection';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get failedToLoadMore => 'Failed to load more';
 }

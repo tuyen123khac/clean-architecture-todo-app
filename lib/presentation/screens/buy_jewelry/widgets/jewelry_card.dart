@@ -128,23 +128,11 @@ class JewelryCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(BorderRadiusApp.r6),
           ),
           child: Text(
-            jewelry.category,
+            jewelry.category.fullName,
             style: AppTextStyles.medium(
               fontSize: AppFontSize.s12,
               color: AppColors.primary,
             ),
-          ),
-        ),
-        const SizedBox(width: SizeApp.s8),
-        Expanded(
-          child: Text(
-            jewelry.material,
-            style: AppTextStyles.regular(
-              fontSize: AppFontSize.s12,
-              color: AppColors.textDarkGray,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

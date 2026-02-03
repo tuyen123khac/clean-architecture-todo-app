@@ -1,4 +1,4 @@
-import 'package:todo_app/data/data_source/network/jewelry_remote_data_source.dart';
+import 'package:todo_app/data/data_source/network/remote_data_source.dart';
 import 'package:todo_app/presentation/base_bloc/base_cubit.dart';
 
 import '../../../../domain/entities/buy_jewelry/jewelry_entity.dart';
@@ -6,10 +6,8 @@ import '../widgets/jewelry_filter_bottom_sheet.dart';
 import 'buy_jewelry_state.dart';
 
 class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
-  BuyJewelryBloc(this._jewelryRemoteDataSource)
+  BuyJewelryBloc()
       : super(BuyJewelryState(jewelryList: [], jewelryListOriginal: []));
-
-  final JewelryRemoteDataSource _jewelryRemoteDataSource;
 
   void initState() {
     fetchJewelryList();
@@ -18,16 +16,16 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
   Future<void> fetchJewelryList() async {
     emit(state.copyWith(screenStatus: BuyJewelryScreenStatus.loading));
 
-    try {
-      final list = await _jewelryRemoteDataSource.fetchJewelryCatalog();
-      emit(state.copyWith(
-        jewelryList: list,
-        jewelryListOriginal: list,
-        screenStatus: BuyJewelryScreenStatus.success,
-      ));
-    } catch (_) {
-      emit(state.copyWith(screenStatus: BuyJewelryScreenStatus.error));
-    }
+    // try {
+    //   final list = await _jewelryRemoteDataSource.fetchJewelryCatalog();
+    //   emit(state.copyWith(
+    //     jewelryList: list,
+    //     jewelryListOriginal: list,
+    //     screenStatus: BuyJewelryScreenStatus.success,
+    //   ));
+    // } catch (_) {
+    //   emit(state.copyWith(screenStatus: BuyJewelryScreenStatus.error));
+    // }
   }
 
   void toggleFavorite(int index) {
@@ -107,18 +105,18 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
     switch (category) {
       case JewelryCategory.all:
         return list;
-      case JewelryCategory.vangSJC:
-        return list.where((item) => item.category == 'Vàng SJC').toList();
-      case JewelryCategory.vang24K:
-        return list.where((item) => item.category == 'Vàng 24K').toList();
-      case JewelryCategory.vang18K:
-        return list.where((item) => item.category == 'Vàng 18K').toList();
-      case JewelryCategory.vang14K:
-        return list.where((item) => item.category == 'Vàng 14K').toList();
-      case JewelryCategory.vangTrang:
-        return list.where((item) => item.category == 'Vàng Trắng').toList();
-      case JewelryCategory.daQuy:
-        return list.where((item) => item.category == 'Đá Quý').toList();
+      case JewelryCategory.sjcGold:
+        return list.where((item) => item.category == 'SJC Gold').toList();
+      case JewelryCategory.gold24K:
+        return list.where((item) => item.category == '24K Gold').toList();
+      case JewelryCategory.gold18K:
+        return list.where((item) => item.category == '18K Gold').toList();
+      case JewelryCategory.gold14K:
+        return list.where((item) => item.category == '14K Gold').toList();
+      case JewelryCategory.whiteGold:
+        return list.where((item) => item.category == 'White Gold').toList();
+      case JewelryCategory.gemstone:
+        return list.where((item) => item.category == 'Gemstone').toList();
     }
   }
 

@@ -8,5 +8,19 @@
   "sellYourJewelry": "Sell Your Jewelry",
   "salesTeam": "Sales Team",
   "expertJewelryConsultants": "Expert jewelry consultants",
-  "callNow": "Call now"
+  "callNow": "Call now",
+  "sjcGold": "Vàng SJC",
+  "gold24K": "Vàng 24K",
+  "gold18K": "Vàng 18K",
+  "gold14K": "Vàng 14K",
+  "whiteGold": "Vàng Trắng",
+  "gemstone": "Đá Quý",
+  "male": "Nam",
+  "female": "Nữ",
+  "other": "Khác",
+  "salesTitleSalesManager": "Trưởng phòng Kinh doanh",
+  "salesTitleSalesSpecialist": "Chuyên viên Kinh doanh",
+  "salesTitleSeniorSalesRep": "Nhân viên Kinh doanh Cấp cao",
+  "salesTitleSalesTeamLead": "Trưởng nhóm Kinh doanh",
+  "salesTitleSalesRep": "Nhân viên Kinh doanh"
 }

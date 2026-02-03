@@ -16,8 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$ResWrapper<T> {
 
 // ignore: invalid_annotation_target
-@JsonKey(name: 'data') T get data;// ignore: invalid_annotation_target
-@JsonKey(name: 'metadata') dynamic get metadata;
+@JsonKey(name: 'data') T get data;
 /// Create a copy of ResWrapper
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +29,16 @@ $ResWrapperCopyWith<T, ResWrapper<T>> get copyWith => _$ResWrapperCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResWrapper<T>&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other.metadata, metadata));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResWrapper<T>&&const DeepCollectionEquality().equals(other.data, data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(metadata));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data));
 
 @override
 String toString() {
-  return 'ResWrapper<$T>(data: $data, metadata: $metadata)';
+  return 'ResWrapper<$T>(data: $data)';
 }
 
 
@@ -50,7 +49,7 @@ abstract mixin class $ResWrapperCopyWith<T,$Res>  {
   factory $ResWrapperCopyWith(ResWrapper<T> value, $Res Function(ResWrapper<T>) _then) = _$ResWrapperCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'data') T data,@JsonKey(name: 'metadata') dynamic metadata
+@JsonKey(name: 'data') T data
 });
 
 
@@ -67,11 +66,10 @@ class _$ResWrapperCopyWithImpl<T,$Res>
 
 /// Create a copy of ResWrapper
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? data = freezed,Object? metadata = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? data = freezed,}) {
   return _then(_self.copyWith(
 data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as T,metadata: freezed == metadata ? _self.metadata : metadata // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as T,
   ));
 }
 
@@ -156,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'data')  T data, @JsonKey(name: 'metadata')  dynamic metadata)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'data')  T data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ResWrapper() when $default != null:
-return $default(_that.data,_that.metadata);case _:
+return $default(_that.data);case _:
   return orElse();
 
 }
@@ -177,10 +175,10 @@ return $default(_that.data,_that.metadata);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'data')  T data, @JsonKey(name: 'metadata')  dynamic metadata)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'data')  T data)  $default,) {final _that = this;
 switch (_that) {
 case _ResWrapper():
-return $default(_that.data,_that.metadata);case _:
+return $default(_that.data);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +195,10 @@ return $default(_that.data,_that.metadata);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'data')  T data, @JsonKey(name: 'metadata')  dynamic metadata)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'data')  T data)?  $default,) {final _that = this;
 switch (_that) {
 case _ResWrapper() when $default != null:
-return $default(_that.data,_that.metadata);case _:
+return $default(_that.data);case _:
   return null;
 
 }
@@ -212,13 +210,11 @@ return $default(_that.data,_that.metadata);case _:
 @JsonSerializable(genericArgumentFactories: true)
 
 class _ResWrapper<T> implements ResWrapper<T> {
-  const _ResWrapper({@JsonKey(name: 'data') required this.data, @JsonKey(name: 'metadata') this.metadata});
+  const _ResWrapper({@JsonKey(name: 'data') required this.data});
   factory _ResWrapper.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$ResWrapperFromJson(json,fromJsonT);
 
 // ignore: invalid_annotation_target
 @override@JsonKey(name: 'data') final  T data;
-// ignore: invalid_annotation_target
-@override@JsonKey(name: 'metadata') final  dynamic metadata;
 
 /// Create a copy of ResWrapper
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +229,16 @@ Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResWrapper<T>&&const DeepCollectionEquality().equals(other.data, data)&&const DeepCollectionEquality().equals(other.metadata, metadata));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResWrapper<T>&&const DeepCollectionEquality().equals(other.data, data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data),const DeepCollectionEquality().hash(metadata));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data));
 
 @override
 String toString() {
-  return 'ResWrapper<$T>(data: $data, metadata: $metadata)';
+  return 'ResWrapper<$T>(data: $data)';
 }
 
 
@@ -253,7 +249,7 @@ abstract mixin class _$ResWrapperCopyWith<T,$Res> implements $ResWrapperCopyWith
   factory _$ResWrapperCopyWith(_ResWrapper<T> value, $Res Function(_ResWrapper<T>) _then) = __$ResWrapperCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'data') T data,@JsonKey(name: 'metadata') dynamic metadata
+@JsonKey(name: 'data') T data
 });
 
 
@@ -270,11 +266,10 @@ class __$ResWrapperCopyWithImpl<T,$Res>
 
 /// Create a copy of ResWrapper
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? data = freezed,Object? metadata = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? data = freezed,}) {
   return _then(_ResWrapper<T>(
 data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as T,metadata: freezed == metadata ? _self.metadata : metadata // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as T,
   ));
 }
 

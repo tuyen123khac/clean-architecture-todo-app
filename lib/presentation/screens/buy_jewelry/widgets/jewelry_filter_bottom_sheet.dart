@@ -8,7 +8,7 @@ import '../../../../application/resource/value_manager.dart';
 
 enum PriceRange { all, under10m, from10mTo30m, from30mTo50m, above50m }
 
-enum JewelryCategory { all, vangSJC, vang24K, vang18K, vang14K, vangTrang, daQuy }
+enum JewelryCategory { all, sjcGold, gold24K, gold18K, gold14K, whiteGold, gemstone }
 
 enum SortBy { nameAZ, priceLowToHigh, priceHighToLow }
 
@@ -242,12 +242,12 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
           runSpacing: SizeApp.s8,
           children: [
             _buildCategoryChip(AppStrings.allCategories, JewelryCategory.all),
-            _buildCategoryChip(AppStrings.vangSJC, JewelryCategory.vangSJC),
-            _buildCategoryChip(AppStrings.vang24K, JewelryCategory.vang24K),
-            _buildCategoryChip(AppStrings.vang18K, JewelryCategory.vang18K),
-            _buildCategoryChip(AppStrings.vang14K, JewelryCategory.vang14K),
-            _buildCategoryChip(AppStrings.vangTrang, JewelryCategory.vangTrang),
-            _buildCategoryChip(AppStrings.daQuy, JewelryCategory.daQuy),
+            _buildCategoryChip(AppStrings.sjcGold, JewelryCategory.sjcGold),
+            _buildCategoryChip(AppStrings.gold24K, JewelryCategory.gold24K),
+            _buildCategoryChip(AppStrings.gold18K, JewelryCategory.gold18K),
+            _buildCategoryChip(AppStrings.gold14K, JewelryCategory.gold14K),
+            _buildCategoryChip(AppStrings.whiteGold, JewelryCategory.whiteGold),
+            _buildCategoryChip(AppStrings.gemstone, JewelryCategory.gemstone),
           ],
         ),
       ],

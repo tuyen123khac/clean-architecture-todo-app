@@ -1,124 +1,129 @@
 import 'package:dio/dio.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+
+import 'endpoints/network_urls.dart';
+import 'exceptions/base_exception.dart';
 
 // Mock data for To-Call (sales team)
 // Following DATA_MODEL.md: id, name, gender, age, title, phone_number, description, image_url
+// Title uses enum values: salesManager, salesSpecialist, seniorSalesRep, salesTeamLead, salesRep
 final List<Map<String, dynamic>> mockSalesTeam = [
   {
-    'id': '1',
+    'id': 1,
     'name': 'Nguyen Thi Mai',
     'gender': 'female',
     'age': 35,
-    'title': 'Sales Manager',
+    'title': 'salesManager',
     'phone_number': '+84912345678',
     'description': 'Over 10 years of experience in luxury jewelry sales. Expert in diamond certification and customer relationship management.',
     'image_url': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
   },
   {
-    'id': '2',
+    'id': 2,
     'name': 'Tran Van Minh',
     'gender': 'male',
     'age': 41,
-    'title': 'Sales Team Lead',
+    'title': 'salesTeamLead',
     'phone_number': '+84987654321',
     'description': 'Specializes in high-value gold transactions and VIP client services. Fluent in English and Mandarin.',
     'image_url': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
   },
   {
-    'id': '3',
+    'id': 3,
     'name': 'Le Hoang Anh',
     'gender': 'female',
     'age': 29,
-    'title': 'Sales Specialist',
+    'title': 'salesSpecialist',
     'phone_number': '+84911223344',
     'description': 'Expert in contemporary jewelry designs and custom creations. Passionate about helping clients find their perfect piece.',
     'image_url': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80',
   },
   {
-    'id': '4',
+    'id': 4,
     'name': 'Pham Duc Long',
     'gender': 'male',
     'age': 45,
-    'title': 'Senior Sales Rep',
+    'title': 'seniorSalesRep',
     'phone_number': '+84999887766',
     'description': 'Vintage jewelry connoisseur with deep knowledge of antique pieces and estate jewelry valuations.',
     'image_url': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
   },
   {
-    'id': '5',
+    'id': 5,
     'name': 'Vo Ngoc Lan',
     'gender': 'female',
     'age': 32,
-    'title': 'Sales Specialist',
+    'title': 'salesSpecialist',
     'phone_number': '+84955667788',
     'description': 'Pearl and gemstone expert. Certified gemologist with extensive knowledge of colored stones.',
     'image_url': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2',
   },
   {
-    'id': '6',
+    'id': 6,
     'name': 'Hoang Quoc Bao',
     'gender': 'male',
     'age': 38,
-    'title': 'Sales Rep',
+    'title': 'salesRep',
     'phone_number': '+84944332211',
     'description': 'Wedding and engagement ring specialist. Dedicated to making special moments even more memorable.',
     'image_url': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
   },
   {
-    'id': '7',
+    'id': 7,
     'name': 'Nguyen Thanh Thao',
     'gender': 'female',
     'age': 27,
-    'title': 'Sales Rep',
+    'title': 'salesRep',
     'phone_number': '+84933445566',
     'description': 'Fashion jewelry consultant bringing the latest trends to your collection. Social media savvy.',
     'image_url': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb',
   },
   {
-    'id': '8',
+    'id': 8,
     'name': 'Do Manh Hung',
     'gender': 'male',
     'age': 52,
-    'title': 'Senior Sales Rep',
+    'title': 'seniorSalesRep',
     'phone_number': '+84922334455',
     'description': 'Investment grade jewelry advisor with expertise in gold bars and bullion. Trusted by collectors.',
     'image_url': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d',
   },
   {
-    'id': '9',
+    'id': 9,
     'name': 'Bui Phuong Linh',
     'gender': 'female',
     'age': 24,
-    'title': 'Sales Rep',
+    'title': 'salesRep',
     'phone_number': '+84911556677',
     'description': 'Custom design consultant. Creative and detail-oriented, turning jewelry dreams into reality.',
     'image_url': 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04',
   },
   {
-    'id': '10',
+    'id': 10,
     'name': 'Ly Quang Vinh',
     'gender': 'male',
     'age': 48,
-    'title': 'Sales Manager',
+    'title': 'salesManager',
     'phone_number': '+84900112233',
     'description': 'Luxury watch and jewelry specialist. Over 20 years in the premium market segment.',
     'image_url': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7',
   },
   {
-    'id': '11',
+    'id': 11,
     'name': 'Dang Thu Ha',
     'gender': 'female',
     'age': 31,
-    'title': 'Sales Specialist',
+    'title': 'salesSpecialist',
     'phone_number': '+84977889900',
     'description': 'Bridal jewelry specialist. Creating perfect looks for your special day with attention to every detail.',
     'image_url': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f',
   },
   {
-    'id': '12',
+    'id': 12,
     'name': 'Truong Hoai Nam',
     'gender': 'male',
     'age': 55,
-    'title': 'Sales Team Lead',
+    'title': 'salesTeamLead',
     'phone_number': '+84966778899',
     'description': 'Colored gemstone expert specializing in rare and exotic stones from around the world.',
     'image_url': 'https://images.unsplash.com/photo-1463453091185-61582044d556',
@@ -155,15 +160,27 @@ final List<Map<String, dynamic>> mockJewelryCatalog = [
 final List<Map<String, dynamic>> mockSellTransactions = [];
 
 class MockInterceptor extends Interceptor {
-  static const String _pathToCall = '/to-call';
-  static const String _pathJewelry = '/jewelry';
+  MockInterceptor(this._connectionChecker);
+
+  final InternetConnection _connectionChecker;
+
+  static const String _pathSalesTeam = NetworkUrls.salesTeam;
+  static const String _pathJewelry = NetworkUrls.jewelry;
   static const String _pathSellTransactions = '/sell-transactions';
 
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
-  ) {
+  ) async {
+    final hasConnection = await _connectionChecker.hasInternetAccess;
+    if (!hasConnection) {
+      return handler.reject(NetworkException());
+    }
+
+    // Simulate network delay
+    await Future.delayed(const Duration(milliseconds: 500));
+
     final method = options.method.toUpperCase();
     final Response<dynamic>? response = switch (method) {
       'GET' => _handleGetRequest(options),
@@ -180,11 +197,8 @@ class MockInterceptor extends Interceptor {
 
   Response<dynamic>? _handleGetRequest(RequestOptions options) {
     switch (options.path) {
-      case _pathToCall:
-        return _mockResponse(options, {
-          'data': mockSalesTeam,
-          'total': mockSalesTeam.length,
-        });
+      case _pathSalesTeam:
+        return _handleSalesTeamRequest(options);
       case _pathJewelry:
         return _mockResponse(options, {
           'data': mockJewelryCatalog,
@@ -193,6 +207,66 @@ class MockInterceptor extends Interceptor {
       default:
         return null;
     }
+  }
+
+  Response<dynamic> _handleSalesTeamRequest(RequestOptions options) {
+    final queryParams = options.queryParameters;
+
+    // Extract pagination params
+    final page = int.tryParse(queryParams['page']?.toString() ?? '1') ?? 1;
+    final limit = int.tryParse(queryParams['limit']?.toString() ?? '10') ?? 10;
+
+    // Extract filter params
+    final minAge = int.tryParse(queryParams['minAge']?.toString() ?? '');
+    final maxAge = int.tryParse(queryParams['maxAge']?.toString() ?? '');
+    final gender = queryParams['gender']?.toString();
+
+    // Apply filters
+    var filteredData = List<Map<String, dynamic>>.from(mockSalesTeam);
+
+    // Filter by age range
+    if (minAge != null) {
+      filteredData = filteredData.where((item) {
+        final age = item['age'] as int;
+        return age >= minAge;
+      }).toList();
+    }
+
+    if (maxAge != null) {
+      filteredData = filteredData.where((item) {
+        final age = item['age'] as int;
+        return age <= maxAge;
+      }).toList();
+    }
+
+    // Filter by gender
+    if (gender != null && gender.isNotEmpty && gender != 'all') {
+      filteredData = filteredData.where((item) {
+        return item['gender'] == gender;
+      }).toList();
+    }
+
+    // Calculate pagination
+    final total = filteredData.length;
+    final startIndex = (page - 1) * limit;
+    final endIndex = startIndex + limit;
+    final hasMore = endIndex < total;
+
+    // Apply pagination
+    final paginatedData = startIndex >= total
+        ? <Map<String, dynamic>>[]
+        : filteredData.sublist(
+            startIndex,
+            endIndex > total ? total : endIndex,
+          );
+
+    return _mockResponse(options, {
+      'data': paginatedData,
+      'total': total,
+      'page': page,
+      'limit': limit,
+      'hasMore': hasMore,
+    });
   }
 
   Response<dynamic>? _handlePostRequest(RequestOptions options) {

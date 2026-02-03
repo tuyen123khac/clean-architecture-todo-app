@@ -28,18 +28,18 @@
   "wishlistedItems": "Wishlisted Items",
   "priceRange": "Price Range",
   "allPrices": "All Prices",
-  "under10m": "< 10 triệu",
-  "from10mTo30m": "10 - 30 triệu",
-  "from30mTo50m": "30 - 50 triệu",
-  "above50m": "> 50 triệu",
+  "under10m": "< 10M",
+  "from10mTo30m": "10 - 30M",
+  "from30mTo50m": "30 - 50M",
+  "above50m": "> 50M",
   "category": "Category",
   "allCategories": "All",
-  "vangSJC": "Vàng SJC",
-  "vang24K": "Vàng 24K",
-  "vang18K": "Vàng 18K",
-  "vang14K": "Vàng 14K",
-  "vangTrang": "Vàng Trắng",
-  "daQuy": "Đá Quý",
+  "sjcGold": "SJC Gold",
+  "gold24K": "24K Gold",
+  "gold18K": "18K Gold",
+  "gold14K": "14K Gold",
+  "whiteGold": "White Gold",
+  "gemstone": "Gemstone",
   "sortBy": "Sort By",
   "nameAZ": "Name (A-Z)",
   "priceLowToHigh": "Price: Low to High",
@@ -54,6 +54,7 @@
   "all": "All",
   "male": "Male",
   "female": "Female",
+  "other": "Other",
   "noMoreData": "No more data",
   "consultantsAvailable": "{count} consultants available",
   "@consultantsAvailable": {
@@ -62,5 +63,14 @@
         "type": "int"
       }
     }
-  }
+  },
+  "salesTitleSalesManager": "Sales Manager",
+  "salesTitleSalesSpecialist": "Sales Specialist",
+  "salesTitleSeniorSalesRep": "Senior Sales Rep",
+  "salesTitleSalesTeamLead": "Sales Team Lead",
+  "salesTitleSalesRep": "Sales Rep",
+  "networkError": "Please check your internet connection",
+  "somethingWentWrong": "Something went wrong",
+  "retry": "Retry",
+  "failedToLoadMore": "Failed to load more"
 }

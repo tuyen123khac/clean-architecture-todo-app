@@ -39,12 +39,12 @@ class AppStrings {
   static String get above50m => getLocalization().above50m;
   static String get category => getLocalization().category;
   static String get allCategories => getLocalization().allCategories;
-  static String get vangSJC => getLocalization().vangSJC;
-  static String get vang24K => getLocalization().vang24K;
-  static String get vang18K => getLocalization().vang18K;
-  static String get vang14K => getLocalization().vang14K;
-  static String get vangTrang => getLocalization().vangTrang;
-  static String get daQuy => getLocalization().daQuy;
+  static String get sjcGold => getLocalization().sjcGold;
+  static String get gold24K => getLocalization().gold24K;
+  static String get gold18K => getLocalization().gold18K;
+  static String get gold14K => getLocalization().gold14K;
+  static String get whiteGold => getLocalization().whiteGold;
+  static String get gemstone => getLocalization().gemstone;
   static String get sortBy => getLocalization().sortBy;
   static String get nameAZ => getLocalization().nameAZ;
   static String get priceLowToHigh => getLocalization().priceLowToHigh;
@@ -59,6 +59,17 @@ class AppStrings {
   static String get all => getLocalization().all;
   static String get male => getLocalization().male;
   static String get female => getLocalization().female;
+  static String get other => getLocalization().other;
   static String get noMoreData => getLocalization().noMoreData;
   static String consultantsAvailable(int count) => getLocalization().consultantsAvailable(count);
+
+  static String get salesManager => getLocalization().salesTitleSalesManager;
+  static String get salesSpecialist => getLocalization().salesTitleSalesSpecialist;
+  static String get seniorSalesRep => getLocalization().salesTitleSeniorSalesRep;
+  static String get salesTeamLead => getLocalization().salesTitleSalesTeamLead;
+  static String get salesRep => getLocalization().salesTitleSalesRep;
+  static String get networkError => getLocalization().networkError;
+  static String get somethingWentWrong => getLocalization().somethingWentWrong;
+  static String get retry => getLocalization().retry;
+  static String get failedToLoadMore => getLocalization().failedToLoadMore;
 }

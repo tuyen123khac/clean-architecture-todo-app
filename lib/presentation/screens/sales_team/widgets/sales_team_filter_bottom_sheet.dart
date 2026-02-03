@@ -5,33 +5,30 @@ import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
+import '../../../../domain/entities/sales_member/sales_gender_enum_entity.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
-
-enum GenderFilter { all, male, female }
 
 class SalesTeamFilterState {
   final RangeValues ageRange;
-  final GenderFilter gender;
+  final SalesGenderEnumEntity? gender; // null means "all"
 
   const SalesTeamFilterState({
     this.ageRange = const RangeValues(18, 65),
-    this.gender = GenderFilter.all,
+    this.gender,
   });
 
   SalesTeamFilterState copyWith({
     RangeValues? ageRange,
-    GenderFilter? gender,
+    SalesGenderEnumEntity? Function()? gender,
   }) {
     return SalesTeamFilterState(
       ageRange: ageRange ?? this.ageRange,
-      gender: gender ?? this.gender,
+      gender: gender != null ? gender() : this.gender,
     );
   }
 
   bool get isDefault =>
-      ageRange.start == 18 &&
-      ageRange.end == 65 &&
-      gender == GenderFilter.all;
+      ageRange.start == 18 && ageRange.end == 65 && gender == null;
 }
 
 class SalesTeamFilterBottomSheet extends StatefulWidget {
@@ -68,7 +65,7 @@ class SalesTeamFilterBottomSheet extends StatefulWidget {
 class _SalesTeamFilterBottomSheetState
     extends State<SalesTeamFilterBottomSheet> {
   late RangeValues _ageRange;
-  late GenderFilter _gender;
+  SalesGenderEnumEntity? _gender;
 
   @override
   void initState() {
@@ -80,7 +77,7 @@ class _SalesTeamFilterBottomSheetState
   void _resetFilters() {
     setState(() {
       _ageRange = const RangeValues(18, 65);
-      _gender = GenderFilter.all;
+      _gender = null;
     });
   }
 
@@ -239,18 +236,18 @@ class _SalesTeamFilterBottomSheetState
         const SizedBox(height: SizeApp.s12),
         Row(
           children: [
-            _buildGenderChip(AppStrings.all, GenderFilter.all),
+            _buildGenderChip(AppStrings.all, null),
             const SizedBox(width: SizeApp.s8),
-            _buildGenderChip(AppStrings.male, GenderFilter.male),
+            _buildGenderChip(AppStrings.male, SalesGenderEnumEntity.male),
             const SizedBox(width: SizeApp.s8),
-            _buildGenderChip(AppStrings.female, GenderFilter.female),
+            _buildGenderChip(AppStrings.female, SalesGenderEnumEntity.female),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildGenderChip(String label, GenderFilter value) {
+  Widget _buildGenderChip(String label, SalesGenderEnumEntity? value) {
     final isSelected = _gender == value;
     return GestureDetector(
       onTap: () {

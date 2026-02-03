@@ -21,3 +21,8 @@ samples, guidance on mobile development, and a full API reference.
 fvm flutter pub get
 fvm dart run flutter_launcher_icons
 ```
+
+## Build generated files:
+```bash
+fvm dart run build_runner build --delete-conflicting-outputs
+```
