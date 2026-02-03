@@ -533,7 +533,7 @@ abstract class AppLocalizations {
   /// No description provided for @sellItems.
   ///
   /// In en, this message translates to:
-  /// **'Sell Items'**
+  /// **'Sell Jewelry'**
   String get sellItems;
 
   /// No description provided for @online.

@@ -230,7 +230,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chooseHowToSort => 'Choose how to sort items';
 
   @override
-  String get sellItems => 'Sell Items';
+  String get sellItems => 'Bán trang sức';
 
   @override
   String get online => 'Online';

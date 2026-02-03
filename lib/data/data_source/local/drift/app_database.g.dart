@@ -68,18 +68,6 @@ class $SellJewelryTableTable extends SellJewelryTable
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _quantityToSellMeta = const VerificationMeta(
-    'quantityToSell',
-  );
-  @override
-  late final GeneratedColumn<int> quantityToSell = GeneratedColumn<int>(
-    'quantity_to_sell',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
-  );
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
   @override
   late final GeneratedColumn<String> weight = GeneratedColumn<String>(
@@ -129,7 +117,6 @@ class $SellJewelryTableTable extends SellJewelryTable
     price,
     imageUrl,
     stock,
-    quantityToSell,
     weight,
     size,
     material,
@@ -186,15 +173,6 @@ class $SellJewelryTableTable extends SellJewelryTable
       context.handle(
         _stockMeta,
         stock.isAcceptableOrUnknown(data['stock']!, _stockMeta),
-      );
-    }
-    if (data.containsKey('quantity_to_sell')) {
-      context.handle(
-        _quantityToSellMeta,
-        quantityToSell.isAcceptableOrUnknown(
-          data['quantity_to_sell']!,
-          _quantityToSellMeta,
-        ),
       );
     }
     if (data.containsKey('weight')) {
@@ -254,10 +232,6 @@ class $SellJewelryTableTable extends SellJewelryTable
         DriftSqlType.int,
         data['${effectivePrefix}stock'],
       )!,
-      quantityToSell: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}quantity_to_sell'],
-      )!,
       weight: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}weight'],
@@ -291,7 +265,6 @@ class SellJewelryTableData extends DataClass
   final double price;
   final String? imageUrl;
   final int stock;
-  final int quantityToSell;
   final String? weight;
   final String? size;
   final String? material;
@@ -303,7 +276,6 @@ class SellJewelryTableData extends DataClass
     required this.price,
     this.imageUrl,
     required this.stock,
-    required this.quantityToSell,
     this.weight,
     this.size,
     this.material,
@@ -320,7 +292,6 @@ class SellJewelryTableData extends DataClass
       map['image_url'] = Variable<String>(imageUrl);
     }
     map['stock'] = Variable<int>(stock);
-    map['quantity_to_sell'] = Variable<int>(quantityToSell);
     if (!nullToAbsent || weight != null) {
       map['weight'] = Variable<String>(weight);
     }
@@ -344,7 +315,6 @@ class SellJewelryTableData extends DataClass
           ? const Value.absent()
           : Value(imageUrl),
       stock: Value(stock),
-      quantityToSell: Value(quantityToSell),
       weight: weight == null && nullToAbsent
           ? const Value.absent()
           : Value(weight),
@@ -368,7 +338,6 @@ class SellJewelryTableData extends DataClass
       price: serializer.fromJson<double>(json['price']),
       imageUrl: serializer.fromJson<String?>(json['imageUrl']),
       stock: serializer.fromJson<int>(json['stock']),
-      quantityToSell: serializer.fromJson<int>(json['quantityToSell']),
       weight: serializer.fromJson<String?>(json['weight']),
       size: serializer.fromJson<String?>(json['size']),
       material: serializer.fromJson<String?>(json['material']),
@@ -385,7 +354,6 @@ class SellJewelryTableData extends DataClass
       'price': serializer.toJson<double>(price),
       'imageUrl': serializer.toJson<String?>(imageUrl),
       'stock': serializer.toJson<int>(stock),
-      'quantityToSell': serializer.toJson<int>(quantityToSell),
       'weight': serializer.toJson<String?>(weight),
       'size': serializer.toJson<String?>(size),
       'material': serializer.toJson<String?>(material),
@@ -400,7 +368,6 @@ class SellJewelryTableData extends DataClass
     double? price,
     Value<String?> imageUrl = const Value.absent(),
     int? stock,
-    int? quantityToSell,
     Value<String?> weight = const Value.absent(),
     Value<String?> size = const Value.absent(),
     Value<String?> material = const Value.absent(),
@@ -412,7 +379,6 @@ class SellJewelryTableData extends DataClass
     price: price ?? this.price,
     imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
     stock: stock ?? this.stock,
-    quantityToSell: quantityToSell ?? this.quantityToSell,
     weight: weight.present ? weight.value : this.weight,
     size: size.present ? size.value : this.size,
     material: material.present ? material.value : this.material,
@@ -426,9 +392,6 @@ class SellJewelryTableData extends DataClass
       price: data.price.present ? data.price.value : this.price,
       imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
       stock: data.stock.present ? data.stock.value : this.stock,
-      quantityToSell: data.quantityToSell.present
-          ? data.quantityToSell.value
-          : this.quantityToSell,
       weight: data.weight.present ? data.weight.value : this.weight,
       size: data.size.present ? data.size.value : this.size,
       material: data.material.present ? data.material.value : this.material,
@@ -447,7 +410,6 @@ class SellJewelryTableData extends DataClass
           ..write('price: $price, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('stock: $stock, ')
-          ..write('quantityToSell: $quantityToSell, ')
           ..write('weight: $weight, ')
           ..write('size: $size, ')
           ..write('material: $material, ')
@@ -464,7 +426,6 @@ class SellJewelryTableData extends DataClass
     price,
     imageUrl,
     stock,
-    quantityToSell,
     weight,
     size,
     material,
@@ -480,7 +441,6 @@ class SellJewelryTableData extends DataClass
           other.price == this.price &&
           other.imageUrl == this.imageUrl &&
           other.stock == this.stock &&
-          other.quantityToSell == this.quantityToSell &&
           other.weight == this.weight &&
           other.size == this.size &&
           other.material == this.material &&
@@ -494,7 +454,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
   final Value<double> price;
   final Value<String?> imageUrl;
   final Value<int> stock;
-  final Value<int> quantityToSell;
   final Value<String?> weight;
   final Value<String?> size;
   final Value<String?> material;
@@ -507,7 +466,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     this.price = const Value.absent(),
     this.imageUrl = const Value.absent(),
     this.stock = const Value.absent(),
-    this.quantityToSell = const Value.absent(),
     this.weight = const Value.absent(),
     this.size = const Value.absent(),
     this.material = const Value.absent(),
@@ -521,7 +479,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     required double price,
     this.imageUrl = const Value.absent(),
     this.stock = const Value.absent(),
-    this.quantityToSell = const Value.absent(),
     this.weight = const Value.absent(),
     this.size = const Value.absent(),
     this.material = const Value.absent(),
@@ -538,7 +495,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     Expression<double>? price,
     Expression<String>? imageUrl,
     Expression<int>? stock,
-    Expression<int>? quantityToSell,
     Expression<String>? weight,
     Expression<String>? size,
     Expression<String>? material,
@@ -552,7 +508,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
       if (price != null) 'price': price,
       if (imageUrl != null) 'image_url': imageUrl,
       if (stock != null) 'stock': stock,
-      if (quantityToSell != null) 'quantity_to_sell': quantityToSell,
       if (weight != null) 'weight': weight,
       if (size != null) 'size': size,
       if (material != null) 'material': material,
@@ -568,7 +523,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     Value<double>? price,
     Value<String?>? imageUrl,
     Value<int>? stock,
-    Value<int>? quantityToSell,
     Value<String?>? weight,
     Value<String?>? size,
     Value<String?>? material,
@@ -582,7 +536,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       stock: stock ?? this.stock,
-      quantityToSell: quantityToSell ?? this.quantityToSell,
       weight: weight ?? this.weight,
       size: size ?? this.size,
       material: material ?? this.material,
@@ -612,9 +565,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     if (stock.present) {
       map['stock'] = Variable<int>(stock.value);
     }
-    if (quantityToSell.present) {
-      map['quantity_to_sell'] = Variable<int>(quantityToSell.value);
-    }
     if (weight.present) {
       map['weight'] = Variable<String>(weight.value);
     }
@@ -642,7 +592,6 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
           ..write('price: $price, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('stock: $stock, ')
-          ..write('quantityToSell: $quantityToSell, ')
           ..write('weight: $weight, ')
           ..write('size: $size, ')
           ..write('material: $material, ')
@@ -1540,7 +1489,6 @@ typedef $$SellJewelryTableTableCreateCompanionBuilder =
       required double price,
       Value<String?> imageUrl,
       Value<int> stock,
-      Value<int> quantityToSell,
       Value<String?> weight,
       Value<String?> size,
       Value<String?> material,
@@ -1555,7 +1503,6 @@ typedef $$SellJewelryTableTableUpdateCompanionBuilder =
       Value<double> price,
       Value<String?> imageUrl,
       Value<int> stock,
-      Value<int> quantityToSell,
       Value<String?> weight,
       Value<String?> size,
       Value<String?> material,
@@ -1599,11 +1546,6 @@ class $$SellJewelryTableTableFilterComposer
 
   ColumnFilters<int> get stock => $composableBuilder(
     column: $table.stock,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get quantityToSell => $composableBuilder(
-    column: $table.quantityToSell,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1667,11 +1609,6 @@ class $$SellJewelryTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get quantityToSell => $composableBuilder(
-    column: $table.quantityToSell,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get weight => $composableBuilder(
     column: $table.weight,
     builder: (column) => ColumnOrderings(column),
@@ -1719,11 +1656,6 @@ class $$SellJewelryTableTableAnnotationComposer
 
   GeneratedColumn<int> get stock =>
       $composableBuilder(column: $table.stock, builder: (column) => column);
-
-  GeneratedColumn<int> get quantityToSell => $composableBuilder(
-    column: $table.quantityToSell,
-    builder: (column) => column,
-  );
 
   GeneratedColumn<String> get weight =>
       $composableBuilder(column: $table.weight, builder: (column) => column);
@@ -1783,7 +1715,6 @@ class $$SellJewelryTableTableTableManager
                 Value<double> price = const Value.absent(),
                 Value<String?> imageUrl = const Value.absent(),
                 Value<int> stock = const Value.absent(),
-                Value<int> quantityToSell = const Value.absent(),
                 Value<String?> weight = const Value.absent(),
                 Value<String?> size = const Value.absent(),
                 Value<String?> material = const Value.absent(),
@@ -1796,7 +1727,6 @@ class $$SellJewelryTableTableTableManager
                 price: price,
                 imageUrl: imageUrl,
                 stock: stock,
-                quantityToSell: quantityToSell,
                 weight: weight,
                 size: size,
                 material: material,
@@ -1811,7 +1741,6 @@ class $$SellJewelryTableTableTableManager
                 required double price,
                 Value<String?> imageUrl = const Value.absent(),
                 Value<int> stock = const Value.absent(),
-                Value<int> quantityToSell = const Value.absent(),
                 Value<String?> weight = const Value.absent(),
                 Value<String?> size = const Value.absent(),
                 Value<String?> material = const Value.absent(),
@@ -1824,7 +1753,6 @@ class $$SellJewelryTableTableTableManager
                 price: price,
                 imageUrl: imageUrl,
                 stock: stock,
-                quantityToSell: quantityToSell,
                 weight: weight,
                 size: size,
                 material: material,

@@ -127,20 +127,24 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
     if (index >= state.inventoryList.length) return;
 
     final item = state.inventoryList[index];
-    if (item.quantityToSell >= item.stock) return;
+    final currentQty = state.getQuantityToSell(item.id);
+    if (currentQty >= item.stock) return;
 
-    final updatedItem = item.copyWith(quantityToSell: item.quantityToSell + 1);
-    _updateSellJewelry.call(updatedItem);
+    final newQuantities = Map<String, int>.from(state.quantitiesToSell);
+    newQuantities[item.id] = currentQty + 1;
+    emit(state.copyWith(quantitiesToSell: newQuantities));
   }
 
   void decrementQuantity(int index) {
     if (index >= state.inventoryList.length) return;
 
     final item = state.inventoryList[index];
-    if (item.quantityToSell <= 0) return;
+    final currentQty = state.getQuantityToSell(item.id);
+    if (currentQty <= 0) return;
 
-    final updatedItem = item.copyWith(quantityToSell: item.quantityToSell - 1);
-    _updateSellJewelry.call(updatedItem);
+    final newQuantities = Map<String, int>.from(state.quantitiesToSell);
+    newQuantities[item.id] = currentQty - 1;
+    emit(state.copyWith(quantitiesToSell: newQuantities));
   }
 
   Future<bool> sellItems() async {
@@ -154,10 +158,10 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
           // Remove item if stock becomes 0
           await _deleteSellJewelry.call(item.id);
         } else {
-          // Update with reduced stock and reset quantityToSell
-          final updatedItem = item.copyWith(
+          // Update with reduced stock (quantityToSell is in-memory only)
+          final originalItem = state.inventoryList.firstWhere((e) => e.id == item.id);
+          final updatedItem = originalItem.copyWith(
             stock: newStock,
-            quantityToSell: 0,
             syncStatus: state.isOnline
                 ? SellJewelrySyncStatus.synced
                 : SellJewelrySyncStatus.pending,
@@ -165,30 +169,65 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
           await _updateSellJewelry.call(updatedItem);
         }
       }
+      // Reset all quantities to sell
+      emit(state.copyWith(quantitiesToSell: {}));
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  void bulkSelect() {
+  void bulkSelectQuantities() {
     // Select all items by setting quantityToSell to stock for each
-    for (int i = 0; i < state.inventoryList.length; i++) {
-      final item = state.inventoryList[i];
-      if (item.quantityToSell < item.stock) {
-        final updatedItem = item.copyWith(quantityToSell: item.stock);
-        _updateSellJewelry.call(updatedItem);
-      }
+    final newQuantities = <String, int>{};
+    for (final item in state.inventoryList) {
+      newQuantities[item.id] = item.stock;
     }
+    emit(state.copyWith(quantitiesToSell: newQuantities));
   }
 
-  void clearSelection() {
+  void clearQuantities() {
     // Reset all quantityToSell to 0
-    for (final item in state.inventoryList) {
-      if (item.quantityToSell > 0) {
-        final updatedItem = item.copyWith(quantityToSell: 0);
-        _updateSellJewelry.call(updatedItem);
+    emit(state.copyWith(quantitiesToSell: {}));
+  }
+
+  void enterSelectionMode() {
+    emit(state.copyWith(isSelectionMode: true, selectedIds: {}));
+  }
+
+  void exitSelectionMode() {
+    emit(state.copyWith(isSelectionMode: false, selectedIds: {}));
+  }
+
+  void toggleSelection(String id) {
+    final newSelectedIds = Set<String>.from(state.selectedIds);
+    if (newSelectedIds.contains(id)) {
+      newSelectedIds.remove(id);
+    } else {
+      newSelectedIds.add(id);
+    }
+    emit(state.copyWith(selectedIds: newSelectedIds));
+  }
+
+  void selectAll() {
+    final allIds = state.inventoryList.map((item) => item.id).toSet();
+    emit(state.copyWith(selectedIds: allIds));
+  }
+
+  void deselectAll() {
+    emit(state.copyWith(selectedIds: {}));
+  }
+
+  Future<void> deleteSelected() async {
+    if (state.selectedIds.isEmpty) return;
+
+    try {
+      for (final id in state.selectedIds) {
+        await _deleteSellJewelry.call(id);
       }
+      exitSelectionMode();
+    } catch (_) {
+      // Error handling
     }
   }
 

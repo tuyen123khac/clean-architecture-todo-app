@@ -15,6 +15,8 @@ class CustomOutlinedButton extends StatelessWidget {
   final TextStyle? labelStyle;
   final EdgeInsetsGeometry? paddingButton;
   final bool isLoading;
+  final IconData? icon;
+  final double? iconSize;
   const CustomOutlinedButton({
     Key? key,
     this.onPressed,
@@ -28,6 +30,8 @@ class CustomOutlinedButton extends StatelessWidget {
     this.labelStyle,
     this.paddingButton,
     this.isLoading = false,
+    this.icon,
+    this.iconSize,
   }) : super(key: key);
 
   @override
@@ -57,14 +61,28 @@ class CustomOutlinedButton extends StatelessWidget {
                 color: AppColors.textWhite,
               ),
             )
-          : Text(
-              label,
-              overflow: TextOverflow.ellipsis,
-              style: labelStyle ??
-                  AppTextStyles.bold(
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[
+                  Icon(
+                    icon,
                     color: colorText ?? AppColors.primary,
-                    fontSize: fontSizeText ?? 16,
+                    size: iconSize ?? 20,
                   ),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: labelStyle ??
+                      AppTextStyles.bold(
+                        color: colorText ?? AppColors.primary,
+                        fontSize: fontSizeText ?? 16,
+                      ),
+                ),
+              ],
             ),
     );
   }

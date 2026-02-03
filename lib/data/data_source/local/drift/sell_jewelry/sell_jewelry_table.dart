@@ -7,7 +7,6 @@ class SellJewelryTable extends Table {
   RealColumn get price => real()();
   TextColumn get imageUrl => text().nullable()();
   IntColumn get stock => integer().withDefault(const Constant(0))();
-  IntColumn get quantityToSell => integer().withDefault(const Constant(0))();
   TextColumn get weight => text().nullable()();
   TextColumn get size => text().nullable()();
   TextColumn get material => text().nullable()();

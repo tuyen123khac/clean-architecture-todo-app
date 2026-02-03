@@ -6,6 +6,7 @@ import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
+import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 
 class SellJewelryCard extends StatelessWidget {
@@ -13,7 +14,9 @@ class SellJewelryCard extends StatelessWidget {
   final VoidCallback? onIncrement;
   final VoidCallback? onDecrement;
   final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
+  final VoidCallback? onTap;
+  final bool isSelectionMode;
+  final bool isSelected;
 
   const SellJewelryCard({
     super.key,
@@ -21,37 +24,92 @@ class SellJewelryCard extends StatelessWidget {
     this.onIncrement,
     this.onDecrement,
     this.onEdit,
-    this.onDelete,
+    this.onTap,
+    this.isSelectionMode = false,
+    this.isSelected = false,
   });
-
-  String _formatPrice(double price) {
-    return '${price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}đ';
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: MarginApp.m12),
-      padding: const EdgeInsets.all(PaddingApp.p12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: MarginApp.m12),
+        padding: const EdgeInsets.all(PaddingApp.p12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
+          border: isSelected
+              ? Border.all(color: AppColors.primary, width: 2)
+              : null,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (isSelectionMode) ...[
+                  _buildCheckbox(),
+                  const SizedBox(width: SizeApp.s12),
+                ],
+                _buildImageWithBadge(),
+                const SizedBox(width: SizeApp.s12),
+                Expanded(child: _buildContent()),
+              ],
+            ),
+            if (!isSelectionMode) ...[
+              const SizedBox(height: SizeApp.s8),
+              _buildQuantitySelector(),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCheckbox() {
+    return Padding(
+      padding: const EdgeInsets.only(top: SizeApp.s28),
+      child: Container(
+        width: SizeApp.s24,
+        height: SizeApp.s24,
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary : Colors.white,
+          borderRadius: BorderRadius.circular(BorderRadiusApp.r6),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.textGray,
+            width: 2,
           ),
-        ],
+        ),
+        child: isSelected
+            ? const Icon(Icons.check, color: Colors.white, size: SizeApp.s16)
+            : null,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildImage(),
-          const SizedBox(width: SizeApp.s12),
-          Expanded(child: _buildContent()),
-        ],
-      ),
+    );
+  }
+
+  Widget _buildImageWithBadge() {
+    // Only show badge for unsynced items
+    if (jewelry.isSynced) {
+      return _buildImage();
+    }
+    return Stack(
+      children: [
+        _buildImage(),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: _buildPendingSyncBadge(),
+        ),
+      ],
     );
   }
 
@@ -61,8 +119,8 @@ class SellJewelryCard extends StatelessWidget {
       child: jewelry.imageUrl != null
           ? CachedNetworkImage(
               imageUrl: jewelry.imageUrl!,
-              width: SizeApp.s100,
-              height: SizeApp.s100,
+              width: SizeApp.s80,
+              height: SizeApp.s80,
               fit: BoxFit.cover,
               placeholder: (context, url) => _buildImagePlaceholder(),
               errorWidget: (context, url, error) => _buildImagePlaceholder(),
@@ -73,13 +131,51 @@ class SellJewelryCard extends StatelessWidget {
 
   Widget _buildImagePlaceholder() {
     return Container(
-      width: SizeApp.s100,
-      height: SizeApp.s100,
+      width: SizeApp.s80,
+      height: SizeApp.s80,
       color: AppColors.bgLightGray,
       child: Icon(
         Icons.diamond_outlined,
         color: AppColors.textGray,
-        size: SizeApp.s32,
+        size: SizeApp.s28,
+      ),
+    );
+  }
+
+  Widget _buildPendingSyncBadge() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PaddingApp.p6,
+        vertical: PaddingApp.p2,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.orange.shade50,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(BorderRadiusApp.r12),
+          topRight: Radius.circular(BorderRadiusApp.r12),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.access_time,
+            size: SizeApp.s12,
+            color: Colors.orange,
+          ),
+          const SizedBox(width: SizeApp.s2),
+          Flexible(
+            child: Text(
+              AppStrings.offline,
+              style: AppTextStyles.medium(
+                fontSize: AppFontSize.s10,
+                color: Colors.orange,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -93,8 +189,6 @@ class SellJewelryCard extends StatelessWidget {
         _buildMaterialAndStock(),
         const SizedBox(height: SizeApp.s4),
         _buildPrice(),
-        const SizedBox(height: SizeApp.s8),
-        _buildQuantitySelector(),
       ],
     );
   }
@@ -113,17 +207,8 @@ class SellJewelryCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        const SizedBox(width: SizeApp.s4),
-        _buildActionButtons(),
-      ],
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (onEdit != null)
+        if (onEdit != null && !isSelectionMode) ...[
+          const SizedBox(width: SizeApp.s8),
           GestureDetector(
             onTap: onEdit,
             child: Container(
@@ -139,59 +224,8 @@ class SellJewelryCard extends StatelessWidget {
               ),
             ),
           ),
-        if (onEdit != null && onDelete != null)
-          const SizedBox(width: SizeApp.s4),
-        if (onDelete != null)
-          GestureDetector(
-            onTap: onDelete,
-            child: Container(
-              padding: const EdgeInsets.all(PaddingApp.p6),
-              decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
-              ),
-              child: Icon(
-                Icons.delete_outline,
-                size: SizeApp.s16,
-                color: Colors.red,
-              ),
-            ),
-          ),
-        const SizedBox(width: SizeApp.s4),
-        _buildSyncBadge(),
-      ],
-    );
-  }
-
-  Widget _buildSyncBadge() {
-    final isSynced = jewelry.isSynced;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PaddingApp.p8,
-        vertical: PaddingApp.p4,
-      ),
-      decoration: BoxDecoration(
-        color: isSynced ? Colors.green.shade50 : Colors.orange.shade50,
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            isSynced ? Icons.check_circle_outline : Icons.wifi_off_outlined,
-            size: SizeApp.s14,
-            color: isSynced ? Colors.green : Colors.orange,
-          ),
-          const SizedBox(width: SizeApp.s4),
-          Text(
-            isSynced ? AppStrings.synced : AppStrings.offline,
-            style: AppTextStyles.medium(
-              fontSize: AppFontSize.s12,
-              color: isSynced ? Colors.green : Colors.orange,
-            ),
-          ),
         ],
-      ),
+      ],
     );
   }
 
@@ -207,7 +241,7 @@ class SellJewelryCard extends StatelessWidget {
 
   Widget _buildPrice() {
     return Text(
-      _formatPrice(jewelry.price),
+      NumberUtils.formatPrice(jewelry.price),
       style: AppTextStyles.bold(
         fontSize: AppFontSize.s18,
         color: AppColors.primary,
@@ -232,7 +266,7 @@ class SellJewelryCard extends StatelessWidget {
           isEnabled: jewelry.quantityToSell > 0,
         ),
         Container(
-          width: SizeApp.s40,
+          width: SizeApp.s36,
           alignment: Alignment.center,
           child: Text(
             jewelry.quantityToSell.toString(),
@@ -261,8 +295,8 @@ class SellJewelryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: SizeApp.s36,
-        height: SizeApp.s36,
+        width: SizeApp.s32,
+        height: SizeApp.s32,
         decoration: BoxDecoration(
           color: isPrimary
               ? (isEnabled ? AppColors.primary : AppColors.bgLightGray)
@@ -271,7 +305,7 @@ class SellJewelryCard extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: SizeApp.s20,
+          size: SizeApp.s18,
           color: isPrimary
               ? (isEnabled ? Colors.white : AppColors.textGray)
               : (isEnabled ? AppColors.textBlack : AppColors.textGray),

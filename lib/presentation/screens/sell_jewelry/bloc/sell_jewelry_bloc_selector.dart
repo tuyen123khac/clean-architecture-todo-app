@@ -22,7 +22,7 @@ class SellJewelryListSelector
     super.key,
     required Widget Function(List<SellJewelryEntity>) builder,
   }) : super(
-          selector: (state) => state.inventoryList,
+          selector: (state) => state.inventoryWithQuantities,
           builder: (_, list) => builder(list),
         );
 }
@@ -68,5 +68,16 @@ class SellJewelryErrorSelector
   }) : super(
           selector: (state) => state.errorMessage,
           builder: (_, error) => builder(error),
+        );
+}
+
+class SellJewelrySelectionModeSelector
+    extends BlocSelector<SellJewelryBloc, SellJewelryState, ({bool isSelectionMode, Set<String> selectedIds})> {
+  SellJewelrySelectionModeSelector({
+    super.key,
+    required Widget Function(bool isSelectionMode, Set<String> selectedIds) builder,
+  }) : super(
+          selector: (state) => (isSelectionMode: state.isSelectionMode, selectedIds: state.selectedIds),
+          builder: (_, data) => builder(data.isSelectionMode, data.selectedIds),
         );
 }
