@@ -1,0 +1,345 @@
+import 'package:flutter/material.dart';
+
+import '../../../../application/resource/colors/app_colors.dart';
+import '../../../../application/resource/fonts/app_font.dart';
+import '../../../../application/resource/strings/app_strings.dart';
+import '../../../../application/resource/styles/app_text_style.dart';
+import '../../../../application/resource/value_manager.dart';
+import '../../../../application/util/number_utils.dart';
+import '../../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
+import '../../../navigation/app_navigation.dart';
+
+class PurchaseConfirmationBottomSheet extends StatefulWidget {
+  final BuyJewelryEntity jewelry;
+  final Future<bool> Function(int quantity) onPayment;
+
+  const PurchaseConfirmationBottomSheet({
+    super.key,
+    required this.jewelry,
+    required this.onPayment,
+  });
+
+  static Future<bool?> show(
+    BuildContext context, {
+    required BuyJewelryEntity jewelry,
+    required Future<bool> Function(int quantity) onPayment,
+  }) {
+    return showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => PurchaseConfirmationBottomSheet(
+        jewelry: jewelry,
+        onPayment: onPayment,
+      ),
+    );
+  }
+
+  @override
+  State<PurchaseConfirmationBottomSheet> createState() =>
+      _PurchaseConfirmationBottomSheetState();
+}
+
+class _PurchaseConfirmationBottomSheetState
+    extends State<PurchaseConfirmationBottomSheet> {
+  int _quantity = 1;
+  bool _isLoading = false;
+
+  double get _totalCost => widget.jewelry.price * _quantity;
+
+  void _incrementQuantity() {
+    setState(() {
+      _quantity++;
+    });
+  }
+
+  void _decrementQuantity() {
+    if (_quantity > 1) {
+      setState(() {
+        _quantity--;
+      });
+    }
+  }
+
+  Future<void> _handlePayment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await widget.onPayment(_quantity);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (mounted) {
+      AppNavigation.pop(context, success);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildDragHandle(),
+          _buildHeader(),
+          _buildProductInfo(),
+          _buildQuantitySection(),
+          _buildTotalSection(),
+          _buildButtons(),
+          SizedBox(
+            height: MediaQuery.of(context).padding.bottom + PaddingApp.p16,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDragHandle() {
+    return Container(
+      margin: const EdgeInsets.only(top: MarginApp.m12),
+      width: SizeApp.s40,
+      height: SizeApp.s4,
+      decoration: BoxDecoration(
+        color: AppColors.bgLightGray,
+        borderRadius: BorderRadius.circular(BorderRadiusApp.r2),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            AppStrings.confirmPurchase,
+            style: AppTextStyles.bold(
+              fontSize: AppFontSize.s20,
+              color: AppColors.textBlack,
+            ),
+          ),
+          IconButton(
+            onPressed: () => AppNavigation.pop(context),
+            icon: Icon(
+              Icons.close,
+              color: AppColors.textBlack,
+              size: SizeApp.s24,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: ScreenPaddingApp.horizontal,
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+            child: Image.network(
+              '${widget.jewelry.imageUrl}?w=200&h=200&fit=crop',
+              width: SizeApp.s80,
+              height: SizeApp.s80,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: SizeApp.s80,
+                height: SizeApp.s80,
+                color: AppColors.bgLightGray,
+                child: Icon(
+                  Icons.diamond_outlined,
+                  color: AppColors.textGray,
+                  size: SizeApp.s32,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: SizeApp.s16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.jewelry.name,
+                  style: AppTextStyles.semiBold(
+                    fontSize: AppFontSize.s16,
+                    color: AppColors.textBlack,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: SizeApp.s4),
+                Text(
+                  NumberUtils.formatPrice(widget.jewelry.price),
+                  style: AppTextStyles.bold(
+                    fontSize: AppFontSize.s18,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuantitySection() {
+    return Padding(
+      padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            AppStrings.quantity,
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s16,
+              color: AppColors.textDarkGray,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.bgLightGray),
+              borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+            ),
+            child: Row(
+              children: [
+                _buildQuantityButton(Icons.remove, _decrementQuantity),
+                Container(
+                  width: SizeApp.s56,
+                  alignment: Alignment.center,
+                  child: Text(
+                    _quantity.toString(),
+                    style: AppTextStyles.semiBold(
+                      fontSize: AppFontSize.s18,
+                      color: AppColors.textBlack,
+                    ),
+                  ),
+                ),
+                _buildQuantityButton(Icons.add, _incrementQuantity),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuantityButton(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: SizeApp.s48,
+        height: SizeApp.s48,
+        alignment: Alignment.center,
+        child: Icon(icon, color: AppColors.textBlack, size: SizeApp.s20),
+      ),
+    );
+  }
+
+  Widget _buildTotalSection() {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: ScreenPaddingApp.horizontal,
+      ),
+      padding: const EdgeInsets.all(PaddingApp.p16),
+      decoration: BoxDecoration(
+        color: AppColors.bgLightGray,
+        borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            AppStrings.totalCost,
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s16,
+              color: AppColors.textDarkGray,
+            ),
+          ),
+          Text(
+            NumberUtils.formatPrice(_totalCost),
+            style: AppTextStyles.bold(
+              fontSize: AppFontSize.s20,
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Padding(
+      padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => AppNavigation.pop(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p16),
+                decoration: BoxDecoration(
+                  color: AppColors.bgLightGray,
+                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+                ),
+                child: Center(
+                  child: Text(
+                    AppStrings.cancel,
+                    style: AppTextStyles.semiBold(
+                      fontSize: AppFontSize.s16,
+                      color: AppColors.textDarkGray,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: SizeApp.s12),
+          Expanded(
+            flex: 2,
+            child: GestureDetector(
+              onTap: _isLoading ? null : _handlePayment,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+                ),
+                child: Center(
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: SizeApp.s20,
+                          height: SizeApp.s20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Text(
+                          AppStrings.payment,
+                          style: AppTextStyles.semiBold(
+                            fontSize: AppFontSize.s16,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -8,13 +8,17 @@ import '../../../application/resource/colors/app_colors.dart';
 import '../../../application/resource/fonts/app_font.dart';
 import '../../../application/resource/styles/app_text_style.dart';
 import '../../../application/resource/value_manager.dart';
+import '../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
 import '../../custom_widgets/app_bar/custom_app_bar.dart';
 import '../../navigation/app_navigation.dart';
+import '../jewelry_detail/jewelry_detail_screen.dart';
+import '../../navigation/app_routes.dart';
 import 'bloc/buy_jewelry_bloc.dart';
 import 'bloc/buy_jewelry_bloc_selector.dart';
 import 'bloc/buy_jewelry_state.dart';
-import 'widgets/jewelry_card.dart';
-import 'widgets/jewelry_filter_bottom_sheet.dart';
+import 'widgets/buy_jewelry_card.dart';
+import 'widgets/buy_jewelry_filter_bottom_sheet.dart';
+import 'widgets/buy_jewelry_sort_bottom_sheet.dart';
 
 class BuyJewelryScreen extends StatefulWidget {
   const BuyJewelryScreen({super.key});
@@ -45,15 +49,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
       child: Scaffold(
         backgroundColor: AppColors.bgWhite,
         appBar: _buildAppBar(),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              _buildBody(),
-            ],
-          ),
-        ),
+        body: _buildBody(),
       ),
     );
   }
@@ -79,27 +75,155 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildBody() {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [_buildTabSelector(), _buildTabContent()],
+      ),
+    );
+  }
+
+  Widget _buildTabSelector() {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: ScreenPaddingApp.horizontal,
       ),
-      child: Column(
-        children: [
-          _buildTabSelector(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BuyJewelryListSelector(
-                builder: (jewelryList) => Text(
-                  AppStrings.itemsAvailable(jewelryList.length),
-                  style: AppTextStyles.regular(
+      child: BuyJewelryTabSelector(
+        builder: (selectedTab, wishlistCount) => SizedBox(
+          width: double.infinity,
+          child: CupertinoSlidingSegmentedControl<BuyJewelryTab>(
+            groupValue: selectedTab,
+            backgroundColor: AppColors.bgLightGray,
+            thumbColor: AppColors.primary,
+            padding: const EdgeInsets.all(PaddingApp.p4),
+            children: {
+              BuyJewelryTab.allItems: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PaddingApp.p16,
+                  vertical: PaddingApp.p10,
+                ),
+                child: Text(
+                  AppStrings.allItems,
+                  style: AppTextStyles.medium(
                     fontSize: AppFontSize.s14,
-                    color: AppColors.textDarkGray,
+                    color: selectedTab == BuyJewelryTab.allItems
+                        ? Colors.white
+                        : AppColors.textDarkGray,
                   ),
                 ),
               ),
-              _buildFilterButton(),
+              BuyJewelryTab.wishlist: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PaddingApp.p16,
+                  vertical: PaddingApp.p10,
+                ),
+                child: Text(
+                  '${AppStrings.wishlist} ($wishlistCount)',
+                  style: AppTextStyles.medium(
+                    fontSize: AppFontSize.s14,
+                    color: selectedTab == BuyJewelryTab.wishlist
+                        ? Colors.white
+                        : AppColors.textDarkGray,
+                  ),
+                ),
+              ),
+            },
+            onValueChanged: (tab) {
+              if (tab != null) {
+                _bloc.selectTab(tab);
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabContent() {
+    return Expanded(
+      child: BuyJewelryTabSelector(
+        builder: (selectedTab, _) => IndexedStack(
+          index: selectedTab == BuyJewelryTab.allItems ? 0 : 1,
+          children: [_buildAllItemsTab(), _buildWishlistTab()],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAllItemsTab() {
+    return Column(children: [_buildFilterSection(), _buildAllItemsBody()]);
+  }
+
+  Widget _buildWishlistTab() {
+    return BuyJewelryWishlistSelector(
+      builder: (wishlist) {
+        if (wishlist.isEmpty) {
+          return _buildEmptyWishlistView();
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            horizontal: ScreenPaddingApp.horizontal,
+          ),
+          itemCount: wishlist.length,
+          itemBuilder: (context, index) {
+            final jewelry = wishlist[index];
+            return BuyJewelryCard(
+              key: ValueKey(jewelry.id),
+              jewelry: jewelry,
+              onFavoritePressed: () =>
+                  _bloc.toggleFavoriteInWishlist(jewelry.id),
+              onViewPressed: () => _viewJewelryDetail(jewelry),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: ScreenPaddingApp.horizontal,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          BuyJewelryAllItemsSelector(
+            builder: (jewelryList) => Text(
+              AppStrings.itemsAvailable(jewelryList.length),
+              style: AppTextStyles.regular(
+                fontSize: AppFontSize.s14,
+                color: AppColors.textDarkGray,
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: SizeApp.s48,
+                height: SizeApp.s48,
+                child: IconButton(
+                  onPressed: _showSortBottomSheet,
+                  icon: Icon(
+                    Icons.swap_vert,
+                    color: AppColors.primary,
+                    size: SizeApp.s24,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: SizeApp.s48,
+                height: SizeApp.s48,
+                child: IconButton(
+                  onPressed: _showFilterBottomSheet,
+                  icon: Icon(
+                    Icons.tune,
+                    color: AppColors.primary,
+                    size: SizeApp.s24,
+                  ),
+                ),
+              ),
             ],
           ),
         ],
@@ -107,70 +231,31 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
-  Widget _buildTabSelector() {
-    return BuyJewelryTabSelector(
-      builder: (selectedTab, wishlistCount) => SizedBox(
-        width: double.infinity,
-        child: CupertinoSlidingSegmentedControl<JewelryTab>(
-          groupValue: selectedTab,
-          backgroundColor: AppColors.bgLightGray,
-          thumbColor: AppColors.primary,
-          padding: const EdgeInsets.all(PaddingApp.p4),
-          children: {
-            JewelryTab.allItems: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: PaddingApp.p16,
-                vertical: PaddingApp.p10,
-              ),
-              child: Text(
-                AppStrings.allItems,
-                style: AppTextStyles.medium(
-                  fontSize: AppFontSize.s14,
-                  color: selectedTab == JewelryTab.allItems
-                      ? Colors.white
-                      : AppColors.textDarkGray,
-                ),
-              ),
+  Widget _buildEmptyWishlistView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.favorite_border,
+            size: SizeApp.s64,
+            color: AppColors.textGray,
+          ),
+          const SizedBox(height: SizeApp.s16),
+          Text(
+            'No items in wishlist',
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s16,
+              color: AppColors.textDarkGray,
             ),
-            JewelryTab.wishlist: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: PaddingApp.p16,
-                vertical: PaddingApp.p10,
-              ),
-              child: Text(
-                '${AppStrings.wishlist} ($wishlistCount)',
-                style: AppTextStyles.medium(
-                  fontSize: AppFontSize.s14,
-                  color: selectedTab == JewelryTab.wishlist
-                      ? Colors.white
-                      : AppColors.textDarkGray,
-                ),
-              ),
-            ),
-          },
-          onValueChanged: (tab) {
-            if (tab != null) {
-              _bloc.selectTab(tab);
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterButton() {
-    return SizedBox(
-      width: SizeApp.s48,
-      height: SizeApp.s48,
-      child: IconButton(
-        onPressed: _showFilterBottomSheet,
-        icon: Icon(Icons.tune, color: AppColors.primary, size: SizeApp.s24),
+          ),
+        ],
       ),
     );
   }
 
   void _showFilterBottomSheet() {
-    JewelryFilterBottomSheet.show(
+    BuyJewelryFilterBottomSheet.show(
       context,
       initialFilter: _bloc.state.filterState,
       onApply: (filterState) {
@@ -179,7 +264,17 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
-  Widget _buildBody() {
+  void _showSortBottomSheet() {
+    BuyJewelrySortBottomSheet.show(
+      context,
+      initialSortBy: _bloc.state.sortBy,
+      onApply: (sortBy) {
+        _bloc.applySorting(sortBy);
+      },
+    );
+  }
+
+  Widget _buildAllItemsBody() {
     return Expanded(
       child: BuyJewelryStatusSelector(
         builder: (status) {
@@ -187,11 +282,11 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
             case BuyJewelryScreenStatus.loading:
               return _buildLoadingView();
             case BuyJewelryScreenStatus.success:
-              return _buildJewelryListView();
+              return _buildAllItemsListView();
             case BuyJewelryScreenStatus.error:
               return _buildErrorView();
             default:
-              return _buildJewelryListView();
+              return _buildAllItemsListView();
           }
         },
       ),
@@ -203,33 +298,104 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
   }
 
   Widget _buildErrorView() {
-    return const Center(child: Text('Error'));
-  }
-
-  Widget _buildJewelryListView() {
-    return BuyJewelryListSelector(
-      builder: (jewelryList) => ListView.builder(
-        padding: const EdgeInsets.symmetric(
-          horizontal: ScreenPaddingApp.horizontal,
+    return BuyJewelryErrorSelector(
+      builder: (errorMessage) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(PaddingApp.p24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: SizeApp.s64,
+                color: AppColors.textGray,
+              ),
+              const SizedBox(height: SizeApp.s16),
+              Text(
+                errorMessage ?? AppStrings.somethingWentWrong,
+                style: AppTextStyles.medium(
+                  fontSize: AppFontSize.s16,
+                  color: AppColors.textDarkGray,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: SizeApp.s24),
+              ElevatedButton.icon(
+                onPressed: () => _bloc.retry(),
+                icon: const Icon(Icons.refresh),
+                label: Text(AppStrings.retry),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PaddingApp.p24,
+                    vertical: PaddingApp.p12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        itemCount: jewelryList.length,
-        itemBuilder: (context, index) {
-          return JewelryCard(
-            jewelry: jewelryList[index],
-            onFavoritePressed: () => _bloc.toggleFavorite(index),
-            onViewPressed: () => _viewJewelryDetail(jewelryList[index].name),
-          );
-        },
       ),
     );
   }
 
-  void _viewJewelryDetail(String name) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Viewing $name'),
-        duration: const Duration(seconds: 2),
+  Widget _buildAllItemsListView() {
+    return BuyJewelryAllItemsSelector(
+      builder: (jewelryList) {
+        if (jewelryList.isEmpty) {
+          return _buildEmptyAllItemsView();
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            horizontal: ScreenPaddingApp.horizontal,
+          ),
+          itemCount: jewelryList.length,
+          itemBuilder: (context, index) {
+            final jewelry = jewelryList[index];
+            return BuyJewelryCard(
+              key: ValueKey(jewelry.id),
+              jewelry: jewelry,
+              onFavoritePressed: () => _bloc.toggleFavorite(index),
+              onViewPressed: () => _viewJewelryDetail(jewelry),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyAllItemsView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inventory_2_outlined,
+            size: SizeApp.s64,
+            color: AppColors.textGray,
+          ),
+          const SizedBox(height: SizeApp.s16),
+          Text(
+            'No items found',
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s16,
+              color: AppColors.textDarkGray,
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _viewJewelryDetail(BuyJewelryEntity jewelry) {
+    AppNavigation.routeTo(
+      context,
+      AppRoutes.jewelryDetail,
+      args: JewelryDetailArgs(jewelry: jewelry),
     );
   }
 }

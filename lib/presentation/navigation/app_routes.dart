@@ -3,4 +3,6 @@ class AppRoutes {
   static const String home = '/home';
   static const String salesTeam = '/salesTeam';
   static const String buyJewelry = '/buyJewelry';
+  static const String jewelryDetail = '/jewelryDetail';
+  static const String sellJewelry = '/sellJewelry';
 }

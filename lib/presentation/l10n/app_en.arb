@@ -72,5 +72,115 @@
   "networkError": "Please check your internet connection",
   "somethingWentWrong": "Something went wrong",
   "retry": "Retry",
-  "failedToLoadMore": "Failed to load more"
+  "failedToLoadMore": "Failed to load more",
+  "details": "Details",
+  "inStock": "in stock",
+  "reviews": "reviews",
+  "weight": "Weight",
+  "size": "Size",
+  "material": "Material",
+  "premiumMaterial": "Premium Material",
+  "certifiedAuthentic": "Certified Authentic",
+  "description": "Description",
+  "features": "Features",
+  "addToCart": "Add to Cart",
+  "chooseHowToSort": "Choose how to sort items",
+  "sellItems": "Sell Items",
+  "online": "Online",
+  "offline": "Offline",
+  "synced": "Synced",
+  "itemsInInventory": "{count} items in inventory",
+  "@itemsInInventory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itemsPendingSync": "{count} items pending sync",
+  "@itemsPendingSync": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkSelect": "Bulk Select",
+  "stockCount": "Stock: {count}",
+  "@stockCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityToSell": "Quantity to sell:",
+  "itemsToSell": "{count} items to sell",
+  "@itemsToSell": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "estimatedPrice": "Est. {price}",
+  "@estimatedPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "sellNow": "Sell Now",
+  "buy": "Buy",
+  "confirmPurchase": "Confirm Purchase",
+  "quantity": "Quantity",
+  "totalCost": "Total Cost",
+  "payment": "Payment",
+  "cancel": "Cancel",
+  "purchaseSuccess": "Purchase successful!",
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "addNewJewelry": "Add New Jewelry",
+  "editJewelry": "Edit Jewelry",
+  "jewelryName": "Jewelry Name",
+  "enterJewelryName": "Enter jewelry name",
+  "price": "Price",
+  "stock": "Stock",
+  "imageUrl": "Image URL",
+  "saveChanges": "Save Changes",
+  "addJewelry": "Add Jewelry",
+  "nameRequired": "Name is required",
+  "priceRequired": "Price is required",
+  "invalidPrice": "Invalid price",
+  "stockRequired": "Stock is required",
+  "invalidStock": "Invalid stock",
+  "deleteItem": "Delete Item",
+  "deleteItemConfirmation": "Are you sure you want to delete \"{name}\"?",
+  "@deleteItemConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Delete",
+  "itemDeleted": "\"{name}\" has been deleted",
+  "@itemDeleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Undo",
+  "itemRestored": "Item restored",
+  "clearSelection": "Clear Selection",
+  "noItemsInInventory": "No items in inventory",
+  "tapToAddFirstItem": "Tap + to add your first item",
+  "confirmSale": "Confirm Sale",
+  "totalItems": "Total Items",
+  "estimatedRevenue": "Estimated Revenue",
+  "confirmSell": "Confirm Sell",
+  "saleSuccess": "Sale completed successfully!",
+  "saleFailed": "Sale failed. Please try again."
 }

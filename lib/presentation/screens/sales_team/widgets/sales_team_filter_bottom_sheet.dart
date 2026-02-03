@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/presentation/navigation/app_navigation.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
 import '../../../../application/resource/fonts/app_font.dart';
@@ -41,6 +42,10 @@ class SalesTeamFilterBottomSheet extends StatefulWidget {
     required this.onApply,
   });
 
+  @override
+  State<SalesTeamFilterBottomSheet> createState() =>
+      _SalesTeamFilterBottomSheetState();
+
   static Future<void> show(
     BuildContext context, {
     required SalesTeamFilterState initialFilter,
@@ -56,10 +61,6 @@ class SalesTeamFilterBottomSheet extends StatefulWidget {
       ),
     );
   }
-
-  @override
-  State<SalesTeamFilterBottomSheet> createState() =>
-      _SalesTeamFilterBottomSheetState();
 }
 
 class _SalesTeamFilterBottomSheetState
@@ -82,11 +83,8 @@ class _SalesTeamFilterBottomSheetState
   }
 
   void _applyFilters() {
-    widget.onApply(SalesTeamFilterState(
-      ageRange: _ageRange,
-      gender: _gender,
-    ));
-    Navigator.pop(context);
+    widget.onApply(SalesTeamFilterState(ageRange: _ageRange, gender: _gender));
+    AppNavigation.pop(context);
   }
 
   @override
@@ -192,11 +190,7 @@ class _SalesTeamFilterBottomSheetState
             min: 18,
             max: 65,
             divisions: 47,
-            onChanged: (values) {
-              setState(() {
-                _ageRange = values;
-              });
-            },
+            onChanged: _onTapAgeRange,
           ),
         ),
         Row(
@@ -220,6 +214,12 @@ class _SalesTeamFilterBottomSheetState
         ),
       ],
     );
+  }
+
+  void _onTapAgeRange(RangeValues values) {
+    setState(() {
+      _ageRange = values;
+    });
   }
 
   Widget _buildGenderSection() {
@@ -250,11 +250,7 @@ class _SalesTeamFilterBottomSheetState
   Widget _buildGenderChip(String label, SalesGenderEnumEntity? value) {
     final isSelected = _gender == value;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _gender = value;
-        });
-      },
+      onTap: () => _onTapGenderChip(value),
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: PaddingApp.p20,
@@ -273,6 +269,12 @@ class _SalesTeamFilterBottomSheetState
         ),
       ),
     );
+  }
+
+  void _onTapGenderChip(SalesGenderEnumEntity? value) {
+    setState(() {
+      _gender = value;
+    });
   }
 
   Widget _buildActionButtons() {

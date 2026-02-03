@@ -69,12 +69,12 @@ class _RemoteDataSource implements RemoteDataSource {
   }
 
   @override
-  Future<ResWrapper<List<JewelryItemDto>>> getJewelry() async {
+  Future<ResWrapper<List<BuyJewelryItemDto>>> getJewelry() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ResWrapper<List<JewelryItemDto>>>(
+    final _options = _setStreamType<ResWrapper<List<BuyJewelryItemDto>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -85,14 +85,15 @@ class _RemoteDataSource implements RemoteDataSource {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResWrapper<List<JewelryItemDto>> _value;
+    late ResWrapper<List<BuyJewelryItemDto>> _value;
     try {
-      _value = ResWrapper<List<JewelryItemDto>>.fromJson(
+      _value = ResWrapper<List<BuyJewelryItemDto>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<JewelryItemDto>(
-                    (i) => JewelryItemDto.fromJson(i as Map<String, dynamic>),
+                  .map<BuyJewelryItemDto>(
+                    (i) =>
+                        BuyJewelryItemDto.fromJson(i as Map<String, dynamic>),
                   )
                   .toList()
             : List.empty(),

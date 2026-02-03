@@ -4,7 +4,7 @@ import 'package:todo_app/data/data_source/network/remote_data_source.dart';
 import '../../../domain/use_cases/sales_member/get_sales_members_params.dart';
 import '../../data_source/network/exceptions/base_exception.dart';
 import '../../data_source/network/models/paginated_res_wrapper.dart';
-import 'sales_member_repository.dart';
+import '../../../domain/repositories/sales_member/sales_member_repository.dart';
 
 class SalesMemberRepositoryImpl extends SalesMemberRepository {
   final RemoteDataSource _remoteDataSource;

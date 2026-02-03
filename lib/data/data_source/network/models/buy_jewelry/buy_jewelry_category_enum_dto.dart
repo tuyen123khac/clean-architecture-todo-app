@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-enum JewelryCategoryEnumDto {
+enum BuyJewelryCategoryEnumDto {
   @JsonValue('goldSjc')
   goldSjc('goldSjc'),
 
@@ -20,9 +20,9 @@ enum JewelryCategoryEnumDto {
   gemstone('gemstone');
 
   final String name;
-  const JewelryCategoryEnumDto(this.name);
+  const BuyJewelryCategoryEnumDto(this.name);
 
-  static JewelryCategoryEnumDto fromString(String name) {
-    return JewelryCategoryEnumDto.values.firstWhere((e) => e.name == name);
+  static BuyJewelryCategoryEnumDto fromString(String name) {
+    return BuyJewelryCategoryEnumDto.values.firstWhere((e) => e.name == name);
   }
 }

@@ -4,7 +4,7 @@ import 'package:todo_app/data/data_source/network/dio_client.dart';
 import 'package:todo_app/data/data_source/network/models/sales_member/sales_member_dto.dart';
 
 import 'endpoints/network_urls.dart';
-import 'models/jewelry/jewelry_item_dto.dart';
+import 'models/buy_jewelry/buy_jewelry_item_dto.dart';
 import 'models/paginated_res_wrapper.dart';
 import 'models/res_wrapper.dart';
 
@@ -24,5 +24,5 @@ abstract class RemoteDataSource {
   });
 
   @GET(NetworkUrls.jewelry)
-  Future<ResWrapper<List<JewelryItemDto>>> getJewelry();
+  Future<ResWrapper<List<BuyJewelryItemDto>>> getJewelry();
 }

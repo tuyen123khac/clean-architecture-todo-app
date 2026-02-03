@@ -98,9 +98,7 @@ class HomeScreen extends StatelessWidget {
           subtitle: AppStrings.sellYourJewelrySubtitle,
           icon: Icons.sell_outlined,
           iconBackgroundColor: AppColors.bgLightGray,
-          onTap: () {
-            // TODO: Navigate to sell jewelry screen
-          },
+          onTap: () => AppNavigation.routeTo(context, AppRoutes.sellJewelry),
         ),
       ],
     );

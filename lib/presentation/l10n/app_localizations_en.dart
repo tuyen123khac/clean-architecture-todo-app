@@ -192,4 +192,201 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToLoadMore => 'Failed to load more';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get inStock => 'in stock';
+
+  @override
+  String get reviews => 'reviews';
+
+  @override
+  String get weight => 'Weight';
+
+  @override
+  String get size => 'Size';
+
+  @override
+  String get material => 'Material';
+
+  @override
+  String get premiumMaterial => 'Premium Material';
+
+  @override
+  String get certifiedAuthentic => 'Certified Authentic';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get addToCart => 'Add to Cart';
+
+  @override
+  String get chooseHowToSort => 'Choose how to sort items';
+
+  @override
+  String get sellItems => 'Sell Items';
+
+  @override
+  String get online => 'Online';
+
+  @override
+  String get offline => 'Offline';
+
+  @override
+  String get synced => 'Synced';
+
+  @override
+  String itemsInInventory(int count) {
+    return '$count items in inventory';
+  }
+
+  @override
+  String itemsPendingSync(int count) {
+    return '$count items pending sync';
+  }
+
+  @override
+  String get bulkSelect => 'Bulk Select';
+
+  @override
+  String stockCount(int count) {
+    return 'Stock: $count';
+  }
+
+  @override
+  String get quantityToSell => 'Quantity to sell:';
+
+  @override
+  String itemsToSell(int count) {
+    return '$count items to sell';
+  }
+
+  @override
+  String estimatedPrice(String price) {
+    return 'Est. $price';
+  }
+
+  @override
+  String get sellNow => 'Sell Now';
+
+  @override
+  String get buy => 'Buy';
+
+  @override
+  String get confirmPurchase => 'Confirm Purchase';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get totalCost => 'Total Cost';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get purchaseSuccess => 'Purchase successful!';
+
+  @override
+  String get purchaseFailed => 'Purchase failed. Please try again.';
+
+  @override
+  String get addNewJewelry => 'Add New Jewelry';
+
+  @override
+  String get editJewelry => 'Edit Jewelry';
+
+  @override
+  String get jewelryName => 'Jewelry Name';
+
+  @override
+  String get enterJewelryName => 'Enter jewelry name';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get stock => 'Stock';
+
+  @override
+  String get imageUrl => 'Image URL';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get addJewelry => 'Add Jewelry';
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get priceRequired => 'Price is required';
+
+  @override
+  String get invalidPrice => 'Invalid price';
+
+  @override
+  String get stockRequired => 'Stock is required';
+
+  @override
+  String get invalidStock => 'Invalid stock';
+
+  @override
+  String get deleteItem => 'Delete Item';
+
+  @override
+  String deleteItemConfirmation(String name) {
+    return 'Are you sure you want to delete \"$name\"?';
+  }
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String itemDeleted(String name) {
+    return '\"$name\" has been deleted';
+  }
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get itemRestored => 'Item restored';
+
+  @override
+  String get clearSelection => 'Clear Selection';
+
+  @override
+  String get noItemsInInventory => 'No items in inventory';
+
+  @override
+  String get tapToAddFirstItem => 'Tap + to add your first item';
+
+  @override
+  String get confirmSale => 'Confirm Sale';
+
+  @override
+  String get totalItems => 'Total Items';
+
+  @override
+  String get estimatedRevenue => 'Estimated Revenue';
+
+  @override
+  String get confirmSell => 'Confirm Sell';
+
+  @override
+  String get saleSuccess => 'Sale completed successfully!';
+
+  @override
+  String get saleFailed => 'Sale failed. Please try again.';
 }

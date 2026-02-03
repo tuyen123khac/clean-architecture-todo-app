@@ -1,50 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/presentation/navigation/app_navigation.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
 import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
+import '../../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
 
 enum PriceRange { all, under10m, from10mTo30m, from30mTo50m, above50m }
 
-enum JewelryCategory { all, sjcGold, gold24K, gold18K, gold14K, whiteGold, gemstone }
-
-enum SortBy { nameAZ, priceLowToHigh, priceHighToLow }
-
-class JewelryFilterState {
+class BuyJewelryFilterState {
   final bool showFavoritesOnly;
   final PriceRange priceRange;
-  final JewelryCategory category;
-  final SortBy sortBy;
+  /// null means "All Categories"
+  final JewelryCategoryEnumEntity? category;
 
-  const JewelryFilterState({
+  const BuyJewelryFilterState({
     this.showFavoritesOnly = false,
     this.priceRange = PriceRange.all,
-    this.category = JewelryCategory.all,
-    this.sortBy = SortBy.nameAZ,
+    this.category,
   });
 
-  JewelryFilterState copyWith({
+  BuyJewelryFilterState copyWith({
     bool? showFavoritesOnly,
     PriceRange? priceRange,
-    JewelryCategory? category,
-    SortBy? sortBy,
+    JewelryCategoryEnumEntity? Function()? category,
   }) {
-    return JewelryFilterState(
+    return BuyJewelryFilterState(
       showFavoritesOnly: showFavoritesOnly ?? this.showFavoritesOnly,
       priceRange: priceRange ?? this.priceRange,
-      category: category ?? this.category,
-      sortBy: sortBy ?? this.sortBy,
+      category: category != null ? category() : this.category,
     );
   }
 }
 
-class JewelryFilterBottomSheet extends StatefulWidget {
-  final JewelryFilterState initialFilter;
-  final Function(JewelryFilterState) onApply;
+class BuyJewelryFilterBottomSheet extends StatefulWidget {
+  final BuyJewelryFilterState initialFilter;
+  final Function(BuyJewelryFilterState) onApply;
 
-  const JewelryFilterBottomSheet({
+  const BuyJewelryFilterBottomSheet({
     super.key,
     required this.initialFilter,
     required this.onApply,
@@ -52,14 +47,14 @@ class JewelryFilterBottomSheet extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context, {
-    required JewelryFilterState initialFilter,
-    required Function(JewelryFilterState) onApply,
+    required BuyJewelryFilterState initialFilter,
+    required Function(BuyJewelryFilterState) onApply,
   }) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => JewelryFilterBottomSheet(
+      builder: (context) => BuyJewelryFilterBottomSheet(
         initialFilter: initialFilter,
         onApply: onApply,
       ),
@@ -67,12 +62,12 @@ class JewelryFilterBottomSheet extends StatefulWidget {
   }
 
   @override
-  State<JewelryFilterBottomSheet> createState() =>
-      _JewelryFilterBottomSheetState();
+  State<BuyJewelryFilterBottomSheet> createState() =>
+      _BuyJewelryFilterBottomSheetState();
 }
 
-class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
-  late JewelryFilterState _filterState;
+class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomSheet> {
+  late BuyJewelryFilterState _filterState;
 
   @override
   void initState() {
@@ -82,13 +77,13 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
 
   void _resetFilters() {
     setState(() {
-      _filterState = const JewelryFilterState();
+      _filterState = const BuyJewelryFilterState();
     });
   }
 
   void _applyFilters() {
     widget.onApply(_filterState);
-    Navigator.pop(context);
+    AppNavigation.pop(context);
   }
 
   @override
@@ -102,6 +97,7 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
       child: Column(
         children: [
           _buildDragHandle(),
+          _buildHeader(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -110,15 +106,12 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
                   const SizedBox(height: SizeApp.s24),
                   _buildShowFavoritesSection(),
                   const SizedBox(height: SizeApp.s24),
                   _buildPriceRangeSection(),
                   const SizedBox(height: SizeApp.s24),
                   _buildCategorySection(),
-                  const SizedBox(height: SizeApp.s24),
-                  _buildSortBySection(),
                   const SizedBox(height: SizeApp.s24),
                 ],
               ),
@@ -143,39 +136,44 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
   }
 
   Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: SizeApp.s16),
-            Text(
-              AppStrings.filters,
-              style: AppTextStyles.bold(
-                fontSize: AppFontSize.s24,
-                color: AppColors.textBlack,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: ScreenPaddingApp.horizontal,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: SizeApp.s16),
+              Text(
+                AppStrings.filters,
+                style: AppTextStyles.bold(
+                  fontSize: AppFontSize.s24,
+                  color: AppColors.textBlack,
+                ),
               ),
-            ),
-            const SizedBox(height: SizeApp.s4),
-            Text(
-              AppStrings.refineYourSearch,
-              style: AppTextStyles.regular(
-                fontSize: AppFontSize.s14,
-                color: AppColors.textDarkGray,
+              const SizedBox(height: SizeApp.s4),
+              Text(
+                AppStrings.refineYourSearch,
+                style: AppTextStyles.regular(
+                  fontSize: AppFontSize.s14,
+                  color: AppColors.textDarkGray,
+                ),
               ),
-            ),
-          ],
-        ),
-        IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.close,
-            color: AppColors.textBlack,
-            size: SizeApp.s24,
+            ],
           ),
-        ),
-      ],
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.close,
+              color: AppColors.textBlack,
+              size: SizeApp.s24,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -241,33 +239,12 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
           spacing: SizeApp.s8,
           runSpacing: SizeApp.s8,
           children: [
-            _buildCategoryChip(AppStrings.allCategories, JewelryCategory.all),
-            _buildCategoryChip(AppStrings.sjcGold, JewelryCategory.sjcGold),
-            _buildCategoryChip(AppStrings.gold24K, JewelryCategory.gold24K),
-            _buildCategoryChip(AppStrings.gold18K, JewelryCategory.gold18K),
-            _buildCategoryChip(AppStrings.gold14K, JewelryCategory.gold14K),
-            _buildCategoryChip(AppStrings.whiteGold, JewelryCategory.whiteGold),
-            _buildCategoryChip(AppStrings.gemstone, JewelryCategory.gemstone),
+            _buildCategoryChip(AppStrings.allCategories, null),
+            ...JewelryCategoryEnumEntity.values.map(
+              (category) => _buildCategoryChip(category.fullName, category),
+            ),
           ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildSortBySection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionHeader(
-          icon: Icons.swap_vert,
-          title: AppStrings.sortBy,
-        ),
-        const SizedBox(height: SizeApp.s12),
-        _buildSortItem(AppStrings.nameAZ, SortBy.nameAZ),
-        const SizedBox(height: SizeApp.s8),
-        _buildSortItem(AppStrings.priceLowToHigh, SortBy.priceLowToHigh),
-        const SizedBox(height: SizeApp.s8),
-        _buildSortItem(AppStrings.priceHighToLow, SortBy.priceHighToLow),
       ],
     );
   }
@@ -358,12 +335,12 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
     );
   }
 
-  Widget _buildCategoryChip(String label, JewelryCategory category) {
+  Widget _buildCategoryChip(String label, JewelryCategoryEnumEntity? category) {
     final isSelected = _filterState.category == category;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _filterState = _filterState.copyWith(category: category);
+          _filterState = _filterState.copyWith(category: () => category);
         });
       },
       child: Container(
@@ -380,37 +357,6 @@ class _JewelryFilterBottomSheetState extends State<JewelryFilterBottomSheet> {
           style: AppTextStyles.medium(
             fontSize: AppFontSize.s14,
             color: isSelected ? Colors.white : AppColors.textDarkGray,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSortItem(String label, SortBy sortBy) {
-    final isSelected = _filterState.sortBy == sortBy;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _filterState = _filterState.copyWith(sortBy: sortBy);
-        });
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          horizontal: PaddingApp.p16,
-          vertical: PaddingApp.p14,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.textBlack : AppColors.bgLightGray,
-          borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: AppTextStyles.medium(
-              fontSize: AppFontSize.s14,
-              color: isSelected ? Colors.white : AppColors.textDarkGray,
-            ),
           ),
         ),
       ),

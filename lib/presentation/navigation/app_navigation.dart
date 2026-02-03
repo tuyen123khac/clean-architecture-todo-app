@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../screens/buy_jewelry/buy_jewelry_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/jewelry_detail/jewelry_detail_screen.dart';
 import '../screens/sales_team/sales_team_screen.dart';
+import '../screens/sell_jewelry/sell_jewelry_screen.dart';
 import '../screens/splash/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -44,6 +47,18 @@ class AppNavigation {
           settings: routeSettings,
         );
 
+      case AppRoutes.jewelryDetail:
+        return MaterialPageRoute(
+          builder: (_) => const JewelryDetailScreen(),
+          settings: routeSettings,
+        );
+
+      case AppRoutes.sellJewelry:
+        return MaterialPageRoute(
+          builder: (_) => const SellJewelryScreen(),
+          settings: routeSettings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => const Placeholder(),
@@ -62,6 +77,10 @@ class AppNavigation {
         return const SalesTeamScreen();
       case AppRoutes.buyJewelry:
         return const BuyJewelryScreen();
+      case AppRoutes.jewelryDetail:
+        return const JewelryDetailScreen();
+      case AppRoutes.sellJewelry:
+        return const SellJewelryScreen();
       default:
         return const Placeholder();
     }

@@ -1,49 +1,67 @@
-import '../../../../domain/entities/buy_jewelry/jewelry_entity.dart';
-import '../widgets/jewelry_filter_bottom_sheet.dart';
+import '../../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
+import '../widgets/buy_jewelry_filter_bottom_sheet.dart';
+import '../widgets/buy_jewelry_sort_bottom_sheet.dart';
 
 enum BuyJewelryScreenStatus { initial, loading, success, error }
 
-enum JewelryTab { allItems, wishlist }
+enum BuyJewelryTab { allItems, wishlist }
 
 class BuyJewelryState {
-  final List<JewelryEntity> jewelryList;
-  final List<JewelryEntity> jewelryListOriginal;
-  final BuyJewelryScreenStatus screenStatus;
-  final JewelryFilterState filterState;
-  final JewelryTab selectedTab;
+  /// Original list from API (backup for reset/filter)
+  final List<BuyJewelryEntity> buyJewelryListOriginal;
 
-  BuyJewelryState({
-    required this.jewelryList,
-    required this.jewelryListOriginal,
+  /// Filtered/sorted list for All Items tab
+  final List<BuyJewelryEntity> buyJewelryList;
+
+  /// Wishlist from local DB
+  final List<BuyJewelryEntity> buyJewelryWishList;
+
+  final BuyJewelryScreenStatus screenStatus;
+  final BuyJewelryFilterState filterState;
+  final SortBy sortBy;
+  final BuyJewelryTab selectedTab;
+  final String? errorMessage;
+
+  const BuyJewelryState({
+    this.buyJewelryListOriginal = const [],
+    this.buyJewelryList = const [],
+    this.buyJewelryWishList = const [],
     this.screenStatus = BuyJewelryScreenStatus.initial,
-    this.filterState = const JewelryFilterState(),
-    this.selectedTab = JewelryTab.allItems,
+    this.filterState = const BuyJewelryFilterState(),
+    this.sortBy = SortBy.priceHighToLow,
+    this.selectedTab = BuyJewelryTab.allItems,
+    this.errorMessage,
   });
 
-  List<JewelryEntity> get displayList {
-    if (selectedTab == JewelryTab.wishlist) {
-      return jewelryList.where((item) => item.isFavorite).toList();
+  /// Returns the list to display based on selected tab
+  List<BuyJewelryEntity> get displayList {
+    if (selectedTab == BuyJewelryTab.wishlist) {
+      return buyJewelryWishList;
     }
-    return jewelryList;
+    return buyJewelryList;
   }
 
-  int get wishlistCount {
-    return jewelryListOriginal.where((item) => item.isFavorite).length;
-  }
+  int get wishlistCount => buyJewelryWishList.length;
 
   BuyJewelryState copyWith({
-    List<JewelryEntity>? jewelryList,
-    List<JewelryEntity>? jewelryListOriginal,
+    List<BuyJewelryEntity>? buyJewelryListOriginal,
+    List<BuyJewelryEntity>? buyJewelryList,
+    List<BuyJewelryEntity>? buyJewelryWishList,
     BuyJewelryScreenStatus? screenStatus,
-    JewelryFilterState? filterState,
-    JewelryTab? selectedTab,
+    BuyJewelryFilterState? filterState,
+    SortBy? sortBy,
+    BuyJewelryTab? selectedTab,
+    String? Function()? errorMessage,
   }) {
     return BuyJewelryState(
-      jewelryList: jewelryList ?? this.jewelryList,
-      jewelryListOriginal: jewelryListOriginal ?? this.jewelryListOriginal,
+      buyJewelryListOriginal: buyJewelryListOriginal ?? this.buyJewelryListOriginal,
+      buyJewelryList: buyJewelryList ?? this.buyJewelryList,
+      buyJewelryWishList: buyJewelryWishList ?? this.buyJewelryWishList,
       screenStatus: screenStatus ?? this.screenStatus,
       filterState: filterState ?? this.filterState,
+      sortBy: sortBy ?? this.sortBy,
       selectedTab: selectedTab ?? this.selectedTab,
+      errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
     );
   }
 }

@@ -4,7 +4,9 @@
       "Bash(flutter analyze:*)",
       "Bash(flutter gen-l10n:*)",
       "Bash(flutter pub run build_runner:*)",
-      "Bash(flutter build:*)"
+      "Bash(flutter build:*)",
+      "Bash(flutter pub add:*)",
+      "Bash(dart run build_runner:*)"
     ]
   }
 }

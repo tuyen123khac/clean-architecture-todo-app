@@ -1,8 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
-import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/fonts/app_font.dart';
+import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 
 class ProfileImage extends StatelessWidget {
@@ -32,19 +33,29 @@ class ProfileImage extends StatelessWidget {
         border: Border.all(color: AppColors.primary, width: BorderWidthApp.w2),
       ),
       child: ClipOval(
-        child: Image.network(
-          '$imageUrl?w=200&h=200&fit=crop',
+        child: CachedNetworkImage(
+          imageUrl: '$imageUrl?w=200&h=200&fit=crop',
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: AppColors.bgLightGray,
-              child: Icon(
-                Icons.person,
-                size: SizeApp.s40,
-                color: AppColors.textGray,
+          memCacheWidth: 200,
+          memCacheHeight: 200,
+          placeholder: (context, url) => Container(
+            color: AppColors.bgLightGray,
+            child: const Center(
+              child: SizedBox(
+                width: SizeApp.s24,
+                height: SizeApp.s24,
+                child: CircularProgressIndicator(strokeWidth: 2),
               ),
-            );
-          },
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
+            color: AppColors.bgLightGray,
+            child: Icon(
+              Icons.person,
+              size: SizeApp.s40,
+              color: AppColors.textGray,
+            ),
+          ),
         ),
       ),
     );

@@ -130,30 +130,269 @@ final List<Map<String, dynamic>> mockSalesTeam = [
   },
 ];
 
-// Mock data for Jewelry catalog
-// Following DATA_MODEL.md: id, name, category, price, image_url
+// Mock data for Jewelry catalog with detailed information
 final List<Map<String, dynamic>> mockJewelryCatalog = [
   // SJC Gold
-  {'id': 'jewelry-001', 'name': 'SJC Gold Bar 1 Tael', 'category': 'SJC Gold', 'price': 72000000, 'image_url': 'https://images.unsplash.com/photo-1610375461246-83df859d849d'},
-  {'id': 'jewelry-002', 'name': 'SJC Gold Bar 5 Chi', 'category': 'SJC Gold', 'price': 36000000, 'image_url': 'https://images.unsplash.com/photo-1589656966895-2f33e7653819'},
-  {'id': 'jewelry-003', 'name': 'SJC Gold Bar 2 Chi', 'category': 'SJC Gold', 'price': 14500000, 'image_url': 'https://images.unsplash.com/photo-1624365168968-f283d506c6b6'},
+  {
+    'id': 1,
+    'name': 'SJC Gold Bar 1 Tael',
+    'category': 'goldSjc',
+    'price': 192000000,
+    'original_price': 200000000,
+    'image_url': 'https://images.unsplash.com/photo-1610375461246-83df859d849d',
+    'weight': '37.5g',
+    'size': '50x28mm',
+    'material': 'SJC 99.99%',
+    'stock': 15,
+    'rating': 4.9,
+    'review_count': 256,
+    'description': 'Premium SJC gold bar with 99.99% purity. Internationally recognized and certified by the State Bank of Vietnam. Perfect for investment and gifting.',
+    'features': ['Certified 99.99% pure gold', 'Official SJC hologram', 'Lifetime buyback guarantee', 'Comes with certificate', 'Secure packaging'],
+    'is_certified': true,
+  },
+  {
+    'id': 2,
+    'name': 'SJC Gold Bar 5 Chi',
+    'category': 'goldSjc',
+    'price': 96000000,
+    'original_price': null,
+    'image_url': 'https://plus.unsplash.com/premium_photo-1678495324281-b6e39deea8cc?q=80&w=677&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'weight': '18.75g',
+    'size': '35x20mm',
+    'material': 'SJC 99.99%',
+    'stock': 25,
+    'rating': 4.8,
+    'review_count': 189,
+    'description': 'Mid-sized SJC gold bar perfect for both investment and gifting purposes. Features authentic SJC branding and certification.',
+    'features': ['Certified 99.99% pure gold', 'Official SJC hologram', 'Lifetime buyback guarantee', 'Perfect gift size'],
+    'is_certified': true,
+  },
+  {
+    'id': 3,
+    'name': 'SJC Gold Bar 2 Chi',
+    'category': 'goldSjc',
+    'price': 39500000,
+    'original_price': 40000000,
+    'image_url': 'https://images.unsplash.com/photo-1745341664947-dd3715684cca?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'weight': '7.5g',
+    'size': '25x15mm',
+    'material': 'SJC 99.99%',
+    'stock': 50,
+    'rating': 4.7,
+    'review_count': 312,
+    'description': 'Compact SJC gold bar ideal for first-time investors. Small but carries the same quality and certification as larger bars.',
+    'features': ['Certified 99.99% pure gold', 'Official SJC hologram', 'Affordable investment option', 'Easy to store'],
+    'is_certified': true,
+  },
   // 24K Gold
-  {'id': 'jewelry-004', 'name': '24K Plain Gold Ring', 'category': '24K Gold', 'price': 15000000, 'image_url': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e'},
-  {'id': 'jewelry-005', 'name': '24K Gold Necklace', 'category': '24K Gold', 'price': 45000000, 'image_url': 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f'},
-  {'id': 'jewelry-006', 'name': '24K Gold Bracelet', 'category': '24K Gold', 'price': 28000000, 'image_url': 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a'},
+  {
+    'id': 4,
+    'name': '24K Plain Gold Ring',
+    'category': 'gold24k',
+    'price': 15000000,
+    'original_price': 18000000,
+    'image_url': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e',
+    'weight': '5.2g',
+    'size': 'Size 7',
+    'material': '24K Gold',
+    'stock': 8,
+    'rating': 4.6,
+    'review_count': 94,
+    'description': 'Classic 24K pure gold ring with timeless design. Handcrafted by master jewelers with attention to every detail.',
+    'features': ['Pure 24K gold', 'Handcrafted design', 'Free resizing within 30 days', 'Complimentary gift box', 'Secure shipping'],
+    'is_certified': true,
+  },
+  {
+    'id': 5,
+    'name': '24K Gold Necklace',
+    'category': 'gold24k',
+    'price': 45000000,
+    'original_price': 52000000,
+    'image_url': 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f',
+    'weight': '15.8g',
+    'size': '45cm',
+    'material': '24K Gold',
+    'stock': 5,
+    'rating': 4.9,
+    'review_count': 67,
+    'description': 'Elegant 24K gold necklace featuring intricate Vietnamese-inspired patterns. A statement piece for special occasions.',
+    'features': ['Pure 24K gold', 'Traditional Vietnamese design', 'Lifetime warranty', 'Complimentary gift packaging', 'Insured shipping'],
+    'is_certified': true,
+  },
+  {
+    'id': 6,
+    'name': '24K Gold Bracelet',
+    'category': 'gold24k',
+    'price': 28000000,
+    'original_price': null,
+    'image_url': 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a',
+    'weight': '9.5g',
+    'size': '18cm',
+    'material': '24K Gold',
+    'stock': 12,
+    'rating': 4.7,
+    'review_count': 128,
+    'description': 'Sophisticated 24K gold bracelet with modern chain design. Perfect balance of elegance and durability.',
+    'features': ['Pure 24K gold', 'Modern design', 'Adjustable clasp', 'Gift box included', 'Secure shipping'],
+    'is_certified': true,
+  },
   // 18K Gold
-  {'id': 'jewelry-007', 'name': '18K Wedding Ring', 'category': '18K Gold', 'price': 8500000, 'image_url': 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9'},
-  {'id': 'jewelry-008', 'name': '18K Gold Earrings', 'category': '18K Gold', 'price': 12000000, 'image_url': 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908'},
-  {'id': 'jewelry-009', 'name': '18K Gold Pendant', 'category': '18K Gold', 'price': 6500000, 'image_url': 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1'},
+  {
+    'id': 7,
+    'name': 'Classic Solitaire Ring',
+    'category': 'gold18k',
+    'price': 8500000,
+    'original_price': 10500000,
+    'image_url': 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9',
+    'weight': '3.2g',
+    'size': '2mm band',
+    'material': '18K Gold',
+    'stock': 5,
+    'rating': 4.8,
+    'review_count': 128,
+    'description': 'Timeless elegance meets modern craftsmanship in this stunning solitaire ring featuring a brilliant-cut diamond set in luxurious 18K gold.',
+    'features': ['Certified authentic precious metal', 'Lifetime warranty included', 'Complimentary gift packaging', 'Free resizing within 30 days', 'Secure & insured shipping'],
+    'is_certified': true,
+  },
+  {
+    'id': 8,
+    'name': '18K Gold Earrings',
+    'category': 'gold18k',
+    'price': 12000000,
+    'original_price': 14500000,
+    'image_url': 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908',
+    'weight': '4.8g',
+    'size': '15mm drop',
+    'material': '18K Gold',
+    'stock': 10,
+    'rating': 4.6,
+    'review_count': 156,
+    'description': 'Stunning 18K gold drop earrings that add elegance to any outfit. Features secure butterfly backs for comfortable all-day wear.',
+    'features': ['18K solid gold', 'Hypoallergenic', 'Secure butterfly backs', 'Gift box included', 'Free shipping'],
+    'is_certified': true,
+  },
+  {
+    'id': 9,
+    'name': '18K Gold Pendant',
+    'category': 'gold18k',
+    'price': 6500000,
+    'original_price': null,
+    'image_url': 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1',
+    'weight': '2.8g',
+    'size': '20x15mm',
+    'material': '18K Gold',
+    'stock': 18,
+    'rating': 4.5,
+    'review_count': 89,
+    'description': 'Delicate 18K gold pendant with minimalist design. Perfect for layering or wearing alone for a subtle statement.',
+    'features': ['18K solid gold', 'Minimalist design', 'Chain sold separately', 'Gift packaging available'],
+    'is_certified': false,
+  },
   // 14K Gold
-  {'id': 'jewelry-010', 'name': '14K Gold Chain', 'category': '14K Gold', 'price': 5200000, 'image_url': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338'},
-  {'id': 'jewelry-011', 'name': '14K Gold Anklet', 'category': '14K Gold', 'price': 3800000, 'image_url': 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0'},
+  {
+    'id': 10,
+    'name': '14K Gold Chain',
+    'category': 'gold14k',
+    'price': 5200000,
+    'original_price': 6000000,
+    'image_url': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338',
+    'weight': '4.2g',
+    'size': '50cm',
+    'material': '14K Gold',
+    'stock': 22,
+    'rating': 4.4,
+    'review_count': 203,
+    'description': 'Versatile 14K gold chain suitable for pendants or worn alone. Features a durable lobster clasp closure.',
+    'features': ['14K solid gold', 'Durable construction', 'Lobster clasp', 'Various lengths available', 'Free shipping'],
+    'is_certified': false,
+  },
+  {
+    'id': 11,
+    'name': '14K Gold Anklet',
+    'category': 'gold14k',
+    'price': 3800000,
+    'original_price': null,
+    'image_url': 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0',
+    'weight': '2.5g',
+    'size': '23cm',
+    'material': '14K Gold',
+    'stock': 15,
+    'rating': 4.3,
+    'review_count': 76,
+    'description': 'Dainty 14K gold anklet perfect for summer or beach days. Lightweight and comfortable for everyday wear.',
+    'features': ['14K solid gold', 'Adjustable length', 'Water-resistant', 'Delicate design'],
+    'is_certified': false,
+  },
   // White Gold
-  {'id': 'jewelry-012', 'name': 'White Gold Diamond Ring', 'category': 'White Gold', 'price': 25000000, 'image_url': 'https://images.unsplash.com/photo-1608042314453-ae338d80c427'},
-  {'id': 'jewelry-013', 'name': 'White Gold Pearl Earrings', 'category': 'White Gold', 'price': 18000000, 'image_url': 'https://images.unsplash.com/photo-1630019852942-f89202989a59'},
+  {
+    'id': 12,
+    'name': 'White Gold Diamond Ring',
+    'category': 'goldWhite',
+    'price': 25000000,
+    'original_price': 30000000,
+    'image_url': 'https://images.unsplash.com/photo-1608042314453-ae338d80c427',
+    'weight': '4.5g',
+    'size': 'Size 6',
+    'material': '18K White Gold',
+    'stock': 3,
+    'rating': 4.9,
+    'review_count': 145,
+    'description': 'Exquisite white gold ring featuring a certified diamond center stone. Perfect for engagements or special celebrations.',
+    'features': ['18K white gold', 'Certified diamond', 'GIA certificate included', 'Free resizing', 'Insured delivery'],
+    'is_certified': true,
+  },
+  {
+    'id': 13,
+    'name': 'White Gold Pearl Earrings',
+    'category': 'goldWhite',
+    'price': 18000000,
+    'original_price': 21000000,
+    'image_url': 'https://images.unsplash.com/photo-1630019852942-f89202989a59',
+    'weight': '5.2g',
+    'size': '8mm pearls',
+    'material': '18K White Gold',
+    'stock': 7,
+    'rating': 4.7,
+    'review_count': 98,
+    'description': 'Classic white gold earrings featuring lustrous Akoya pearls. Timeless elegance for any occasion.',
+    'features': ['18K white gold', 'AAA grade Akoya pearls', 'Secure post backs', 'Gift box included', 'Certificate of authenticity'],
+    'is_certified': true,
+  },
   // Gemstone
-  {'id': 'jewelry-014', 'name': 'Ruby Pendant Necklace', 'category': 'Gemstone', 'price': 85000000, 'image_url': 'https://images.unsplash.com/photo-1599459183200-59c3a0e770e5'},
-  {'id': 'jewelry-015', 'name': 'Emerald Tennis Bracelet', 'category': 'Gemstone', 'price': 65000000, 'image_url': 'https://images.unsplash.com/photo-1611085583191-a3b181a88401'},
+  {
+    'id': 14,
+    'name': 'Ruby Pendant Necklace',
+    'category': 'gemstone',
+    'price': 85000000,
+    'original_price': 95000000,
+    'image_url': 'https://images.unsplash.com/photo-1741886422087-204620c77a85?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'weight': '8.5g',
+    'size': '2.5ct ruby',
+    'material': '18K Gold',
+    'stock': 2,
+    'rating': 5.0,
+    'review_count': 34,
+    'description': 'Magnificent 2.5 carat natural ruby pendant set in 18K gold. Features a vibrant pigeon blood color highly prized by collectors.',
+    'features': ['Natural untreated ruby', 'Pigeon blood color', 'GRS certificate', '18K gold setting', 'Insurance included'],
+    'is_certified': true,
+  },
+  {
+    'id': 15,
+    'name': 'Emerald Tennis Bracelet',
+    'category': 'gemstone',
+    'price': 65000000,
+    'original_price': null,
+    'image_url': 'https://images.unsplash.com/photo-1611085583191-a3b181a88401',
+    'weight': '12.5g',
+    'size': '18cm',
+    'material': '18K White Gold',
+    'stock': 4,
+    'rating': 4.8,
+    'review_count': 52,
+    'description': 'Stunning emerald tennis bracelet featuring 25 Colombian emeralds set in 18K white gold. A true collector\'s piece.',
+    'features': ['Colombian emeralds', '18K white gold setting', 'Double safety clasp', 'Certificate included', 'Luxury packaging'],
+    'is_certified': true,
+  },
 ];
 
 // In-memory store for POST /sell-transactions
@@ -196,17 +435,50 @@ class MockInterceptor extends Interceptor {
   }
 
   Response<dynamic>? _handleGetRequest(RequestOptions options) {
-    switch (options.path) {
+    final path = options.path;
+
+    // Handle jewelry by ID: /jewelry/{id}
+    if (path.startsWith(_pathJewelry) && path != _pathJewelry) {
+      final idStr = path.replaceFirst('$_pathJewelry/', '');
+      final id = int.tryParse(idStr);
+      if (id != null) {
+        return _handleJewelryDetailRequest(options, id);
+      }
+    }
+
+    switch (path) {
       case _pathSalesTeam:
         return _handleSalesTeamRequest(options);
       case _pathJewelry:
-        return _mockResponse(options, {
-          'data': mockJewelryCatalog,
-          'total': mockJewelryCatalog.length,
-        });
+        return _handleJewelryListRequest(options);
       default:
         return null;
     }
+  }
+
+  Response<dynamic> _handleJewelryListRequest(RequestOptions options) {
+    return _mockResponse(options, {
+      'data': mockJewelryCatalog,
+      'total': mockJewelryCatalog.length,
+    });
+  }
+
+  Response<dynamic>? _handleJewelryDetailRequest(
+      RequestOptions options, int id) {
+    final jewelry = mockJewelryCatalog.cast<Map<String, dynamic>?>().firstWhere(
+          (item) => item?['id'] == id,
+          orElse: () => null,
+        );
+
+    if (jewelry == null) {
+      return Response<dynamic>(
+        requestOptions: options,
+        statusCode: 404,
+        data: {'error': 'Jewelry not found'},
+      );
+    }
+
+    return _mockResponse(options, {'data': jewelry});
   }
 
   Response<dynamic> _handleSalesTeamRequest(RequestOptions options) {

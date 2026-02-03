@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../../../application/use_case/use_case.dart';
 import '../../../data/data_source/network/models/sales_member/sales_member_dto.dart';
-import '../../../data/repositories/sales_member/sales_member_repository.dart';
+import '../../repositories/sales_member/sales_member_repository.dart';
 import 'get_sales_members_params.dart';
 import 'get_sales_members_result.dart';
 

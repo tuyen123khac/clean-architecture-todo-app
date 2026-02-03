@@ -20,32 +20,49 @@ class SalesPersonCard extends StatelessWidget {
     this.onCallPressed,
   });
 
+  // Cache the card decoration to avoid recreating on every build
+  static final _cardDecoration = BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.1),
+        blurRadius: BlurRadiusApp.b10,
+        offset: OffsetApp.o04,
+      ),
+    ],
+  );
+
+  // Cache gender badge decorations
+  static final _maleBadgeDecoration = BoxDecoration(
+    color: Colors.blue.withValues(alpha: 0.1),
+    borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
+  );
+
+  static final _femaleBadgeDecoration = BoxDecoration(
+    color: Colors.pink.withValues(alpha: 0.1),
+    borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: MarginApp.m16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: OpacityApp.opa10),
-            blurRadius: BlurRadiusApp.b10,
-            offset: OffsetApp.o04,
+    // RepaintBoundary isolates this widget's repaints from the rest of the tree
+    return RepaintBoundary(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: MarginApp.m16),
+        decoration: _cardDecoration,
+        child: Padding(
+          padding: const EdgeInsets.all(PaddingApp.p16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const SizedBox(height: SizeApp.s12),
+              _buildDescription(),
+              const SizedBox(height: SizeApp.s16),
+              _buildCallButton(),
+            ],
           ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(PaddingApp.p16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: SizeApp.s12),
-            _buildDescription(),
-            const SizedBox(height: SizeApp.s16),
-            _buildCallButton(),
-          ],
         ),
       ),
     );
@@ -101,12 +118,7 @@ class SalesPersonCard extends StatelessWidget {
         horizontal: PaddingApp.p8,
         vertical: PaddingApp.p4,
       ),
-      decoration: BoxDecoration(
-        color: isMale
-            ? Colors.blue.withValues(alpha: 0.1)
-            : Colors.pink.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
-      ),
+      decoration: isMale ? _maleBadgeDecoration : _femaleBadgeDecoration,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

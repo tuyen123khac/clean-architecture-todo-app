@@ -457,6 +457,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load more'**
   String get failedToLoadMore;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @inStock.
+  ///
+  /// In en, this message translates to:
+  /// **'in stock'**
+  String get inStock;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'reviews'**
+  String get reviews;
+
+  /// No description provided for @weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get weight;
+
+  /// No description provided for @size.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get size;
+
+  /// No description provided for @material.
+  ///
+  /// In en, this message translates to:
+  /// **'Material'**
+  String get material;
+
+  /// No description provided for @premiumMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Material'**
+  String get premiumMaterial;
+
+  /// No description provided for @certifiedAuthentic.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified Authentic'**
+  String get certifiedAuthentic;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @addToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Cart'**
+  String get addToCart;
+
+  /// No description provided for @chooseHowToSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to sort items'**
+  String get chooseHowToSort;
+
+  /// No description provided for @sellItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell Items'**
+  String get sellItems;
+
+  /// No description provided for @online.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get online;
+
+  /// No description provided for @offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get offline;
+
+  /// No description provided for @synced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get synced;
+
+  /// No description provided for @itemsInInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items in inventory'**
+  String itemsInInventory(int count);
+
+  /// No description provided for @itemsPendingSync.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items pending sync'**
+  String itemsPendingSync(int count);
+
+  /// No description provided for @bulkSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Select'**
+  String get bulkSelect;
+
+  /// No description provided for @stockCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock: {count}'**
+  String stockCount(int count);
+
+  /// No description provided for @quantityToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity to sell:'**
+  String get quantityToSell;
+
+  /// No description provided for @itemsToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items to sell'**
+  String itemsToSell(int count);
+
+  /// No description provided for @estimatedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Est. {price}'**
+  String estimatedPrice(String price);
+
+  /// No description provided for @sellNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell Now'**
+  String get sellNow;
+
+  /// No description provided for @buy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get buy;
+
+  /// No description provided for @confirmPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Purchase'**
+  String get confirmPurchase;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @totalCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Cost'**
+  String get totalCost;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @purchaseSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful!'**
+  String get purchaseSuccess;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get purchaseFailed;
+
+  /// No description provided for @addNewJewelry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Jewelry'**
+  String get addNewJewelry;
+
+  /// No description provided for @editJewelry.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Jewelry'**
+  String get editJewelry;
+
+  /// No description provided for @jewelryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Jewelry Name'**
+  String get jewelryName;
+
+  /// No description provided for @enterJewelryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter jewelry name'**
+  String get enterJewelryName;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get stock;
+
+  /// No description provided for @imageUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Image URL'**
+  String get imageUrl;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @addJewelry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Jewelry'**
+  String get addJewelry;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get nameRequired;
+
+  /// No description provided for @priceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is required'**
+  String get priceRequired;
+
+  /// No description provided for @invalidPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid price'**
+  String get invalidPrice;
+
+  /// No description provided for @stockRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock is required'**
+  String get stockRequired;
+
+  /// No description provided for @invalidStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid stock'**
+  String get invalidStock;
+
+  /// No description provided for @deleteItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Item'**
+  String get deleteItem;
+
+  /// No description provided for @deleteItemConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{name}\"?'**
+  String deleteItemConfirmation(String name);
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @itemDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" has been deleted'**
+  String itemDeleted(String name);
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @itemRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Item restored'**
+  String get itemRestored;
+
+  /// No description provided for @clearSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Selection'**
+  String get clearSelection;
+
+  /// No description provided for @noItemsInInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in inventory'**
+  String get noItemsInInventory;
+
+  /// No description provided for @tapToAddFirstItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to add your first item'**
+  String get tapToAddFirstItem;
+
+  /// No description provided for @confirmSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Sale'**
+  String get confirmSale;
+
+  /// No description provided for @totalItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Items'**
+  String get totalItems;
+
+  /// No description provided for @estimatedRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Revenue'**
+  String get estimatedRevenue;
+
+  /// No description provided for @confirmSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Sell'**
+  String get confirmSell;
+
+  /// No description provided for @saleSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale completed successfully!'**
+  String get saleSuccess;
+
+  /// No description provided for @saleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale failed. Please try again.'**
+  String get saleFailed;
 }
 
 class _AppLocalizationsDelegate

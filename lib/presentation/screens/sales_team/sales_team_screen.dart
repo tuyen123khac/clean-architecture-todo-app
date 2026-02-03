@@ -228,6 +228,7 @@ class _SalesTeamScreenState extends State<SalesTeamScreen> {
             return _buildLoadMoreIndicator();
           }
           return SalesPersonCard(
+            key: ValueKey(salesTeam[index].id),
             salesPerson: salesTeam[index],
             onCallPressed: () => _callPhone(salesTeam[index].phone),
           );
