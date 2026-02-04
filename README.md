@@ -26,6 +26,11 @@ fvm flutter pub get
 Run the app:
 
 ```bash
+fvm flutter run --profile
+```
+or in dev mode
+
+```bash
 fvm flutter run
 ```
 
