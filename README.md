@@ -70,6 +70,10 @@ Notifications are also mocked by [`MarketingNotificationRepositoryImpl`](./lib/d
 
 # IV. Architecture
 
+This app follows **Clean Architecture** principles to ensure separation of concerns, testability, and maintainability.
+
+![Clean Architecture Diagram](./Clean-Architecture-Flutter-Diagram.png)
+
 ## Folder Structure
 
 ```
@@ -126,122 +130,95 @@ We use [`service_locator.dart`](./lib/data/di/service_locator.dart) with **get_i
 
 # V. Sequence Diagrams
 
-### 1. To-Call: Fetch with Pagination & Retry
+### 1. To-Call: Get Sales Team
 
 ```mermaid
 sequenceDiagram
-    participant UI as ToCallPage
-    participant C as ToCallCubit
-    participant UC as GetPersonsUseCase
-    participant R as PersonRepository
-    participant API as RetrofitService
+    participant UI as SalesTeamScreen
+    participant Bloc as SalesTeamBloc
+    participant UC as GetSalesMembers
+    participant Repo as SalesMemberRepository
+    participant API as RemoteDataSource
 
-    UI->>C: loadPersons(page, filter)
-    C->>UC: execute(page, filter)
-    UC->>R: getPersons(page, filter)
-    R->>API: GET /persons?page=1&filter=x
-
-    alt Success
-        API-->>R: List<PersonDTO>
-        R-->>UC: List<Person>
-        UC-->>C: List<Person>
-        C-->>UI: Loaded(persons)
-    else Network Error
-        API-->>R: Error
-        R->>API: Retry (up to 3x)
-        API-->>R: Success/Fail
-        R-->>UC: Result
-        UC-->>C: Result
-        C-->>UI: Error or Loaded
-    end
+    UI->>Bloc: FetchSalesTeam(page, filter)
+    Bloc->>UC: call(params)
+    UC->>Repo: getSalesMembers(params)
+    Repo->>API: getSalesTeam()
+    API-->>Repo: PaginatedResWrapper
+    Repo-->>UC: Result
+    UC-->>Bloc: GetSalesMembersResult
+    Bloc-->>UI: emit(Loaded)
 ```
 
-### 2. To-Buy: Add to Wishlist (Local Storage)
+### 2. To-Buy: Buy Jewelry & Save to Sell
 
 ```mermaid
 sequenceDiagram
-    participant UI as ItemDetailPage
-    participant C as ToBuyCubit
-    participant UC as AddToWishlistUseCase
-    participant R as WishlistRepository
+    participant UI as JewelryDetailScreen
+    participant Bloc as JewelryDetailBloc
+    participant UC as BuyJewelry
+    participant Repo as SellJewelryRepository
     participant DB as DriftDatabase
 
-    UI->>C: addToWishlist(item)
-    C->>UC: execute(item)
-    UC->>R: saveToWishlist(item)
-    R->>DB: INSERT INTO wishlist
-    DB-->>R: Success
-    R-->>UC: Done
-    UC-->>C: Done
-    C-->>UI: WishlistUpdated
+    UI->>Bloc: BuyItem(jewelry)
+    Bloc->>UC: call(jewelry)
+    UC->>Repo: insertSellItem(item)
+    Repo->>DB: INSERT INTO SellJewelryItems
+    DB-->>Repo: Success
+    Repo-->>UC: Done
+    UC-->>Bloc: Success
+    Bloc-->>UI: emit(PurchaseSuccess)
 ```
 
-### 3. To-Sell: CRUD with Undo Delete
+### 3. To-Sell: Delete with Undo
 
 ```mermaid
 sequenceDiagram
-    participant UI as ToSellPage
-    participant C as ToSellCubit
-    participant UC as DeleteItemUseCase
-    participant R as ItemRepository
+    participant UI as SellJewelryScreen
+    participant Bloc as SellJewelryBloc
+    participant UC as DeleteSellItem
+    participant Repo as SellJewelryRepository
     participant DB as DriftDatabase
 
-    UI->>C: deleteItem(item)
-    C->>C: Cache item for undo
-    C->>UC: execute(itemId)
-    UC->>R: deleteItem(itemId)
-    R->>DB: DELETE FROM ItemToSell
-    DB-->>R: Success
-    C-->>UI: Deleted(showUndo: true)
+    UI->>Bloc: DeleteItem(item)
+    Bloc->>Bloc: Cache deleted item
+    Bloc->>UC: call(itemId)
+    UC->>Repo: deleteItem(id)
+    Repo->>DB: DELETE FROM SellJewelryItems
+    DB-->>Repo: Success
+    Bloc-->>UI: emit(Deleted, canUndo)
 
-    alt User taps Undo
-        UI->>C: undoDelete()
-        C->>UC: restoreItem(cachedItem)
-        UC->>R: insertItem(item)
-        R->>DB: INSERT INTO ItemToSell
-        C-->>UI: Restored
-    end
+    Note over UI,Bloc: User taps Undo
+    UI->>Bloc: UndoDelete()
+    Bloc->>Repo: insertItem(cachedItem)
+    Bloc-->>UI: emit(Restored)
 ```
 
-### 4. Sync: Offline-First Flow
+### 4. Sync: Sell & Sync to Server
 
 ```mermaid
 sequenceDiagram
-    participant UI as SyncPage
-    participant C as SyncCubit
-    participant UC as SyncItemsUseCase
-    participant R as SyncRepository
+    participant UI as SellJewelryScreen
+    participant Bloc as SellJewelryBloc
+    participant Repo as SellJewelryRepository
     participant DB as DriftDatabase
-    participant API as RetrofitService
-    participant Net as ConnectivityChecker
+    participant API as RemoteDataSource
 
-    UI->>C: syncNow()
-    C->>Net: isConnected?
+    UI->>Bloc: MarkAsSold(item)
+    Bloc->>Repo: updateSoldStatus(item)
+    Repo->>DB: UPDATE soldAt, syncStatus='pending'
+    Bloc->>Repo: syncSoldItems()
+    Repo->>API: syncSellJewelry(request)
 
-    alt Offline
-        Net-->>C: false
-        C-->>UI: OfflineQueued
-    else Online
-        Net-->>C: true
-        C->>UC: execute()
-        UC->>R: getPendingItems()
-        R->>DB: SELECT WHERE syncStatus = 'pending'
-        DB-->>R: List<Item>
-
-        loop Each pending item
-            R->>API: POST /items/sync
-            alt Success
-                API-->>R: 200 OK
-                R->>DB: UPDATE syncStatus = 'synced'
-            else Fail
-                API-->>R: Error
-                R->>DB: UPDATE syncStatus = 'failed'
-            end
-        end
-
-        UC-->>C: SyncResult
-        C-->>UI: SyncCompleted(success, failed)
+    alt Online
+        API-->>Repo: Success
+        Repo->>DB: UPDATE syncStatus='synced'
+    else Offline
+        Repo->>DB: Keep syncStatus='pending'
+        Note over Repo: Sync later when online
     end
+
+    Bloc-->>UI: emit(SoldSuccess)
 ```
 
 ---
