@@ -10,6 +10,7 @@ import '../../../domain/entities/notification/notification_entity.dart';
 import '../../custom_widgets/app_bar/custom_app_bar.dart';
 import '../../globals/global_states/global_notification/global_notification_bloc.dart';
 import '../../globals/global_states/global_notification/global_notification_bloc_selector.dart';
+import '../../navigation/app_navigation.dart';
 import 'widgets/notification_card.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class NotificationScreen extends StatelessWidget {
       ),
       backgroundColor: AppColors.bgWhite,
       leadingWidget: const Icon(Icons.arrow_back_ios, size: SizeApp.s20),
-      onPressLeftIcon: () => Navigator.of(context).pop(),
+      onPressLeftIcon: () => AppNavigation.pop(context),
       actionButtons: [_buildClearAllButton(context)],
     );
   }

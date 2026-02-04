@@ -7,8 +7,10 @@ import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
+import '../../../custom_widgets/bottom_sheet/bottom_sheet_container.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
 import '../../../custom_widgets/button/custom_outline_button.dart';
+import '../../../custom_widgets/stepper/quantity_stepper.dart';
 import '../../../navigation/app_navigation.dart';
 
 class PurchaseConfirmationBottomSheet extends StatefulWidget {
@@ -82,15 +84,10 @@ class _PurchaseConfirmationBottomSheetState
   // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.bgWhite,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+    return BottomSheetContainer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildDragHandle(),
           _buildHeader(),
           _buildProductInfo(),
           _buildQuantitySection(),
@@ -100,19 +97,6 @@ class _PurchaseConfirmationBottomSheetState
             height: MediaQuery.of(context).padding.bottom + PaddingApp.p16,
           ),
         ],
-      ),
-    );
-  }
-
-  // ==================== Drag Handle ====================
-  Widget _buildDragHandle() {
-    return Container(
-      margin: const EdgeInsets.only(top: MarginApp.m12),
-      width: SizeApp.s40,
-      height: SizeApp.s4,
-      decoration: BoxDecoration(
-        color: AppColors.bgLightGray,
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r2),
       ),
     );
   }
@@ -215,43 +199,13 @@ class _PurchaseConfirmationBottomSheetState
               color: AppColors.textDarkGray,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.bgLightGray),
-              borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-            ),
-            child: Row(
-              children: [
-                _buildQuantityButton(Icons.remove, _decrementQuantity),
-                Container(
-                  width: SizeApp.s56,
-                  alignment: Alignment.center,
-                  child: Text(
-                    _quantity.toString(),
-                    style: AppTextStyles.semiBold(
-                      fontSize: AppFontSize.s18,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                ),
-                _buildQuantityButton(Icons.add, _incrementQuantity),
-              ],
-            ),
+          QuantityStepper(
+            quantity: _quantity,
+            onIncrement: _incrementQuantity,
+            onDecrement: _decrementQuantity,
+            minValue: 1,
           ),
         ],
-      ),
-    );
-  }
-
-  // ==================== Helpers ====================
-  Widget _buildQuantityButton(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: SizeApp.s48,
-        height: SizeApp.s48,
-        alignment: Alignment.center,
-        child: Icon(icon, color: AppColors.textBlack, size: SizeApp.s20),
       ),
     );
   }

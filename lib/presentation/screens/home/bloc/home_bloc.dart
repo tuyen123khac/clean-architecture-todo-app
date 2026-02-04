@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../../../application/use_case/use_case.dart';
 import '../../../../domain/entities/notification/notification_entity.dart';
 import '../../../../domain/use_cases/buy_jewelry/watch_wishlist.dart';
 import '../../../../domain/use_cases/marketing_notification/watch_marketing_notifications.dart';
@@ -41,13 +42,13 @@ class HomeBloc extends BaseCubit<HomeState> {
   // ==================== Subscriptions ====================
 
   void _subscribeToWishlist() {
-    _wishlistSubscription = _watchWishlist.call().listen((wishlist) {
+    _wishlistSubscription = _watchWishlist.call(NoParams()).listen((wishlist) {
       emit(state.copyWith(wishlistCount: wishlist.length));
     });
   }
 
   void _subscribeToSellJewelry() {
-    _sellJewelrySubscription = _watchSellJewelry.call().listen((items) {
+    _sellJewelrySubscription = _watchSellJewelry.call(NoParams()).listen((items) {
       final pendingCount = items.where((item) => !item.isSynced).length;
       emit(
         state.copyWith(
@@ -60,7 +61,7 @@ class HomeBloc extends BaseCubit<HomeState> {
 
   void _subscribeToMarketingNotifications() {
     _notificationSubscription =
-        _watchMarketingNotifications.call().listen(_onNotificationReceived);
+        _watchMarketingNotifications.call(NoParams()).listen(_onNotificationReceived);
   }
 
   void _onNotificationReceived(NotificationEntity notification) {

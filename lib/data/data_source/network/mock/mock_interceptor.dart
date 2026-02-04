@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-import 'endpoints/network_urls.dart';
-import 'exceptions/base_exception.dart';
+import '../endpoints/network_urls.dart';
+import '../exceptions/base_exception.dart';
 
 // Mock data for To-Call (sales team)
 // Following DATA_MODEL.md: id, name, gender, age, title, phone_number, description, image_url
@@ -406,7 +406,6 @@ class MockInterceptor extends Interceptor {
   static const String _pathSalesTeam = NetworkUrls.salesTeam;
   static const String _pathJewelry = NetworkUrls.jewelry;
   static const String _pathSellJewelry = NetworkUrls.sellJewelry;
-  static const String _pathSellTransactions = '/sell-transactions';
 
   @override
   void onRequest(
@@ -550,12 +549,6 @@ class MockInterceptor extends Interceptor {
             ? Map<String, dynamic>.from(options.data as Map)
             : <String, dynamic>{};
         return _mockResponse(options, {'result': 'ok', 'synced': body});
-      case _pathSellTransactions:
-        final body = options.data is Map<String, dynamic>
-            ? Map<String, dynamic>.from(options.data as Map)
-            : <String, dynamic>{};
-        mockSellTransactions.add(body);
-        return _mockResponse(options, {'result': 'ok', 'saved': body});
       default:
         return null;
     }

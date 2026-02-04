@@ -10,7 +10,10 @@ import '../../../application/resource/styles/app_text_style.dart';
 import '../../../application/resource/value_manager.dart';
 import '../../../data/di/service_locator.dart';
 import '../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
+import '../../custom_widgets/button/circular_icon_button.dart';
 import '../../custom_widgets/button/custom_filled_button.dart';
+import '../../custom_widgets/list/feature_check_item.dart';
+import '../../custom_widgets/rating/rating_stars.dart';
 import '../../navigation/app_navigation.dart';
 import 'bloc/jewelry_detail_bloc.dart';
 import 'bloc/jewelry_detail_bloc_selector.dart';
@@ -70,10 +73,7 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _bloc,
-      child: Scaffold(
-        backgroundColor: AppColors.bgWhite,
-        body: _buildBody(),
-      ),
+      child: Scaffold(backgroundColor: AppColors.bgWhite, body: _buildBody()),
     );
   }
 
@@ -82,34 +82,31 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
       builder: (jewelry) {
         if (jewelry == null) return const SizedBox.shrink();
         return Column(
-          children: [
-            Expanded(
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  JewelryDetailAppBarTitleOpacitySelector(
-                    builder: (appBarTitleOpacity) =>
-                        _buildSliverAppBar(jewelry, appBarTitleOpacity),
-                  ),
-                  SliverToBoxAdapter(child: _buildProductInfo(jewelry)),
-                  SliverToBoxAdapter(child: _buildSpecsRow(jewelry)),
-                  if (jewelry.isCertified)
-                    SliverToBoxAdapter(
-                      child: _buildPremiumMaterialCard(jewelry),
-                    ),
-                  SliverToBoxAdapter(child: _buildDescriptionSection(jewelry)),
-                  if (jewelry.features.isNotEmpty)
-                    SliverToBoxAdapter(child: _buildFeaturesSection(jewelry)),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: SizeApp.s24),
-                  ),
-                ],
-              ),
-            ),
-            _buildBottomBar(jewelry),
-          ],
+          children: [_buildJewelryContent(jewelry), _buildBottomBar(jewelry)],
         );
       },
+    );
+  }
+
+  Widget _buildJewelryContent(BuyJewelryEntity jewelry) {
+    return Expanded(
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          JewelryDetailAppBarTitleOpacitySelector(
+            builder: (appBarTitleOpacity) =>
+                _buildSliverAppBar(jewelry, appBarTitleOpacity),
+          ),
+          SliverToBoxAdapter(child: _buildProductInfo(jewelry)),
+          SliverToBoxAdapter(child: _buildSpecsRow(jewelry)),
+          if (jewelry.isCertified)
+            SliverToBoxAdapter(child: _buildPremiumMaterialCard(jewelry)),
+          SliverToBoxAdapter(child: _buildDescriptionSection(jewelry)),
+          if (jewelry.features.isNotEmpty)
+            SliverToBoxAdapter(child: _buildFeaturesSection(jewelry)),
+          const SliverToBoxAdapter(child: SizedBox(height: SizeApp.s24)),
+        ],
+      ),
     );
   }
 
@@ -158,41 +155,19 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
   }
 
   Widget _buildBackButton() {
-    return GestureDetector(
+    return CircularIconButton(
+      icon: Icons.arrow_back,
       onTap: () => AppNavigation.back(context),
-      child: Container(
-        width: SizeApp.s44,
-        height: SizeApp.s44,
-        decoration: BoxDecoration(
-          color: AppColors.bgLightGray,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.arrow_back,
-          color: AppColors.textBlack,
-          size: SizeApp.s20,
-        ),
-      ),
     );
   }
 
   Widget _buildFavoriteButton() {
     return JewelryDetailFavoriteSelector(
-      builder: (isFavorite) => GestureDetector(
+      builder: (isFavorite) => CircularIconButton(
+        icon: isFavorite ? Icons.favorite : Icons.favorite_border,
         onTap: () => _bloc.toggleFavorite(),
-        child: Container(
-          width: SizeApp.s44,
-          height: SizeApp.s44,
-          decoration: BoxDecoration(
-            color: isFavorite ? Colors.pink.shade50 : AppColors.bgLightGray,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: isFavorite ? Colors.pink : AppColors.textGray,
-            size: SizeApp.s20,
-          ),
-        ),
+        backgroundColor: isFavorite ? AppColors.favoriteLight : AppColors.bgLightGray,
+        iconColor: isFavorite ? AppColors.favorite : AppColors.textGray,
       ),
     );
   }
@@ -244,17 +219,7 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
   Widget _buildRatingRow(BuyJewelryEntity jewelry) {
     return Row(
       children: [
-        ...List.generate(5, (index) {
-          return Icon(
-            index < jewelry.rating.floor()
-                ? Icons.star
-                : (index < jewelry.rating
-                      ? Icons.star_half
-                      : Icons.star_border),
-            color: Colors.amber,
-            size: SizeApp.s20,
-          );
-        }),
+        RatingStars(rating: jewelry.rating),
         const SizedBox(width: SizeApp.s8),
         Text(
           '(${jewelry.reviewCount} ${AppStrings.reviews})',
@@ -367,9 +332,9 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
       child: Container(
         padding: const EdgeInsets.all(PaddingApp.p16),
         decoration: BoxDecoration(
-          color: Colors.amber.shade50,
+          color: AppColors.premiumLight,
           borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-          border: Border.all(color: Colors.amber.shade200),
+          border: Border.all(color: AppColors.premiumBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,7 +343,7 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
               AppStrings.premiumMaterial,
               style: AppTextStyles.semiBold(
                 fontSize: AppFontSize.s16,
-                color: Colors.amber.shade800,
+                color: AppColors.premium,
               ),
             ),
             const SizedBox(height: SizeApp.s4),
@@ -386,7 +351,7 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
               '${jewelry.material ?? ""} • ${AppStrings.certifiedAuthentic}',
               style: AppTextStyles.regular(
                 fontSize: AppFontSize.s14,
-                color: Colors.amber.shade700,
+                color: AppColors.warning,
               ),
             ),
           ],
@@ -442,36 +407,7 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
           ),
           const SizedBox(height: SizeApp.s12),
           ...jewelry.features.map(
-            (feature) => Padding(
-              padding: const EdgeInsets.only(bottom: PaddingApp.p8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.teal.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.teal,
-                      size: SizeApp.s16,
-                    ),
-                  ),
-                  const SizedBox(width: SizeApp.s12),
-                  Expanded(
-                    child: Text(
-                      feature,
-                      style: AppTextStyles.regular(
-                        fontSize: AppFontSize.s14,
-                        color: AppColors.textDarkGray,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            (feature) => FeatureCheckItem(text: feature),
           ),
         ],
       ),
@@ -482,10 +418,10 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.bgWhite,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: AppColors.shadow.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -514,14 +450,14 @@ class _JewelryDetailScreenState extends State<JewelryDetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppStrings.purchaseSuccess),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
         ),
       );
     } else if (success == false && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppStrings.purchaseFailed),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
     }

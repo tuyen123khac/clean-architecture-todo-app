@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
+import '../../../../application/use_case/use_case.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../../../domain/use_cases/sell_jewelry/add_sell_jewelry.dart';
 import '../../../../domain/use_cases/sell_jewelry/delete_sell_jewelry.dart';
@@ -57,7 +58,7 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
   void _subscribeToInventory() {
     emit(state.copyWith(screenStatus: SellJewelryScreenStatus.loading));
 
-    _inventorySubscription = _watchSellJewelry.call().listen(
+    _inventorySubscription = _watchSellJewelry.call(NoParams()).listen(
       (inventoryList) {
         _emitWithComputedValues(
           inventoryList: inventoryList,

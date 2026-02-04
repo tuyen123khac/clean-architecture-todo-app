@@ -3,12 +3,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../presentation/navigation/app_navigation.dart';
 import '../../presentation/navigation/app_routes.dart';
 
-/// Notification channel IDs for different notification types
 class NotificationChannels {
   static const String marketing = 'marketing_channel';
-  // Add more channels here for future notification types
-  // static const String order = 'order_channel';
-  // static const String chat = 'chat_channel';
 }
 
 class NotificationUtil {
@@ -48,14 +44,11 @@ class NotificationUtil {
 
   /// Determine which route to navigate based on notification data
   static String? _getRouteForNotification(NotificationResponse response) {
-    // Check payload first for specific routing
     final payload = response.payload;
     if (payload != null && payload.isNotEmpty) {
       return _getRouteFromPayload(payload);
     }
 
-    // Fallback to channel-based routing for Android
-    // For now, all marketing notifications go to notification screen
     return AppRoutes.notification;
   }
 

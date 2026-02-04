@@ -1,29 +1,36 @@
 import 'dart:async';
 
 import '../../../../domain/entities/notification/notification_entity.dart';
+import '../../../../domain/use_cases/marketing_notification/start_notification_scheduler.dart';
+import '../../../../domain/use_cases/marketing_notification/stop_notification_scheduler.dart';
 import '../../../../domain/use_cases/marketing_notification/watch_marketing_notifications.dart';
 import '../../../base_bloc/base_cubit.dart';
 import 'global_notification_state.dart';
 
 class GlobalNotificationBloc extends BaseCubit<GlobalNotificationState> {
   final WatchMarketingNotifications _watchMarketingNotifications;
+  final StartNotificationScheduler _startNotificationScheduler;
+  final StopNotificationScheduler _stopNotificationScheduler;
 
   StreamSubscription<NotificationEntity>? _notificationSubscription;
 
-  GlobalNotificationBloc(this._watchMarketingNotifications)
-      : super(const GlobalNotificationState());
+  GlobalNotificationBloc(
+    this._watchMarketingNotifications,
+    this._startNotificationScheduler,
+    this._stopNotificationScheduler,
+  ) : super(const GlobalNotificationState());
 
   // ==================== Lifecycle ====================
 
   void initState() {
     _subscribeToNotifications();
-    _watchMarketingNotifications.startScheduler();
+    _startNotificationScheduler.call();
   }
 
   @override
   Future<void> close() {
     _notificationSubscription?.cancel();
-    _watchMarketingNotifications.stopScheduler();
+    _stopNotificationScheduler.call();
     return super.close();
   }
 

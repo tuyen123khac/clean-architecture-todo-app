@@ -45,6 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  // ==================== Notification Handler ====================
+
+  void _onNotificationReceived(
+    BuildContext context,
+    NotificationEntity notification,
+  ) {
+    NotificationUtil.showNotification(
+      id: notification.id.hashCode,
+      title: notification.title,
+      body: notification.body,
+      payload: 'route:${AppRoutes.notification}',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -60,20 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  // ==================== Notification Handler ====================
-
-  void _onNotificationReceived(
-    BuildContext context,
-    NotificationEntity notification,
-  ) {
-    NotificationUtil.showNotification(
-      id: notification.id.hashCode,
-      title: notification.title,
-      body: notification.body,
-      payload: 'route:${AppRoutes.notification}',
     );
   }
 
@@ -166,7 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
               iconBackgroundColor: AppColors.bgLightGray,
               badgeCount: counters.sell,
               badgeColor: AppColors.primary,
-              onTap: () => AppNavigation.routeTo(context, AppRoutes.sellJewelry),
+              onTap: () =>
+                  AppNavigation.routeTo(context, AppRoutes.sellJewelry),
             ),
           ],
         );
@@ -175,25 +176,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSyncCard(BuildContext context) {
-    return GlobalBackgroundOnlineSelector(
-      builder: (isOnline) {
-        return GlobalBackgroundSyncStatusSelector(
-          builder: (syncStatus) {
-            return GlobalBackgroundLastSyncedSelector(
-              builder: (lastSyncedAt) {
-                return HomePendingSyncCountSelector(
-                  builder: (pendingSyncCount) {
-                    return SyncStatusCard(
-                      syncStatus: syncStatus,
-                      pendingSyncCount: pendingSyncCount,
-                      lastSyncedAt: lastSyncedAt,
-                      isOnline: isOnline,
-                      onTap: () {
-                        context.read<GlobalBackgroundBloc>().triggerSync();
-                      },
-                    );
-                  },
-                );
+    return GlobalBackgroundSyncCardSelector(
+      builder: (syncData) {
+        return HomePendingSyncCountSelector(
+          builder: (pendingSyncCount) {
+            return SyncStatusCard(
+              syncStatus: syncData.syncStatus,
+              pendingSyncCount: pendingSyncCount,
+              lastSyncedAt: syncData.lastSyncedAt,
+              isOnline: syncData.isOnline,
+              onTap: () {
+                context.read<GlobalBackgroundBloc>().triggerSync();
               },
             );
           },

@@ -1,11 +1,13 @@
+import '../../../application/use_case/use_case.dart';
 import '../../repositories/buy_jewelry/buy_jewelry_repository.dart';
 
-class RemoveFromWishlist {
+class RemoveFromWishlist extends UseCase<void, String> {
   final BuyJewelryRepository _repository;
 
-  RemoveFromWishlist(this._repository);
+  const RemoveFromWishlist(this._repository);
 
-  Future<void> call(String id) {
-    return _repository.removeFromWishlist(id);
+  @override
+  Future<void> call(String params) {
+    return _repository.removeFromWishlist(params);
   }
 }

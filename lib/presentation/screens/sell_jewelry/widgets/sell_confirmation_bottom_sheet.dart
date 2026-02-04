@@ -9,6 +9,7 @@ import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
 import '../../../custom_widgets/button/custom_outline_button.dart';
+import '../../../navigation/app_navigation.dart';
 
 class SellConfirmationBottomSheet extends StatelessWidget {
   final List<SellJewelryEntity> itemsToSell;
@@ -102,7 +103,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => AppNavigation.pop(context),
             child: Container(
               padding: const EdgeInsets.all(PaddingApp.p8),
               decoration: BoxDecoration(
@@ -269,7 +270,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
         Expanded(
           child: CustomOutlinedButton(
             label: AppStrings.cancel,
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => AppNavigation.pop(context, false),
             colorText: AppColors.textDarkGray,
             borderColor: AppColors.textGray,
           ),
@@ -282,7 +283,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
             onPressed: () async {
               final result = await onConfirm();
               if (context.mounted) {
-                Navigator.of(context).pop(result);
+                AppNavigation.pop(context, result);
               }
             },
           ),

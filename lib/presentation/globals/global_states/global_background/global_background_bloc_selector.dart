@@ -47,3 +47,25 @@ class GlobalBackgroundLastSyncedSelector
           builder: (_, lastSyncedAt) => builder(lastSyncedAt),
         );
 }
+
+/// Combined selector for SyncStatusCard with all needed data
+typedef SyncCardData = ({
+  bool isOnline,
+  SyncStatus syncStatus,
+  DateTime? lastSyncedAt,
+});
+
+class GlobalBackgroundSyncCardSelector
+    extends BlocSelector<GlobalBackgroundBloc, GlobalBackgroundState, SyncCardData> {
+  GlobalBackgroundSyncCardSelector({
+    super.key,
+    required Widget Function(SyncCardData) builder,
+  }) : super(
+          selector: (state) => (
+            isOnline: state.isOnline,
+            syncStatus: state.syncStatus,
+            lastSyncedAt: state.lastSyncedAt,
+          ),
+          builder: (_, data) => builder(data),
+        );
+}

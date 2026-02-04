@@ -3,13 +3,13 @@ import '../../../data/data_source/network/models/buy_jewelry/buy_jewelry_item_dt
 import '../../repositories/buy_jewelry/buy_jewelry_repository.dart';
 import '../../entities/buy_jewelry/buy_jewelry_entity.dart';
 
-class GetJewelryList extends UseCase<List<BuyJewelryEntity>, void> {
+class GetJewelryList extends UseCase<List<BuyJewelryEntity>, NoParams> {
   final BuyJewelryRepository _repository;
 
   const GetJewelryList(this._repository);
 
   @override
-  Future<List<BuyJewelryEntity>> call([void params]) async {
+  Future<List<BuyJewelryEntity>> call([NoParams? params]) async {
     final response = await _repository.getJewelryList();
     return response.data.map((dto) => dto.toEntity()).toList();
   }

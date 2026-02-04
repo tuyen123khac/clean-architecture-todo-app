@@ -556,7 +556,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: () => AppNavigation.pop(context, false),
                 child: Text(
                   AppStrings.cancel,
                   style: AppTextStyles.medium(
@@ -566,7 +566,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
                 ),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => AppNavigation.pop(context, true),
                 child: Text(
                   AppStrings.delete,
                   style: AppTextStyles.medium(
@@ -602,7 +602,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => AppNavigation.pop(context, false),
             child: Text(
               AppStrings.cancel,
               style: AppTextStyles.medium(
@@ -612,7 +612,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => AppNavigation.pop(context, true),
             child: Text(
               AppStrings.delete,
               style: AppTextStyles.medium(

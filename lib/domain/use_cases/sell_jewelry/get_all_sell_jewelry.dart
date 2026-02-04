@@ -8,7 +8,7 @@ class GetAllSellJewelry extends UseCase<List<SellJewelryEntity>, NoParams> {
   const GetAllSellJewelry(this._repository);
 
   @override
-  Future<List<SellJewelryEntity>> call(NoParams params) async {
+  Future<List<SellJewelryEntity>> call([NoParams? params]) async {
     return _repository.getAllJewelry();
   }
 }

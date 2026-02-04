@@ -1,12 +1,14 @@
+import '../../../application/use_case/use_case.dart';
 import '../../entities/buy_jewelry/buy_jewelry_entity.dart';
 import '../../repositories/buy_jewelry/buy_jewelry_repository.dart';
 
-class AddToWishlist {
+class AddToWishlist extends UseCase<void, BuyJewelryEntity> {
   final BuyJewelryRepository _repository;
 
-  AddToWishlist(this._repository);
+  const AddToWishlist(this._repository);
 
-  Future<void> call(BuyJewelryEntity jewelry) {
-    return _repository.addToWishlist(jewelry);
+  @override
+  Future<void> call(BuyJewelryEntity params) {
+    return _repository.addToWishlist(params);
   }
 }

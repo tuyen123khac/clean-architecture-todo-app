@@ -6,4 +6,10 @@ abstract class UseCase<Data, Params> {
   Future<Data> call(Params params);
 }
 
+abstract class StreamUseCase<Data, Params> {
+  const StreamUseCase();
+
+  Stream<Data> call(Params params);
+}
+
 class NoParams {}

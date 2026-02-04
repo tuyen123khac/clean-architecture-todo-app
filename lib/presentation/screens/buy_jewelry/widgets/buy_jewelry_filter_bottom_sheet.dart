@@ -170,7 +170,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
             ],
           ),
           IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => AppNavigation.pop(context),
             icon: Icon(
               Icons.close,
               color: AppColors.textBlack,

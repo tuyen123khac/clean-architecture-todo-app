@@ -7,7 +7,7 @@ class DeleteAllSellJewelry extends UseCase<void, NoParams> {
   const DeleteAllSellJewelry(this._repository);
 
   @override
-  Future<void> call(NoParams params) async {
+  Future<void> call([NoParams? params]) async {
     await _repository.deleteAllJewelry();
   }
 }

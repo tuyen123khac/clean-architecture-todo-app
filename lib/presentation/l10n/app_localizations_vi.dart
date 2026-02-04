@@ -96,22 +96,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get allCategories => 'All';
 
   @override
-  String get sjcGold => 'Vàng SJC';
+  String get sjcGold => 'SJC Gold';
 
   @override
-  String get gold24K => 'Vàng 24K';
+  String get gold24K => '24K Gold';
 
   @override
-  String get gold18K => 'Vàng 18K';
+  String get gold18K => '18K Gold';
 
   @override
-  String get gold14K => 'Vàng 14K';
+  String get gold14K => '14K Gold';
 
   @override
-  String get whiteGold => 'Vàng Trắng';
+  String get whiteGold => 'White Gold';
 
   @override
-  String get gemstone => 'Đá Quý';
+  String get gemstone => 'Gemstone';
 
   @override
   String get sortBy => 'Sort By';
@@ -150,13 +150,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get male => 'Nam';
+  String get male => 'Male';
 
   @override
-  String get female => 'Nữ';
+  String get female => 'Female';
 
   @override
-  String get other => 'Khác';
+  String get other => 'Other';
 
   @override
   String get noMoreData => 'No more data';
@@ -167,19 +167,19 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get salesTitleSalesManager => 'Trưởng phòng Kinh doanh';
+  String get salesTitleSalesManager => 'Sales Manager';
 
   @override
-  String get salesTitleSalesSpecialist => 'Chuyên viên Kinh doanh';
+  String get salesTitleSalesSpecialist => 'Sales Specialist';
 
   @override
-  String get salesTitleSeniorSalesRep => 'Nhân viên Kinh doanh Cấp cao';
+  String get salesTitleSeniorSalesRep => 'Senior Sales Rep';
 
   @override
-  String get salesTitleSalesTeamLead => 'Trưởng nhóm Kinh doanh';
+  String get salesTitleSalesTeamLead => 'Sales Team Lead';
 
   @override
-  String get salesTitleSalesRep => 'Nhân viên Kinh doanh';
+  String get salesTitleSalesRep => 'Sales Rep';
 
   @override
   String get networkError => 'Please check your internet connection';
@@ -230,7 +230,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chooseHowToSort => 'Choose how to sort items';
 
   @override
-  String get sellItems => 'Bán trang sức';
+  String get sellItems => 'Sell Jewelry';
 
   @override
   String get online => 'Online';
@@ -429,45 +429,45 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addToWishlist => 'Add items to your wishlist';
 
   @override
-  String get sync => 'Đồng bộ';
+  String get sync => 'Sync';
 
   @override
-  String get syncSubtitle => 'Đồng bộ dữ liệu với máy chủ';
+  String get syncSubtitle => 'Sync your data with server';
 
   @override
-  String get syncNow => 'Đồng bộ ngay';
+  String get syncNow => 'Sync Now';
 
   @override
-  String get syncing => 'Đang đồng bộ...';
+  String get syncing => 'Syncing...';
 
   @override
-  String get syncFailed => 'Đồng bộ thất bại';
+  String get syncFailed => 'Sync failed';
 
   @override
-  String get syncSuccess => 'Đồng bộ hoàn tất';
+  String get syncSuccess => 'Sync completed';
 
   @override
-  String get tapToRetrySync => 'Nhấn để thử lại';
+  String get tapToRetrySync => 'Tap to retry sync';
 
   @override
   String lastSynced(String time) {
-    return 'Đồng bộ lần cuối: $time';
+    return 'Last synced: $time';
   }
 
   @override
-  String get neverSynced => 'Chưa đồng bộ';
+  String get neverSynced => 'Never synced';
 
   @override
-  String get notifications => 'Thông báo';
+  String get notifications => 'Notifications';
 
   @override
-  String get noNotifications => 'Không có thông báo';
+  String get noNotifications => 'No notifications';
 
   @override
-  String get noNotificationsSubtitle => 'Bạn đã xem hết thông báo!';
+  String get noNotificationsSubtitle => 'You\'re all caught up!';
 
   @override
-  String get clearAll => 'Xóa tất cả';
+  String get clearAll => 'Clear All';
 
   @override
   String get pendingSync => 'Pending';

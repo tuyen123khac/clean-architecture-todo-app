@@ -1,12 +1,14 @@
+import '../../../application/use_case/use_case.dart';
 import '../../entities/buy_jewelry/buy_jewelry_entity.dart';
 import '../../repositories/buy_jewelry/buy_jewelry_repository.dart';
 
-class WatchWishlist {
+class WatchWishlist extends StreamUseCase<List<BuyJewelryEntity>, NoParams> {
   final BuyJewelryRepository _repository;
 
-  WatchWishlist(this._repository);
+  const WatchWishlist(this._repository);
 
-  Stream<List<BuyJewelryEntity>> call() {
+  @override
+  Stream<List<BuyJewelryEntity>> call([NoParams? params]) {
     return _repository.watchWishlist();
   }
 }

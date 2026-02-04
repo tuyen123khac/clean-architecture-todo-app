@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../../../application/use_case/use_case.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../data/data_source/network/exceptions/base_exception.dart';
 import '../../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
@@ -48,7 +49,7 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
 
   Future<void> _loadWishlistSnapshot() async {
     try {
-      final wishlist = await _getAllWishlist.call();
+      final wishlist = await _getAllWishlist.call(NoParams());
       emit(state.copyWith(buyJewelryWishList: wishlist));
     } catch (_) {
       emit(state.copyWith(buyJewelryWishList: []));
@@ -56,7 +57,7 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
   }
 
   void _subscribeToWishlist() {
-    _wishlistSubscription = _watchWishlist.call().listen((wishlist) {
+    _wishlistSubscription = _watchWishlist.call(NoParams()).listen((wishlist) {
       emit(state.copyWith(buyJewelryWishList: wishlist));
       _updateFavoritesFromWishlist(wishlist);
     });

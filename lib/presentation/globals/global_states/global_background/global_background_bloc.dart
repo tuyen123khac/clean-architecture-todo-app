@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-import '../../../../domain/use_cases/sell_jewelry/sync_sell_jewelry.dart';
+import '../../../../application/use_case/use_case.dart';
+import '../../../../domain/use_cases/sell_jewelry/get_pending_sell_jewelry.dart';
+import '../../../../domain/use_cases/sell_jewelry/sync_all_pending_sell_jewelry.dart';
 import '../../../base_bloc/base_cubit.dart';
 import 'global_background_state.dart';
 
 class GlobalBackgroundBloc extends BaseCubit<GlobalBackgroundState> {
-  final SyncSellJewelry _syncSellJewelry;
+  final SyncAllPendingSellJewelry _syncAllPendingSellJewelry;
+  final GetPendingSellJewelry _getPendingSellJewelry;
   final InternetConnection _internetConnection;
 
   Timer? _syncTimer;
@@ -16,7 +19,8 @@ class GlobalBackgroundBloc extends BaseCubit<GlobalBackgroundState> {
   static const Duration _syncInterval = Duration(minutes: 1);
 
   GlobalBackgroundBloc(
-    this._syncSellJewelry,
+    this._syncAllPendingSellJewelry,
+    this._getPendingSellJewelry,
     this._internetConnection,
   ) : super(const GlobalBackgroundState());
 
@@ -84,8 +88,9 @@ class GlobalBackgroundBloc extends BaseCubit<GlobalBackgroundState> {
     ));
 
     try {
-      await _syncSellJewelry.syncAllPending();
-      final remainingPending = await _syncSellJewelry.getPendingItems();
+      await _syncAllPendingSellJewelry.call(NoParams());
+      final remainingPending =
+          await _getPendingSellJewelry.call(NoParams());
 
       emit(state.copyWith(
         syncStatus: SyncStatus.completed,
@@ -120,10 +125,5 @@ class GlobalBackgroundBloc extends BaseCubit<GlobalBackgroundState> {
     if (state.isOnline) {
       _performSync();
     }
-  }
-
-  /// Update pending count (called from sell jewelry bloc)
-  void updatePendingCount(int count) {
-    emit(state.copyWith(pendingSyncCount: count));
   }
 }

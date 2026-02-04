@@ -13,15 +13,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize service locator
-  await injectDependencies();
+  injectDependencies();
 
   // Initialize notifications
   await NotificationUtil.initialize();
 
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/presentation/navigation/app_navigation.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
 import '../../../../application/resource/fonts/app_font.dart';
@@ -51,7 +52,7 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
       _selectedSortBy = sortBy;
     });
     widget.onApply(sortBy);
-    Navigator.pop(context);
+    AppNavigation.pop(context);
   }
 
   // ==================== Build ====================
@@ -132,7 +133,7 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
             ],
           ),
           IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => AppNavigation.pop(context),
             icon: Icon(
               Icons.close,
               color: AppColors.textBlack,

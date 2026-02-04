@@ -122,6 +122,7 @@ class SellJewelryRepositoryImpl implements SellJewelryRepository {
       name: entity.name,
       category: entity.category.name,
       price: entity.price,
+      stock: entity.stock,
     );
     await _remoteDataSource.syncSellJewelry(request);
   }

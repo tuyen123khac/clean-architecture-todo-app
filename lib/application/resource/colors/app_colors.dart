@@ -27,6 +27,25 @@ class AppColors {
   static Color warningLight = HexColor.fromHex("#FFF3E0");
   static Color info = HexColor.fromHex("#00897B");
   static Color infoLight = HexColor.fromHex("#E0F2F1");
+
+  // Gender colors
+  static Color male = HexColor.fromHex("#2196F3");
+  static Color maleLight = HexColor.fromHex("#E3F2FD");
+  static Color female = HexColor.fromHex("#E91E63");
+  static Color femaleLight = HexColor.fromHex("#FCE4EC");
+
+  // Rating/favorite colors
+  static Color favorite = HexColor.fromHex("#E91E63");
+  static Color favoriteLight = HexColor.fromHex("#FCE4EC");
+  static Color rating = HexColor.fromHex("#FFC107");
+
+  // Premium/Certified colors
+  static Color premium = HexColor.fromHex("#FFA000");
+  static Color premiumLight = HexColor.fromHex("#FFF8E1");
+  static Color premiumBorder = HexColor.fromHex("#FFECB3");
+
+  // Shadow color
+  static Color shadow = HexColor.fromHex("#000000");
 }
 
 extension HexColor on Color {

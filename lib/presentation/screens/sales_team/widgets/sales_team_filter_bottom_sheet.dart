@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/presentation/custom_widgets/button/custom_outline_button.dart';
 import 'package:todo_app/presentation/navigation/app_navigation.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
@@ -90,9 +91,9 @@ class _SalesTeamFilterBottomSheetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(
           top: Radius.circular(BorderRadiusApp.r20),
         ),
       ),
@@ -142,7 +143,7 @@ class _SalesTeamFilterBottomSheetState
           ],
         ),
         IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => AppNavigation.pop(context),
           icon: Icon(
             Icons.close,
             color: AppColors.textBlack,
@@ -264,7 +265,7 @@ class _SalesTeamFilterBottomSheetState
           label,
           style: AppTextStyles.medium(
             fontSize: AppFontSize.s14,
-            color: isSelected ? Colors.white : AppColors.textDarkGray,
+            color: isSelected ? AppColors.bgWhite : AppColors.textDarkGray,
           ),
         ),
       ),
@@ -281,22 +282,11 @@ class _SalesTeamFilterBottomSheetState
     return Row(
       children: [
         Expanded(
-          child: OutlinedButton(
+          child: CustomOutlinedButton(
             onPressed: _resetFilters,
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: PaddingApp.p14),
-              side: BorderSide(color: AppColors.primary),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-              ),
-            ),
-            child: Text(
-              AppStrings.resetAll,
-              style: AppTextStyles.semiBold(
-                fontSize: AppFontSize.s16,
-                color: AppColors.primary,
-              ),
-            ),
+            label: AppStrings.resetAll,
+            colorText: AppColors.primary,
+            borderColor: AppColors.primary,
           ),
         ),
         const SizedBox(width: SizeApp.s12),

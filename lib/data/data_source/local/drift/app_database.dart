@@ -22,7 +22,6 @@ class AppDatabase extends _$AppDatabase {
             await migrator.createTable(buyJewelryWishlistTable);
           }
           if (from < 3) {
-            // Add createdAt column to existing sell_jewelry_table
             await customStatement(
               'ALTER TABLE sell_jewelry_table ADD COLUMN created_at INTEGER NOT NULL DEFAULT (strftime(\'%s\', \'now\') * 1000)',
             );

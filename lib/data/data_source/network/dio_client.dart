@@ -5,7 +5,7 @@ import 'package:dio/io.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import 'exceptions/base_exception.dart';
-import 'mock_interceptor.dart';
+import 'mock/mock_interceptor.dart';
 
 class DioClient extends DioForNative implements Interceptor {
   final InternetConnection _connectionChecker;

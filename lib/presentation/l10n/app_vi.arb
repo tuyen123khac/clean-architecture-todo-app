@@ -9,34 +9,247 @@
   "salesTeam": "Sales Team",
   "expertJewelryConsultants": "Expert jewelry consultants",
   "callNow": "Call now",
-  "sjcGold": "Vàng SJC",
-  "gold24K": "Vàng 24K",
-  "gold18K": "Vàng 18K",
-  "gold14K": "Vàng 14K",
-  "whiteGold": "Vàng Trắng",
-  "gemstone": "Đá Quý",
-  "male": "Nam",
-  "female": "Nữ",
-  "other": "Khác",
-  "salesTitleSalesManager": "Trưởng phòng Kinh doanh",
-  "salesTitleSalesSpecialist": "Chuyên viên Kinh doanh",
-  "salesTitleSeniorSalesRep": "Nhân viên Kinh doanh Cấp cao",
-  "salesTitleSalesTeamLead": "Trưởng nhóm Kinh doanh",
-  "salesTitleSalesRep": "Nhân viên Kinh doanh",
-  "sellItems": "Bán trang sức",
+  "salesTeamSubtitle": "Meet our expert jewelry consultants",
+  "buyJewelrySubtitle": "Browse our jewelry collection",
+  "sellYourJewelrySubtitle": "Get the best value for your pieces",
+  "jewelry": "Jewelry",
+  "itemsAvailable": "{count} items available",
+  "@itemsAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "view": "View",
+  "filters": "Filters",
+  "refineYourSearch": "Refine your search",
+  "showFavoritesOnly": "Show Favorites Only",
+  "wishlistedItems": "Wishlisted Items",
+  "priceRange": "Price Range",
+  "allPrices": "All Prices",
+  "under10m": "< 10M",
+  "from10mTo30m": "10 - 30M",
+  "from30mTo50m": "30 - 50M",
+  "above50m": "> 50M",
+  "category": "Category",
+  "allCategories": "All",
+  "sjcGold": "SJC Gold",
+  "gold24K": "24K Gold",
+  "gold18K": "18K Gold",
+  "gold14K": "14K Gold",
+  "whiteGold": "White Gold",
+  "gemstone": "Gemstone",
+  "sortBy": "Sort By",
+  "nameAZ": "Name (A-Z)",
+  "priceLowToHigh": "Price: Low to High",
+  "priceHighToLow": "Price: High to Low",
+  "resetAll": "Reset All",
+  "applyFilters": "Apply Filters",
+  "allItems": "All Items",
+  "wishlist": "Wishlist",
+  "ageRange": "Age Range",
+  "yearsOld": "years old",
+  "gender": "Gender",
+  "all": "All",
+  "male": "Male",
+  "female": "Female",
+  "other": "Other",
+  "noMoreData": "No more data",
+  "consultantsAvailable": "{count} consultants available",
+  "@consultantsAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "salesTitleSalesManager": "Sales Manager",
+  "salesTitleSalesSpecialist": "Sales Specialist",
+  "salesTitleSeniorSalesRep": "Senior Sales Rep",
+  "salesTitleSalesTeamLead": "Sales Team Lead",
+  "salesTitleSalesRep": "Sales Rep",
+  "networkError": "Please check your internet connection",
+  "somethingWentWrong": "Something went wrong",
+  "retry": "Retry",
+  "failedToLoadMore": "Failed to load more",
+  "details": "Details",
+  "inStock": "in stock",
+  "reviews": "reviews",
+  "weight": "Weight",
+  "size": "Size",
+  "material": "Material",
+  "premiumMaterial": "Premium Material",
+  "certifiedAuthentic": "Certified Authentic",
+  "description": "Description",
+  "features": "Features",
+  "addToCart": "Add to Cart",
+  "chooseHowToSort": "Choose how to sort items",
+  "sellItems": "Sell Jewelry",
+  "online": "Online",
+  "offline": "Offline",
+  "synced": "Synced",
+  "itemsInInventory": "{count} items in inventory",
+  "@itemsInInventory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itemsPendingSync": "{count} items pending sync",
+  "@itemsPendingSync": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkSelect": "Bulk Select",
+  "stockCount": "Stock: {count}",
+  "@stockCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityToSell": "Quantity to sell:",
+  "itemsToSell": "{count} items to sell",
+  "@itemsToSell": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "estimatedPrice": "Est. {price}",
+  "@estimatedPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "sellNow": "Sell Now",
+  "buy": "Buy",
+  "confirmPurchase": "Confirm Purchase",
+  "quantity": "Quantity",
+  "totalCost": "Total Cost",
+  "payment": "Payment",
+  "cancel": "Cancel",
+  "purchaseSuccess": "Purchase successful!",
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "addNewJewelry": "Add New Jewelry",
+  "editJewelry": "Edit Jewelry",
+  "jewelryName": "Jewelry Name",
+  "enterJewelryName": "Enter jewelry name",
+  "price": "Price",
+  "stock": "Stock",
+  "imageUrl": "Image URL",
+  "saveChanges": "Save Changes",
+  "addJewelry": "Add Jewelry",
+  "nameRequired": "Name is required",
+  "priceRequired": "Price is required",
+  "invalidPrice": "Invalid price",
+  "stockRequired": "Stock is required",
+  "invalidStock": "Invalid stock",
+  "deleteItem": "Delete Item",
+  "deleteItemConfirmation": "Are you sure you want to delete \"{name}\"?",
+  "@deleteItemConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Delete",
+  "itemDeleted": "\"{name}\" has been deleted",
+  "@itemDeleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Undo",
+  "itemRestored": "Item restored",
+  "clearSelection": "Clear Selection",
+  "noItemsInInventory": "No items in inventory",
+  "tapToAddFirstItem": "Tap + to add your first item",
+  "confirmSale": "Confirm Sale",
+  "totalItems": "Total Items",
+  "estimatedRevenue": "Estimated Revenue",
+  "confirmSell": "Confirm Sell",
+  "saleSuccess": "Sale completed successfully!",
+  "saleFailed": "Sale failed. Please try again.",
+  "bulkDelete": "Bulk Delete",
+  "selectAll": "Select All",
+  "itemsSelected": "{count} items selected",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itemsDeletedCount": "{count} items deleted",
+  "@itemsDeletedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteItemsConfirmation": "Are you sure you want to delete {count} items?",
+  "@deleteItemsConfirmation": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "thisFieldIsRequired": "This field is required",
+  "enterExample": "e.g. {example}",
+  "@enterExample": {
+    "placeholders": {
+      "example": {
+        "type": "String"
+      }
+    }
+  },
+  "noItemsInWishlist": "No items in wishlist",
+  "noItemsFound": "No items found",
+  "addToWishlist": "Add items to your wishlist",
 
-  "sync": "Đồng bộ",
-  "syncSubtitle": "Đồng bộ dữ liệu với máy chủ",
-  "syncNow": "Đồng bộ ngay",
-  "syncing": "Đang đồng bộ...",
-  "syncFailed": "Đồng bộ thất bại",
-  "syncSuccess": "Đồng bộ hoàn tất",
-  "tapToRetrySync": "Nhấn để thử lại",
-  "lastSynced": "Đồng bộ lần cuối: {time}",
-  "neverSynced": "Chưa đồng bộ",
+  "sync": "Sync",
+  "syncSubtitle": "Sync your data with server",
+  "syncNow": "Sync Now",
+  "syncing": "Syncing...",
+  "syncFailed": "Sync failed",
+  "syncSuccess": "Sync completed",
+  "tapToRetrySync": "Tap to retry sync",
+  "lastSynced": "Last synced: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "neverSynced": "Never synced",
 
-  "notifications": "Thông báo",
-  "noNotifications": "Không có thông báo",
-  "noNotificationsSubtitle": "Bạn đã xem hết thông báo!",
-  "clearAll": "Xóa tất cả"
+  "notifications": "Notifications",
+  "noNotifications": "No notifications",
+  "noNotificationsSubtitle": "You're all caught up!",
+  "clearAll": "Clear All",
+  "pendingSync": "Pending",
+  "itemsRestored": "{count} items restored",
+  "@itemsRestored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -10,6 +10,7 @@ import '../../../../application/resource/value_manager.dart';
 import '../../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
+import '../../../navigation/app_navigation.dart';
 
 class AddEditJewelryBottomSheet extends StatefulWidget {
   final SellJewelryEntity? jewelry;
@@ -111,7 +112,7 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
     );
 
     widget.onSave(entity);
-    Navigator.of(context).pop();
+    AppNavigation.pop(context);
   }
 
   @override
@@ -191,7 +192,7 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
             ),
           ),
           GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => AppNavigation.pop(context),
             child: Container(
               padding: const EdgeInsets.all(PaddingApp.p8),
               decoration: BoxDecoration(

@@ -1,11 +1,13 @@
+import '../../../application/use_case/use_case.dart';
 import '../../repositories/buy_jewelry/buy_jewelry_repository.dart';
 
-class ClearWishlist {
+class ClearWishlist extends UseCase<void, NoParams> {
   final BuyJewelryRepository _repository;
 
-  ClearWishlist(this._repository);
+  const ClearWishlist(this._repository);
 
-  Future<void> call() {
+  @override
+  Future<void> call([NoParams? params]) {
     return _repository.clearWishlist();
   }
 }

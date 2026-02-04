@@ -2,14 +2,14 @@ import '../../../application/use_case/use_case.dart';
 import '../../entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../repositories/sell_jewelry/sell_jewelry_repository.dart';
 
-class WatchSellJewelry
-    extends StreamUseCase<List<SellJewelryEntity>, NoParams> {
+class GetPendingSellJewelry
+    extends UseCase<List<SellJewelryEntity>, NoParams> {
   final SellJewelryRepository _repository;
 
-  const WatchSellJewelry(this._repository);
+  const GetPendingSellJewelry(this._repository);
 
   @override
-  Stream<List<SellJewelryEntity>> call([NoParams? params]) {
-    return _repository.watchAllJewelry();
+  Future<List<SellJewelryEntity>> call([NoParams? params]) {
+    return _repository.getPendingJewelry();
   }
 }

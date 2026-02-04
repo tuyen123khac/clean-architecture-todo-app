@@ -5,8 +5,8 @@ import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
-import '../../../../domain/entities/sales_member/sales_gender_enum_entity.dart';
 import '../../../../domain/entities/sales_member/sales_member_entity.dart';
+import '../../../custom_widgets/badge/gender_badge.dart';
 import '../../../custom_widgets/button/custom_filled_button.dart';
 import 'profile_image.dart';
 
@@ -22,26 +22,15 @@ class SalesPersonCard extends StatelessWidget {
 
   // Cache the card decoration to avoid recreating on every build
   static final _cardDecoration = BoxDecoration(
-    color: Colors.white,
+    color: AppColors.bgWhite,
     borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.1),
+        color: AppColors.shadow.withValues(alpha: 0.1),
         blurRadius: BlurRadiusApp.b10,
         offset: OffsetApp.o04,
       ),
     ],
-  );
-
-  // Cache gender badge decorations
-  static final _maleBadgeDecoration = BoxDecoration(
-    color: Colors.blue.withValues(alpha: 0.1),
-    borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
-  );
-
-  static final _femaleBadgeDecoration = BoxDecoration(
-    color: Colors.pink.withValues(alpha: 0.1),
-    borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
   );
 
   @override
@@ -106,37 +95,8 @@ class SalesPersonCard extends StatelessWidget {
             ],
           ),
         ),
-        _buildGenderBadge(),
+        GenderBadge(gender: salesPerson.gender),
       ],
-    );
-  }
-
-  Widget _buildGenderBadge() {
-    final isMale = salesPerson.gender == SalesGenderEnumEntity.male;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PaddingApp.p8,
-        vertical: PaddingApp.p4,
-      ),
-      decoration: isMale ? _maleBadgeDecoration : _femaleBadgeDecoration,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            isMale ? Icons.male : Icons.female,
-            size: SizeApp.s16,
-            color: isMale ? Colors.blue : Colors.pink,
-          ),
-          const SizedBox(width: SizeApp.s4),
-          Text(
-            isMale ? AppStrings.male : AppStrings.female,
-            style: AppTextStyles.medium(
-              fontSize: AppFontSize.s12,
-              color: isMale ? Colors.blue : Colors.pink,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

@@ -1,12 +1,7 @@
 /// Store all images path of the app, include SVG, PNG, JSON
 class AppImages {
-  //****************************  SVG ****************************//
-
   //****************************  PNG ****************************//
   static String appIcon = ImagesPath.getPath('app_icon.png');
-
-  //****************************  JSON ****************************//
-  static String appLoading = ImagesPath.getPath('app_loading.json');
 }
 
 extension ImagesPath on AppImages {

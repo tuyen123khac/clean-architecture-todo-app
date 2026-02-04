@@ -80,7 +80,7 @@ class ProfileImage extends StatelessWidget {
             age.toString(),
             style: AppTextStyles.semiBold(
               fontSize: AppFontSize.s12,
-              color: Colors.white,
+              color: AppColors.bgWhite,
             ),
           ),
         ),
