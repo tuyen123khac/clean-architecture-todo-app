@@ -25,6 +25,8 @@ Run the app:
 fvm flutter run
 ```
 
+Currently, app is not tested on iOS platform.
+
 ---
 
 # II. App Features
@@ -150,24 +152,33 @@ sequenceDiagram
     Bloc-->>UI: emit(Loaded)
 ```
 
-### 2. To-Buy: Buy Jewelry & Save to Sell
+### 2. To-Buy: Browse, Wishlist & Purchase
 
 ```mermaid
 sequenceDiagram
-    participant UI as JewelryDetailScreen
-    participant Bloc as JewelryDetailBloc
-    participant UC as BuyJewelry
-    participant Repo as SellJewelryRepository
+    participant ListUI as BuyJewelryScreen
+    participant ListBloc as BuyJewelryBloc
+    participant API as RemoteDataSource
     participant DB as DriftDatabase
+    participant DetailUI as JewelryDetailScreen
+    participant DetailBloc as JewelryDetailBloc
 
-    UI->>Bloc: BuyItem(jewelry)
-    Bloc->>UC: call(jewelry)
-    UC->>Repo: insertSellItem(item)
-    Repo->>DB: INSERT INTO SellJewelryItems
-    DB-->>Repo: Success
-    Repo-->>UC: Done
-    UC-->>Bloc: Success
-    Bloc-->>UI: emit(PurchaseSuccess)
+    Note over ListUI: User opens Buy Jewelry
+    ListUI->>ListBloc: FetchJewelry()
+    ListBloc->>API: getJewelry()
+    API-->>ListBloc: List<BuyJewelryItemDto>
+    ListBloc-->>ListUI: emit(Loaded)
+
+    Note over ListUI: User adds to Wishlist
+    ListUI->>ListBloc: AddToWishlist(item)
+    ListBloc->>DB: INSERT INTO Wishlist
+    ListBloc-->>ListUI: emit(WishlistUpdated)
+
+    Note over DetailUI: User opens Detail & Buys
+    DetailUI->>DetailBloc: BuyItem(jewelry)
+    DetailBloc->>DB: INSERT INTO SellJewelryItems
+    DB-->>DetailBloc: Success
+    DetailBloc-->>DetailUI: emit(PurchaseSuccess)
 ```
 
 ### 3. To-Sell: Delete with Undo
