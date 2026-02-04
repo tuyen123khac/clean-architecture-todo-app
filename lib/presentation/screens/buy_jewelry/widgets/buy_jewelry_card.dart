@@ -4,6 +4,7 @@ import '../../../../application/resource/colors/app_colors.dart';
 import '../../../../application/resource/fonts/app_font.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
+import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
 
 class BuyJewelryCard extends StatefulWidget {
@@ -47,12 +48,13 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
     widget.onFavoritePressed?.call();
   }
 
+  // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: MarginApp.m16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.bgWhite,
         borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
         boxShadow: [
           BoxShadow(
@@ -82,6 +84,8 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
     );
   }
 
+  // ==================== Product Image ====================
+
   Widget _buildProductImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
@@ -106,6 +110,7 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
     );
   }
 
+  // ==================== Product Info ====================
   Widget _buildProductInfo() {
     return Expanded(
       child: Column(
@@ -129,6 +134,7 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
     );
   }
 
+  // ==================== Category Badge ====================
   Widget _buildCategory() {
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -149,13 +155,14 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
     );
   }
 
+  // ==================== Price & Action ====================
   Widget _buildPriceAndAction() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          '${widget.jewelry.price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}đ',
+          NumberUtils.formatPrice(widget.jewelry.price),
           style: AppTextStyles.bold(
             fontSize: AppFontSize.s14,
             color: AppColors.primary,
@@ -170,7 +177,7 @@ class _BuyJewelryCardState extends State<BuyJewelryCard> {
               padding: const EdgeInsets.all(PaddingApp.p8),
               child: Icon(
                 _displayFavorite ? Icons.favorite : Icons.favorite_border,
-                color: _displayFavorite ? Colors.red : AppColors.textGray,
+                color: _displayFavorite ? AppColors.error : AppColors.textGray,
                 size: SizeApp.s32,
               ),
             ),

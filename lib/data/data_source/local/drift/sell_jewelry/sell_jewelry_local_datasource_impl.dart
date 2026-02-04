@@ -11,7 +11,8 @@ class SellJewelryLocalDatasourceImpl implements SellJewelryLocalDatasource {
 
   @override
   MultiSelectable<SellJewelryTableData> getAll() {
-    return _db.select(_db.sellJewelryTable);
+    return _db.select(_db.sellJewelryTable)
+      ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]);
   }
 
   @override
@@ -68,5 +69,18 @@ class SellJewelryLocalDatasourceImpl implements SellJewelryLocalDatasource {
   @override
   Future<void> deleteAll() async {
     await _db.delete(_db.sellJewelryTable).go();
+  }
+
+  @override
+  Future<List<SellJewelryTableData>> getPendingSyncItems() async {
+    return (_db.select(_db.sellJewelryTable)
+          ..where((t) => t.syncStatus.equals('pending')))
+        .get();
+  }
+
+  @override
+  Future<int> markAsSynced(String id) async {
+    return (_db.update(_db.sellJewelryTable)..where((t) => t.id.equals(id)))
+        .write(const SellJewelryTableCompanion(syncStatus: Value('synced')));
   }
 }

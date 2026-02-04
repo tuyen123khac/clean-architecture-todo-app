@@ -23,5 +23,20 @@
   "salesTitleSeniorSalesRep": "Nhân viên Kinh doanh Cấp cao",
   "salesTitleSalesTeamLead": "Trưởng nhóm Kinh doanh",
   "salesTitleSalesRep": "Nhân viên Kinh doanh",
-  "sellItems": "Bán trang sức"
+  "sellItems": "Bán trang sức",
+
+  "sync": "Đồng bộ",
+  "syncSubtitle": "Đồng bộ dữ liệu với máy chủ",
+  "syncNow": "Đồng bộ ngay",
+  "syncing": "Đang đồng bộ...",
+  "syncFailed": "Đồng bộ thất bại",
+  "syncSuccess": "Đồng bộ hoàn tất",
+  "tapToRetrySync": "Nhấn để thử lại",
+  "lastSynced": "Đồng bộ lần cuối: {time}",
+  "neverSynced": "Chưa đồng bộ",
+
+  "notifications": "Thông báo",
+  "noNotifications": "Không có thông báo",
+  "noNotificationsSubtitle": "Bạn đã xem hết thông báo!",
+  "clearAll": "Xóa tất cả"
 }

@@ -11,6 +11,8 @@ class NavigationCard extends StatelessWidget {
   final IconData icon;
   final Color? iconBackgroundColor;
   final VoidCallback? onTap;
+  final int? badgeCount;
+  final Color? badgeColor;
 
   const NavigationCard({
     super.key,
@@ -19,6 +21,8 @@ class NavigationCard extends StatelessWidget {
     required this.icon,
     this.iconBackgroundColor,
     this.onTap,
+    this.badgeCount,
+    this.badgeColor,
   });
 
   @override
@@ -39,7 +43,15 @@ class NavigationCard extends StatelessWidget {
           ],
         ),
         child: Row(
-          children: [_buildModuleIcon(), _buildContent(), _buildNavigateIcon()],
+          children: [
+            _buildModuleIcon(),
+            _buildContent(),
+            if (badgeCount != null && badgeCount! > 0) ...[
+              _buildBadge(),
+              const SizedBox(width: MarginApp.m8),
+            ],
+            _buildNavigateIcon(),
+          ],
         ),
       ),
     );
@@ -79,6 +91,26 @@ class NavigationCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBadge() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PaddingApp.p8,
+        vertical: PaddingApp.p4,
+      ),
+      decoration: BoxDecoration(
+        color: badgeColor ?? AppColors.primary,
+        borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
+      ),
+      child: Text(
+        badgeCount.toString(),
+        style: AppTextStyles.semiBold(
+          fontSize: AppFontSize.s12,
+          color: AppColors.textWhite,
+        ),
       ),
     );
   }

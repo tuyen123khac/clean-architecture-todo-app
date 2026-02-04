@@ -14,8 +14,9 @@ class SellJewelryEntity {
   final String? size;
   final String? material;
   final SellJewelrySyncStatus syncStatus;
+  final DateTime createdAt;
 
-  const SellJewelryEntity({
+  SellJewelryEntity({
     required this.id,
     required this.name,
     required this.category,
@@ -27,7 +28,8 @@ class SellJewelryEntity {
     this.size,
     this.material,
     this.syncStatus = SellJewelrySyncStatus.synced,
-  });
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
 
   bool get isSynced => syncStatus == SellJewelrySyncStatus.synced;
 
@@ -43,6 +45,7 @@ class SellJewelryEntity {
     String? Function()? size,
     String? Function()? material,
     SellJewelrySyncStatus? syncStatus,
+    DateTime? createdAt,
   }) {
     return SellJewelryEntity(
       id: id ?? this.id,
@@ -56,6 +59,7 @@ class SellJewelryEntity {
       size: size != null ? size() : this.size,
       material: material != null ? material() : this.material,
       syncStatus: syncStatus ?? this.syncStatus,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

@@ -8,6 +8,7 @@ import '../../../../domain/use_cases/sell_jewelry/delete_sell_jewelry.dart';
 import '../../../../domain/use_cases/sell_jewelry/update_sell_jewelry.dart';
 import '../../../../domain/use_cases/sell_jewelry/watch_sell_jewelry.dart';
 import '../../../base_bloc/base_cubit.dart';
+import '../../../globals/global_states/global_background/global_background_bloc.dart';
 import 'sell_jewelry_state.dart';
 
 class SellJewelryBloc extends BaseCubit<SellJewelryState> {
@@ -16,12 +17,13 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
   final UpdateSellJewelry _updateSellJewelry;
   final DeleteSellJewelry _deleteSellJewelry;
   final InternetConnection _internetConnection;
+  final GlobalBackgroundBloc _backgroundBloc;
 
   StreamSubscription<List<SellJewelryEntity>>? _inventorySubscription;
   StreamSubscription<InternetStatus>? _connectivitySubscription;
 
-  /// Recently deleted item for undo functionality
-  SellJewelryEntity? _recentlyDeletedItem;
+  /// Recently deleted items for undo functionality (with their original indices)
+  List<({SellJewelryEntity item, int index})> _recentlyDeletedItems = [];
 
   SellJewelryBloc(
     this._watchSellJewelry,
@@ -29,11 +31,18 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
     this._updateSellJewelry,
     this._deleteSellJewelry,
     this._internetConnection,
+    this._backgroundBloc,
   ) : super(const SellJewelryState());
 
   void initState() {
+    _checkInitialConnectivity();
     _subscribeToInventory();
     _subscribeToConnectivity();
+  }
+
+  Future<void> _checkInitialConnectivity() async {
+    final isConnected = await _internetConnection.hasInternetAccess;
+    emit(state.copyWith(isOnline: isConnected));
   }
 
   @override
@@ -43,16 +52,18 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
     return super.close();
   }
 
+  // ==================== Subscriptions ====================
+
   void _subscribeToInventory() {
     emit(state.copyWith(screenStatus: SellJewelryScreenStatus.loading));
 
     _inventorySubscription = _watchSellJewelry.call().listen(
       (inventoryList) {
-        emit(state.copyWith(
+        _emitWithComputedValues(
           inventoryList: inventoryList,
           screenStatus: SellJewelryScreenStatus.success,
           errorMessage: () => null,
-        ));
+        );
       },
       onError: (error) {
         emit(state.copyWith(
@@ -73,12 +84,16 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
     );
   }
 
+  // ==================== CRUD Operations ====================
+
   Future<void> addJewelry(SellJewelryEntity entity) async {
     try {
       await _addSellJewelry.call(AddSellJewelryParams(
         entity: entity,
         quantity: entity.stock,
       ));
+      // Trigger sync after successful local DB update
+      _backgroundBloc.triggerSync();
     } catch (_) {
       // Error handling - the watch will reflect the actual state
     }
@@ -87,41 +102,56 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
   Future<void> updateJewelry(SellJewelryEntity entity) async {
     try {
       await _updateSellJewelry.call(entity);
+      // Trigger sync after successful local DB update
+      _backgroundBloc.triggerSync();
     } catch (_) {
       // Error handling - the watch will reflect the actual state
     }
   }
 
   Future<void> deleteJewelry(String id) async {
-    // Store for undo
-    _recentlyDeletedItem = state.inventoryList.firstWhere(
-      (item) => item.id == id,
-      orElse: () => throw Exception('Item not found'),
-    );
+    // Find item and its index for undo
+    final index = state.inventoryList.indexWhere((item) => item.id == id);
+    if (index == -1) return;
+
+    final item = state.inventoryList[index];
+
+    // Store for undo (clear previous and store new single item)
+    _recentlyDeletedItems = [(item: item, index: index)];
 
     try {
       await _deleteSellJewelry.call(id);
     } catch (_) {
-      _recentlyDeletedItem = null;
+      _recentlyDeletedItems = [];
     }
   }
 
   Future<bool> undoDelete() async {
-    if (_recentlyDeletedItem == null) return false;
+    if (_recentlyDeletedItems.isEmpty) return false;
 
     try {
-      await _addSellJewelry.call(AddSellJewelryParams(
-        entity: _recentlyDeletedItem!,
-        quantity: _recentlyDeletedItem!.stock,
-      ));
-      _recentlyDeletedItem = null;
+      // Sort by index descending to restore in correct order
+      final sortedItems = List.of(_recentlyDeletedItems)
+        ..sort((a, b) => a.index.compareTo(b.index));
+
+      for (final record in sortedItems) {
+        await _addSellJewelry.call(AddSellJewelryParams(
+          entity: record.item,
+          quantity: record.item.stock,
+        ));
+      }
+
+      _recentlyDeletedItems = [];
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  bool get canUndoDelete => _recentlyDeletedItem != null;
+  int get deletedItemsCount => _recentlyDeletedItems.length;
+  bool get canUndoDelete => _recentlyDeletedItems.isNotEmpty;
+
+  // ==================== Quantity Management ====================
 
   void incrementQuantity(int index) {
     if (index >= state.inventoryList.length) return;
@@ -132,7 +162,7 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
 
     final newQuantities = Map<String, int>.from(state.quantitiesToSell);
     newQuantities[item.id] = currentQty + 1;
-    emit(state.copyWith(quantitiesToSell: newQuantities));
+    _emitWithComputedValues(quantitiesToSell: newQuantities);
   }
 
   void decrementQuantity(int index) {
@@ -144,7 +174,7 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
 
     final newQuantities = Map<String, int>.from(state.quantitiesToSell);
     newQuantities[item.id] = currentQty - 1;
-    emit(state.copyWith(quantitiesToSell: newQuantities));
+    _emitWithComputedValues(quantitiesToSell: newQuantities);
   }
 
   Future<bool> sellItems() async {
@@ -154,42 +184,25 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
     try {
       for (final item in itemsToSell) {
         final newStock = item.stock - item.quantityToSell;
-        if (newStock <= 0) {
-          // Remove item if stock becomes 0
-          await _deleteSellJewelry.call(item.id);
-        } else {
-          // Update with reduced stock (quantityToSell is in-memory only)
-          final originalItem = state.inventoryList.firstWhere((e) => e.id == item.id);
-          final updatedItem = originalItem.copyWith(
-            stock: newStock,
-            syncStatus: state.isOnline
-                ? SellJewelrySyncStatus.synced
-                : SellJewelrySyncStatus.pending,
-          );
-          await _updateSellJewelry.call(updatedItem);
-        }
+        // Always update stock (even to 0) and mark as pending
+        // The item will only be deleted after successful sync to server
+        final originalItem = state.inventoryList.firstWhere((e) => e.id == item.id);
+        final updatedItem = originalItem.copyWith(
+          stock: newStock,
+          syncStatus: SellJewelrySyncStatus.pending,
+        );
+        await _updateSellJewelry.call(updatedItem);
       }
-      // Reset all quantities to sell
-      emit(state.copyWith(quantitiesToSell: {}));
+      // Reset all quantities to sell and trigger sync
+      _emitWithComputedValues(quantitiesToSell: {});
+      _backgroundBloc.triggerSync();
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  void bulkSelectQuantities() {
-    // Select all items by setting quantityToSell to stock for each
-    final newQuantities = <String, int>{};
-    for (final item in state.inventoryList) {
-      newQuantities[item.id] = item.stock;
-    }
-    emit(state.copyWith(quantitiesToSell: newQuantities));
-  }
-
-  void clearQuantities() {
-    // Reset all quantityToSell to 0
-    emit(state.copyWith(quantitiesToSell: {}));
-  }
+  // ==================== Selection Mode (for Bulk Delete) ====================
 
   void enterSelectionMode() {
     emit(state.copyWith(isSelectionMode: true, selectedIds: {}));
@@ -221,18 +234,117 @@ class SellJewelryBloc extends BaseCubit<SellJewelryState> {
   Future<void> deleteSelected() async {
     if (state.selectedIds.isEmpty) return;
 
+    // Store all selected items with their indices for undo
+    _recentlyDeletedItems = [];
+    for (int i = 0; i < state.inventoryList.length; i++) {
+      final item = state.inventoryList[i];
+      if (state.selectedIds.contains(item.id)) {
+        _recentlyDeletedItems.add((item: item, index: i));
+      }
+    }
+
     try {
       for (final id in state.selectedIds) {
         await _deleteSellJewelry.call(id);
       }
       exitSelectionMode();
     } catch (_) {
-      // Error handling
+      _recentlyDeletedItems = [];
     }
   }
+
+  // ==================== Retry ====================
 
   Future<void> retry() async {
     _inventorySubscription?.cancel();
     _subscribeToInventory();
   }
+
+  // ==================== Helper Methods ====================
+
+  /// Emit state with pre-computed derived values
+  void _emitWithComputedValues({
+    List<SellJewelryEntity>? inventoryList,
+    SellJewelryScreenStatus? screenStatus,
+    String? Function()? errorMessage,
+    Map<String, int>? quantitiesToSell,
+  }) {
+    final newInventoryList = inventoryList ?? state.inventoryList;
+    final newQuantitiesToSell = quantitiesToSell ?? state.quantitiesToSell;
+
+    // Compute derived values
+    final computedValues = _computeDerivedValues(
+      inventoryList: newInventoryList,
+      quantitiesToSell: newQuantitiesToSell,
+    );
+
+    emit(state.copyWith(
+      inventoryList: inventoryList,
+      screenStatus: screenStatus,
+      errorMessage: errorMessage,
+      quantitiesToSell: quantitiesToSell,
+      inventoryWithQuantities: computedValues.inventoryWithQuantities,
+      itemsToSell: computedValues.itemsToSell,
+      totalItemsToSell: computedValues.totalItemsToSell,
+      estimatedTotal: computedValues.estimatedTotal,
+      pendingSyncCount: computedValues.pendingSyncCount,
+    ));
+  }
+
+  /// Compute all derived values from source data
+  _ComputedValues _computeDerivedValues({
+    required List<SellJewelryEntity> inventoryList,
+    required Map<String, int> quantitiesToSell,
+  }) {
+    // Inventory with quantities merged
+    final inventoryWithQuantities = inventoryList.map((item) {
+      final qty = quantitiesToSell[item.id] ?? 0;
+      return item.copyWith(quantityToSell: qty);
+    }).toList();
+
+    // Items to sell (quantity > 0)
+    final itemsToSell = inventoryWithQuantities
+        .where((item) => item.quantityToSell > 0)
+        .toList();
+
+    // Total items to sell
+    final totalItemsToSell = itemsToSell.fold<int>(
+      0,
+      (sum, item) => sum + item.quantityToSell,
+    );
+
+    // Estimated total
+    final estimatedTotal = itemsToSell.fold<double>(
+      0,
+      (sum, item) => sum + (item.price * item.quantityToSell),
+    );
+
+    // Pending sync count
+    final pendingSyncCount = inventoryList.where((item) => !item.isSynced).length;
+
+    return _ComputedValues(
+      inventoryWithQuantities: inventoryWithQuantities,
+      itemsToSell: itemsToSell,
+      totalItemsToSell: totalItemsToSell,
+      estimatedTotal: estimatedTotal,
+      pendingSyncCount: pendingSyncCount,
+    );
+  }
+}
+
+/// Helper class to hold computed values
+class _ComputedValues {
+  final List<SellJewelryEntity> inventoryWithQuantities;
+  final List<SellJewelryEntity> itemsToSell;
+  final int totalItemsToSell;
+  final double estimatedTotal;
+  final int pendingSyncCount;
+
+  const _ComputedValues({
+    required this.inventoryWithQuantities,
+    required this.itemsToSell,
+    required this.totalItemsToSell,
+    required this.estimatedTotal,
+    required this.pendingSyncCount,
+  });
 }

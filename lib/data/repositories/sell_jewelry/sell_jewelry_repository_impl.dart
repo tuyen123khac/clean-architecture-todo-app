@@ -2,14 +2,17 @@ import 'package:drift/drift.dart';
 
 import '../../data_source/local/drift/app_database.dart';
 import '../../data_source/local/drift/sell_jewelry/sell_jewelry_local_datasource.dart';
+import '../../data_source/network/models/sell_jewelry/sell_jewelry_sync_request_dto.dart';
+import '../../data_source/network/remote_data_source.dart';
 import '../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
 import '../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../../domain/repositories/sell_jewelry/sell_jewelry_repository.dart';
 
 class SellJewelryRepositoryImpl implements SellJewelryRepository {
   final SellJewelryLocalDatasource _localDatasource;
+  final RemoteDataSource _remoteDataSource;
 
-  SellJewelryRepositoryImpl(this._localDatasource);
+  SellJewelryRepositoryImpl(this._localDatasource, this._remoteDataSource);
 
   static SellJewelryEntity _rowToEntity(SellJewelryTableData row) {
     return SellJewelryEntity(
@@ -27,6 +30,7 @@ class SellJewelryRepositoryImpl implements SellJewelryRepository {
         (e) => e.name == row.syncStatus,
         orElse: () => SellJewelrySyncStatus.synced,
       ),
+      createdAt: row.createdAt,
     );
   }
 
@@ -42,6 +46,7 @@ class SellJewelryRepositoryImpl implements SellJewelryRepository {
       size: Value(e.size),
       material: Value(e.material),
       syncStatus: Value(e.syncStatus.name),
+      createdAt: Value(e.createdAt),
     );
   }
 
@@ -100,5 +105,29 @@ class SellJewelryRepositoryImpl implements SellJewelryRepository {
   @override
   Future<void> deleteAllJewelry() async {
     await _localDatasource.deleteAll();
+  }
+
+  // ==================== Sync Operations ====================
+
+  @override
+  Future<List<SellJewelryEntity>> getPendingJewelry() async {
+    final rows = await _localDatasource.getPendingSyncItems();
+    return rows.map(_rowToEntity).toList();
+  }
+
+  @override
+  Future<void> syncToServer(SellJewelryEntity entity) async {
+    final request = SellJewelrySyncRequestDto(
+      id: entity.id,
+      name: entity.name,
+      category: entity.category.name,
+      price: entity.price,
+    );
+    await _remoteDataSource.syncSellJewelry(request);
+  }
+
+  @override
+  Future<void> markAsSynced(String id) async {
+    await _localDatasource.markAsSynced(id);
   }
 }

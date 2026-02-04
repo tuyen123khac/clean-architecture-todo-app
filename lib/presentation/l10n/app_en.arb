@@ -182,5 +182,74 @@
   "estimatedRevenue": "Estimated Revenue",
   "confirmSell": "Confirm Sell",
   "saleSuccess": "Sale completed successfully!",
-  "saleFailed": "Sale failed. Please try again."
+  "saleFailed": "Sale failed. Please try again.",
+  "bulkDelete": "Bulk Delete",
+  "selectAll": "Select All",
+  "itemsSelected": "{count} items selected",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itemsDeletedCount": "{count} items deleted",
+  "@itemsDeletedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteItemsConfirmation": "Are you sure you want to delete {count} items?",
+  "@deleteItemsConfirmation": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "thisFieldIsRequired": "This field is required",
+  "enterExample": "e.g. {example}",
+  "@enterExample": {
+    "placeholders": {
+      "example": {
+        "type": "String"
+      }
+    }
+  },
+  "noItemsInWishlist": "No items in wishlist",
+  "noItemsFound": "No items found",
+  "addToWishlist": "Add items to your wishlist",
+
+  "sync": "Sync",
+  "syncSubtitle": "Sync your data with server",
+  "syncNow": "Sync Now",
+  "syncing": "Syncing...",
+  "syncFailed": "Sync failed",
+  "syncSuccess": "Sync completed",
+  "tapToRetrySync": "Tap to retry sync",
+  "lastSynced": "Last synced: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "neverSynced": "Never synced",
+
+  "notifications": "Notifications",
+  "noNotifications": "No notifications",
+  "noNotificationsSubtitle": "You're all caught up!",
+  "clearAll": "Clear All",
+  "pendingSync": "Pending",
+  "itemsRestored": "{count} items restored",
+  "@itemsRestored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -5,4 +5,5 @@ class AppRoutes {
   static const String buyJewelry = '/buyJewelry';
   static const String jewelryDetail = '/jewelryDetail';
   static const String sellJewelry = '/sellJewelry';
+  static const String notification = '/notification';
 }

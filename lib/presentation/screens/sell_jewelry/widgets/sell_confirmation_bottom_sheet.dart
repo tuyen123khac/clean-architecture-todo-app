@@ -7,6 +7,8 @@ import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
+import '../../../custom_widgets/button/custom_filled_button.dart';
+import '../../../custom_widgets/button/custom_outline_button.dart';
 
 class SellConfirmationBottomSheet extends StatelessWidget {
   final List<SellJewelryEntity> itemsToSell;
@@ -49,9 +51,9 @@ class SellConfirmationBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.7,
       ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -150,7 +152,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
             width: SizeApp.s48,
             height: SizeApp.s48,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.bgWhite,
               borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
             ),
             child: item.imageUrl != null
@@ -213,9 +215,9 @@ class SellConfirmationBottomSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(PaddingApp.p16),
       decoration: BoxDecoration(
-        color: Colors.teal.shade50,
+        color: AppColors.infoLight,
         borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-        border: Border.all(color: Colors.teal.shade200),
+        border: Border.all(color: AppColors.info.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -242,7 +244,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
           label,
           style: AppTextStyles.regular(
             fontSize: AppFontSize.s14,
-            color: isHighlighted ? Colors.teal.shade800 : AppColors.textDarkGray,
+            color: isHighlighted ? AppColors.info : AppColors.textDarkGray,
           ),
         ),
         Text(
@@ -250,7 +252,7 @@ class SellConfirmationBottomSheet extends StatelessWidget {
           style: isHighlighted
               ? AppTextStyles.bold(
                   fontSize: AppFontSize.s18,
-                  color: Colors.teal.shade800,
+                  color: AppColors.info,
                 )
               : AppTextStyles.semiBold(
                   fontSize: AppFontSize.s14,
@@ -265,48 +267,24 @@ class SellConfirmationBottomSheet extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: OutlinedButton(
+          child: CustomOutlinedButton(
+            label: AppStrings.cancel,
             onPressed: () => Navigator.of(context).pop(false),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: PaddingApp.p14),
-              side: BorderSide(color: AppColors.textGray),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-              ),
-            ),
-            child: Text(
-              AppStrings.cancel,
-              style: AppTextStyles.semiBold(
-                fontSize: AppFontSize.s16,
-                color: AppColors.textDarkGray,
-              ),
-            ),
+            colorText: AppColors.textDarkGray,
+            borderColor: AppColors.textGray,
           ),
         ),
         const SizedBox(width: SizeApp.s12),
         Expanded(
-          child: ElevatedButton(
+          child: CustomFilledButton(
+            label: AppStrings.confirmSell,
+            color: AppColors.info,
             onPressed: () async {
               final result = await onConfirm();
               if (context.mounted) {
                 Navigator.of(context).pop(result);
               }
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: PaddingApp.p14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-              ),
-            ),
-            child: Text(
-              AppStrings.confirmSell,
-              style: AppTextStyles.semiBold(
-                fontSize: AppFontSize.s16,
-                color: Colors.white,
-              ),
-            ),
           ),
         ),
       ],

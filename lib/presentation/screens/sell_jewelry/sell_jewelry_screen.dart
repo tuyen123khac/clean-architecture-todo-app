@@ -12,6 +12,7 @@ import '../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
 import '../../custom_widgets/app_bar/custom_app_bar.dart';
 import '../../custom_widgets/button/custom_filled_button.dart';
 import '../../custom_widgets/button/custom_outline_button.dart';
+import '../../custom_widgets/button/custom_pill_button.dart';
 import '../../navigation/app_navigation.dart';
 import 'bloc/sell_jewelry_bloc.dart';
 import 'bloc/sell_jewelry_bloc_selector.dart';
@@ -28,7 +29,7 @@ class SellJewelryScreen extends StatefulWidget {
 }
 
 class _SellJewelryScreenState extends State<SellJewelryScreen> {
-  final SellJewelryBloc _bloc = serviceLocator.get<SellJewelryBloc>();
+  final _bloc = serviceLocator.get<SellJewelryBloc>();
 
   @override
   void initState() {
@@ -51,12 +52,18 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
         appBar: _buildAppBar(),
         body: SafeArea(
           child: Column(
-            children: [_buildHeader(), _buildBody(), _buildBottomBar()],
+            children: [
+              _buildHeader(),
+              _buildBody(),
+              _buildBottomBar(),
+            ],
           ),
         ),
       ),
     );
   }
+
+  // ==================== App Bar ====================
 
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
@@ -87,84 +94,21 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
   Widget _buildOnlineStatusChip(bool isOnline) {
     return Container(
       margin: const EdgeInsets.only(right: MarginApp.m12),
-      padding: const EdgeInsets.symmetric(
-        horizontal: PaddingApp.p12,
-        vertical: PaddingApp.p6,
-      ),
-      decoration: BoxDecoration(
-        color: isOnline ? Colors.green.shade50 : Colors.red.shade50,
-        borderRadius: BorderRadius.circular(BorderRadiusApp.r20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            isOnline ? Icons.wifi : Icons.wifi_off,
-            size: SizeApp.s12,
-            color: isOnline ? Colors.green : Colors.red,
-          ),
-          const SizedBox(width: SizeApp.s4),
-          Text(
-            isOnline ? AppStrings.online : AppStrings.offline,
-            style: AppTextStyles.medium(
-              fontSize: AppFontSize.s12,
-              color: isOnline ? Colors.green : Colors.red,
-            ),
-          ),
-        ],
+      child: CustomPillButton(
+        label: isOnline ? AppStrings.online : AppStrings.offline,
+        icon: isOnline ? Icons.wifi : Icons.wifi_off,
+        backgroundColor: isOnline ? AppColors.successLight : AppColors.errorLight,
+        foregroundColor: isOnline ? AppColors.success : AppColors.error,
+        iconSize: SizeApp.s12,
       ),
     );
   }
 
-  void _showAddJewelrySheet() {
-    AddEditJewelryBottomSheet.show(
-      context,
-      onSave: (entity) => _bloc.addJewelry(entity),
-    );
-  }
-
-  void _showEditJewelrySheet(SellJewelryEntity jewelry) {
-    AddEditJewelryBottomSheet.show(
-      context,
-      jewelry: jewelry,
-      onSave: (entity) => _bloc.updateJewelry(entity),
-    );
-  }
-
-  void _deleteJewelry(SellJewelryEntity jewelry) async {
-    await _bloc.deleteJewelry(jewelry.id);
-
-    if (!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppStrings.itemDeleted(jewelry.name)),
-        action: _bloc.canUndoDelete
-            ? SnackBarAction(
-                label: AppStrings.undo,
-                onPressed: () async {
-                  final success = await _bloc.undoDelete();
-                  if (success && mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(AppStrings.itemRestored),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                  }
-                },
-              )
-            : null,
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
+  // ==================== Header ====================
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: ScreenPaddingApp.horizontal,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: ScreenPaddingApp.horizontal),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -197,28 +141,25 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
         if (count == 0) return const SizedBox.shrink();
         return Container(
           width: double.infinity,
+          margin: const EdgeInsets.only(bottom: MarginApp.m8),
           padding: const EdgeInsets.symmetric(
             horizontal: PaddingApp.p16,
             vertical: PaddingApp.p12,
           ),
           decoration: BoxDecoration(
-            color: Colors.amber.shade50,
+            color: AppColors.warningLight,
             borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-            border: Border.all(color: Colors.amber.shade200),
+            border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.access_time,
-                size: SizeApp.s20,
-                color: Colors.amber.shade800,
-              ),
+              Icon(Icons.access_time, size: SizeApp.s20, color: AppColors.warning),
               const SizedBox(width: SizeApp.s8),
               Text(
                 AppStrings.itemsPendingSync(count),
                 style: AppTextStyles.medium(
                   fontSize: AppFontSize.s14,
-                  color: Colors.amber.shade800,
+                  color: AppColors.warning,
                 ),
               ),
             ],
@@ -232,7 +173,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
     return SellJewelrySelectionModeSelector(
       builder: (isSelectionMode, selectedIds) {
         if (isSelectionMode) {
-          return _buildSelectionModeButtons(selectedIds);
+          return _buildSelectionModeButtons();
         }
         return _buildNormalModeButtons();
       },
@@ -244,87 +185,38 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
       margin: const EdgeInsets.only(bottom: MarginApp.m8),
       child: Row(
         children: [
-          // Add Jewelry button
-          GestureDetector(
-            onTap: _showAddJewelrySheet,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: PaddingApp.p12,
-                vertical: PaddingApp.p8,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add, color: Colors.white, size: SizeApp.s14),
-                  const SizedBox(width: SizeApp.s4),
-                  Text(
-                    AppStrings.addJewelry,
-                    style: AppTextStyles.medium(
-                      fontSize: AppFontSize.s12,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          CustomPillButton(
+            label: AppStrings.addJewelry,
+            icon: Icons.add,
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textWhite,
+            onPressed: _onPressAddJewelry,
           ),
           const SizedBox(width: SizeApp.s8),
-          // Bulk Delete button
-          GestureDetector(
-            onTap: () => _bloc.enterSelectionMode(),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: PaddingApp.p12,
-                vertical: PaddingApp.p8,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(BorderRadiusApp.r20),
-                border: Border.all(color: Colors.red.shade200),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                    size: SizeApp.s14,
-                  ),
-                  const SizedBox(width: SizeApp.s4),
-                  Text(
-                    'Bulk Delete',
-                    style: AppTextStyles.medium(
-                      fontSize: AppFontSize.s12,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          CustomPillButton(
+            label: AppStrings.bulkDelete,
+            icon: Icons.delete_outline,
+            backgroundColor: AppColors.errorLight,
+            foregroundColor: AppColors.error,
+            borderColor: AppColors.error.withValues(alpha: 0.3),
+            onPressed: _onPressBulkDelete,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSelectionModeButtons(Set<String> selectedIds) {
+  Widget _buildSelectionModeButtons() {
     return Container(
       margin: const EdgeInsets.only(bottom: MarginApp.m8),
       child: Row(
         children: [
           Expanded(
             child: CustomOutlinedButton(
-              label: 'Select All',
+              label: AppStrings.selectAll,
               icon: Icons.select_all,
               onPressed: () => _bloc.selectAll(),
               fontSizeText: AppFontSize.s14,
-              paddingButton: const EdgeInsets.symmetric(
-                vertical: PaddingApp.p6,
-              ),
             ),
           ),
           const SizedBox(width: SizeApp.s12),
@@ -335,15 +227,14 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
               fontSizeText: AppFontSize.s14,
               colorText: AppColors.textDarkGray,
               borderColor: AppColors.border,
-              paddingButton: const EdgeInsets.symmetric(
-                vertical: PaddingApp.p6,
-              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  // ==================== Body ====================
 
   Widget _buildBody() {
     return Expanded(
@@ -364,9 +255,8 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
     );
   }
 
-  Widget _buildLoadingView() {
-    return const Center(child: CircularProgressIndicator());
-  }
+  Widget _buildLoadingView() =>
+      const Center(child: CircularProgressIndicator());
 
   Widget _buildErrorView() {
     return SellJewelryErrorSelector(
@@ -376,11 +266,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.error_outline,
-                size: SizeApp.s64,
-                color: AppColors.textGray,
-              ),
+              Icon(Icons.error_outline, size: SizeApp.s64, color: AppColors.textGray),
               const SizedBox(height: SizeApp.s16),
               Text(
                 errorMessage ?? AppStrings.somethingWentWrong,
@@ -391,25 +277,41 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: SizeApp.s24),
-              ElevatedButton.icon(
+              CustomFilledButton(
+                label: AppStrings.retry,
+                icon: Icons.refresh,
                 onPressed: () => _bloc.retry(),
-                icon: const Icon(Icons.refresh),
-                label: Text(AppStrings.retry),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PaddingApp.p24,
-                    vertical: PaddingApp.p12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                  ),
-                ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inventory_2_outlined, size: SizeApp.s64, color: AppColors.textGray),
+          const SizedBox(height: SizeApp.s16),
+          Text(
+            AppStrings.noItemsInInventory,
+            style: AppTextStyles.medium(
+              fontSize: AppFontSize.s16,
+              color: AppColors.textDarkGray,
+            ),
+          ),
+          const SizedBox(height: SizeApp.s8),
+          Text(
+            AppStrings.tapToAddFirstItem,
+            style: AppTextStyles.regular(
+              fontSize: AppFontSize.s14,
+              color: AppColors.textGray,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -419,50 +321,52 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
       builder: (isSelectionMode, selectedIds) {
         return SellJewelryListSelector(
           builder: (inventoryList) {
-            if (inventoryList.isEmpty) {
-              return _buildEmptyView();
-            }
+            if (inventoryList.isEmpty) return _buildEmptyView();
+
             return ListView.builder(
               padding: const EdgeInsets.symmetric(
                 horizontal: ScreenPaddingApp.horizontal,
               ),
               itemCount: inventoryList.length,
-              itemBuilder: (context, index) {
-                final jewelry = inventoryList[index];
-                final isSelected = selectedIds.contains(jewelry.id);
-
-                if (isSelectionMode) {
-                  return SellJewelryCard(
-                    jewelry: jewelry,
-                    isSelectionMode: true,
-                    isSelected: isSelected,
-                    onTap: () => _bloc.toggleSelection(jewelry.id),
-                    onEdit: () => _showEditJewelrySheet(jewelry),
-                  );
-                }
-
-                return Dismissible(
-                  key: Key(jewelry.id),
-                  direction: DismissDirection.endToStart,
-                  background: _buildDismissBackground(),
-                  confirmDismiss: (direction) async {
-                    return await _confirmDelete(jewelry);
-                  },
-                  onDismissed: (direction) {
-                    _deleteJewelry(jewelry);
-                  },
-                  child: SellJewelryCard(
-                    jewelry: jewelry,
-                    onIncrement: () => _bloc.incrementQuantity(index),
-                    onDecrement: () => _bloc.decrementQuantity(index),
-                    onEdit: () => _showEditJewelrySheet(jewelry),
-                  ),
-                );
-              },
+              itemBuilder: (context, index) =>
+                  _buildListItem(inventoryList[index], index, isSelectionMode, selectedIds),
             );
           },
         );
       },
+    );
+  }
+
+  Widget _buildListItem(
+    SellJewelryEntity jewelry,
+    int index,
+    bool isSelectionMode,
+    Set<String> selectedIds,
+  ) {
+    final isSelected = selectedIds.contains(jewelry.id);
+
+    if (isSelectionMode) {
+      return SellJewelryCard(
+        jewelry: jewelry,
+        isSelectionMode: true,
+        isSelected: isSelected,
+        onTap: () => _bloc.toggleSelection(jewelry.id),
+        onEdit: () => _onPressEditJewelry(jewelry),
+      );
+    }
+
+    return Dismissible(
+      key: Key(jewelry.id),
+      direction: DismissDirection.endToStart,
+      background: _buildDismissBackground(),
+      confirmDismiss: (direction) => _confirmDeleteSingle(jewelry),
+      onDismissed: (direction) => _onDeleteJewelry(jewelry),
+      child: SellJewelryCard(
+        jewelry: jewelry,
+        onIncrement: () => _bloc.incrementQuantity(index),
+        onDecrement: () => _bloc.decrementQuantity(index),
+        onEdit: () => _onPressEditJewelry(jewelry),
+      ),
     );
   }
 
@@ -471,19 +375,168 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
       margin: const EdgeInsets.only(bottom: MarginApp.m12),
       padding: const EdgeInsets.symmetric(horizontal: PaddingApp.p24),
       decoration: BoxDecoration(
-        color: Colors.red,
+        color: AppColors.error,
         borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
       ),
       alignment: Alignment.centerRight,
-      child: const Icon(
-        Icons.delete_outline,
-        color: Colors.white,
-        size: SizeApp.s28,
+      child: Icon(Icons.delete_outline, color: AppColors.textWhite, size: SizeApp.s28),
+    );
+  }
+
+  // ==================== Bottom Bar ====================
+
+  Widget _buildBottomBar() {
+    return SellJewelrySelectionModeSelector(
+      builder: (isSelectionMode, selectedIds) {
+        if (isSelectionMode) {
+          return _buildSelectionBottomBar(selectedIds);
+        }
+        return _buildSellBottomBar();
+      },
+    );
+  }
+
+  Widget _buildSelectionBottomBar(Set<String> selectedIds) {
+    if (selectedIds.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.bgBlack.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              AppStrings.itemsSelected(selectedIds.length),
+              style: AppTextStyles.medium(
+                fontSize: AppFontSize.s16,
+                color: AppColors.textBlack,
+              ),
+            ),
+          ),
+          CustomFilledButton(
+            label: AppStrings.delete,
+            icon: Icons.delete_outline,
+            color: AppColors.error,
+            onPressed: _onPressDeleteSelected,
+          ),
+        ],
       ),
     );
   }
 
-  Future<bool> _confirmDelete(SellJewelryEntity jewelry) async {
+  Widget _buildSellBottomBar() {
+    return SellJewelrySummarySelector(
+      builder: (itemCount, total) {
+        if (itemCount == 0) return const SizedBox.shrink();
+
+        return Container(
+          padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
+          decoration: BoxDecoration(
+            color: AppColors.bgWhite,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.bgBlack.withValues(alpha: 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -5),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppStrings.itemsToSell(itemCount),
+                      style: AppTextStyles.regular(
+                        fontSize: AppFontSize.s14,
+                        color: AppColors.textGray,
+                      ),
+                    ),
+                    const SizedBox(height: SizeApp.s2),
+                    Text(
+                      AppStrings.estimatedPrice(NumberUtils.formatPrice(total)),
+                      style: AppTextStyles.bold(
+                        fontSize: AppFontSize.s20,
+                        color: AppColors.textBlack,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              CustomFilledButton(
+                label: AppStrings.sellNow,
+                icon: Icons.shopping_bag_outlined,
+                color: AppColors.info,
+                onPressed: _onPressSellNow,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // ==================== Actions ====================
+
+  void _onPressAddJewelry() {
+    AddEditJewelryBottomSheet.show(
+      context,
+      onSave: (entity) => _bloc.addJewelry(entity),
+    );
+  }
+
+  void _onPressEditJewelry(SellJewelryEntity jewelry) {
+    AddEditJewelryBottomSheet.show(
+      context,
+      jewelry: jewelry,
+      onSave: (entity) => _bloc.updateJewelry(entity),
+    );
+  }
+
+  void _onPressBulkDelete() => _bloc.enterSelectionMode();
+
+  void _onDeleteJewelry(SellJewelryEntity jewelry) async {
+    await _bloc.deleteJewelry(jewelry.id);
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppStrings.itemDeleted(jewelry.name)),
+        backgroundColor: AppColors.error,
+        action: _bloc.canUndoDelete
+            ? SnackBarAction(
+                label: AppStrings.undo,
+                textColor: AppColors.textWhite,
+                onPressed: () async {
+                  final success = await _bloc.undoDelete();
+                  if (success && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(AppStrings.itemRestored),
+                        backgroundColor: AppColors.success,
+                      ),
+                    );
+                  }
+                },
+              )
+            : null,
+      ),
+    );
+  }
+
+  Future<bool> _confirmDeleteSingle(SellJewelryEntity jewelry) async {
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
@@ -518,7 +571,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
                   AppStrings.delete,
                   style: AppTextStyles.medium(
                     fontSize: AppFontSize.s14,
-                    color: Colors.red,
+                    color: AppColors.error,
                   ),
                 ),
               ),
@@ -528,85 +581,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
         false;
   }
 
-  Widget _buildEmptyView() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.inventory_2_outlined,
-            size: SizeApp.s64,
-            color: AppColors.textGray,
-          ),
-          const SizedBox(height: SizeApp.s16),
-          Text(
-            AppStrings.noItemsInInventory,
-            style: AppTextStyles.medium(
-              fontSize: AppFontSize.s16,
-              color: AppColors.textDarkGray,
-            ),
-          ),
-          const SizedBox(height: SizeApp.s8),
-          Text(
-            AppStrings.tapToAddFirstItem,
-            style: AppTextStyles.regular(
-              fontSize: AppFontSize.s14,
-              color: AppColors.textGray,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomBar() {
-    return SellJewelrySelectionModeSelector(
-      builder: (isSelectionMode, selectedIds) {
-        if (isSelectionMode) {
-          return _buildSelectionBottomBar(selectedIds);
-        }
-        return _buildSellBottomBar();
-      },
-    );
-  }
-
-  Widget _buildSelectionBottomBar(Set<String> selectedIds) {
-    if (selectedIds.isEmpty) return const SizedBox.shrink();
-    return Container(
-      padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              '${selectedIds.length} items selected',
-              style: AppTextStyles.medium(
-                fontSize: AppFontSize.s16,
-                color: AppColors.textBlack,
-              ),
-            ),
-          ),
-          CustomFilledButton(
-            label: AppStrings.delete,
-            icon: Icons.delete_outline,
-            color: Colors.red,
-            onPressed: () => _confirmDeleteSelected(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _confirmDeleteSelected() async {
+  void _onPressDeleteSelected() async {
     final selectedCount = _bloc.state.selectedIds.length;
     final confirmed = await showDialog<bool>(
       context: context,
@@ -619,7 +594,7 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
           ),
         ),
         content: Text(
-          'Are you sure you want to delete $selectedCount items?',
+          AppStrings.deleteItemsConfirmation(selectedCount),
           style: AppTextStyles.regular(
             fontSize: AppFontSize.s16,
             color: AppColors.textDarkGray,
@@ -636,11 +611,15 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
               ),
             ),
           ),
-          CustomFilledButton(
-            label: AppStrings.delete,
-            icon: Icons.delete_outline,
-            color: Colors.red,
+          TextButton(
             onPressed: () => Navigator.of(context).pop(true),
+            child: Text(
+              AppStrings.delete,
+              style: AppTextStyles.medium(
+                fontSize: AppFontSize.s14,
+                color: AppColors.error,
+              ),
+            ),
           ),
         ],
       ),
@@ -651,68 +630,32 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$selectedCount items deleted'),
-          backgroundColor: Colors.red,
+          content: Text(AppStrings.itemsDeletedCount(selectedCount)),
+          backgroundColor: AppColors.error,
+          action: _bloc.canUndoDelete
+              ? SnackBarAction(
+                  label: AppStrings.undo,
+                  textColor: AppColors.textWhite,
+                  onPressed: () async {
+                    final deletedCount = _bloc.deletedItemsCount;
+                    final success = await _bloc.undoDelete();
+                    if (success && mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AppStrings.itemsRestored(deletedCount)),
+                          backgroundColor: AppColors.success,
+                        ),
+                      );
+                    }
+                  },
+                )
+              : null,
         ),
       );
     }
   }
 
-  Widget _buildSellBottomBar() {
-    return SellJewelrySummarySelector(
-      builder: (itemCount, total) {
-        if (itemCount == 0) return const SizedBox.shrink();
-        return Container(
-          padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 10,
-                offset: const Offset(0, -5),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      AppStrings.itemsToSell(itemCount),
-                      style: AppTextStyles.regular(
-                        fontSize: AppFontSize.s14,
-                        color: AppColors.textGray,
-                      ),
-                    ),
-                    const SizedBox(height: SizeApp.s2),
-                    Text(
-                      AppStrings.estimatedPrice(NumberUtils.formatPrice(total)),
-                      style: AppTextStyles.bold(
-                        fontSize: AppFontSize.s20,
-                        color: AppColors.textBlack,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              CustomFilledButton(
-                label: AppStrings.sellNow,
-                icon: Icons.shopping_bag_outlined,
-                color: Colors.teal,
-                onPressed: () => _showSellConfirmation(),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _showSellConfirmation() async {
+  void _onPressSellNow() async {
     final result = await SellConfirmationBottomSheet.show(
       context,
       itemsToSell: _bloc.state.itemsToSell,
@@ -726,14 +669,14 @@ class _SellJewelryScreenState extends State<SellJewelryScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppStrings.saleSuccess),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
         ),
       );
     } else if (result == false) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppStrings.saleFailed),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
     }

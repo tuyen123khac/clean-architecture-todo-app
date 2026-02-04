@@ -37,14 +37,14 @@ class SellJewelryCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: MarginApp.m12),
         padding: const EdgeInsets.all(PaddingApp.p12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.bgWhite,
           borderRadius: BorderRadius.circular(BorderRadiusApp.r16),
           border: isSelected
               ? Border.all(color: AppColors.primary, width: 2)
               : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: AppColors.bgBlack.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -81,7 +81,7 @@ class SellJewelryCard extends StatelessWidget {
         width: SizeApp.s24,
         height: SizeApp.s24,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
+          color: isSelected ? AppColors.primary : AppColors.bgWhite,
           borderRadius: BorderRadius.circular(BorderRadiusApp.r6),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.textGray,
@@ -89,7 +89,7 @@ class SellJewelryCard extends StatelessWidget {
           ),
         ),
         child: isSelected
-            ? const Icon(Icons.check, color: Colors.white, size: SizeApp.s16)
+            ? Icon(Icons.check, color: AppColors.textWhite, size: SizeApp.s16)
             : null,
       ),
     );
@@ -149,7 +149,7 @@ class SellJewelryCard extends StatelessWidget {
         vertical: PaddingApp.p2,
       ),
       decoration: BoxDecoration(
-        color: Colors.orange.shade50,
+        color: AppColors.warningLight,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(BorderRadiusApp.r12),
           topRight: Radius.circular(BorderRadiusApp.r12),
@@ -162,15 +162,15 @@ class SellJewelryCard extends StatelessWidget {
           Icon(
             Icons.access_time,
             size: SizeApp.s12,
-            color: Colors.orange,
+            color: AppColors.warning,
           ),
           const SizedBox(width: SizeApp.s2),
           Flexible(
             child: Text(
-              AppStrings.offline,
+              AppStrings.pendingSync,
               style: AppTextStyles.medium(
                 fontSize: AppFontSize.s10,
-                color: Colors.orange,
+                color: AppColors.warning,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -214,13 +214,13 @@ class SellJewelryCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(PaddingApp.p6),
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
+                color: AppColors.infoLight,
                 borderRadius: BorderRadius.circular(BorderRadiusApp.r8),
               ),
               child: Icon(
                 Icons.edit_outlined,
                 size: SizeApp.s16,
-                color: Colors.blue,
+                color: AppColors.info,
               ),
             ),
           ),
@@ -307,7 +307,7 @@ class SellJewelryCard extends StatelessWidget {
           icon,
           size: SizeApp.s18,
           color: isPrimary
-              ? (isEnabled ? Colors.white : AppColors.textGray)
+              ? (isEnabled ? AppColors.textWhite : AppColors.textGray)
               : (isEnabled ? AppColors.textBlack : AppColors.textGray),
         ),
       ),

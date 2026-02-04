@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/data/di/service_locator.dart';
 
 import '../../../application/resource/images/app_images.dart';
+import '../../../application/util/notification_util.dart';
 import '../../custom_widgets/app_bar/custom_app_bar.dart';
+import '../../globals/global_states/global_background/global_background_bloc.dart';
+import '../../globals/global_states/global_notification/global_notification_bloc.dart';
 import '../../navigation/app_navigation.dart';
 import '../../navigation/app_routes.dart';
 
@@ -19,6 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _requestNotificationPermissions();
+      _initBackgroundServices();
       _routeToHome();
     });
   }
@@ -28,8 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
+  void _requestNotificationPermissions() async {
+    await NotificationUtil.requestPermissions();
+  }
+
+  void _initBackgroundServices() {
+    serviceLocator.get<GlobalBackgroundBloc>().initState();
+    serviceLocator.get<GlobalNotificationBloc>().initState();
+  }
+
   void _routeToHome() async {
-    // Simulate logic
     await Future.delayed(const Duration(seconds: 1));
     if (!mounted) return;
     AppNavigation.popAllAndRouteTo(

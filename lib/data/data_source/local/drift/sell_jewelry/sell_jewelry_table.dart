@@ -11,6 +11,7 @@ class SellJewelryTable extends Table {
   TextColumn get size => text().nullable()();
   TextColumn get material => text().nullable()();
   TextColumn get syncStatus => text().withDefault(const Constant('synced'))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
   Set<Column<Object>> get primaryKey => {id};

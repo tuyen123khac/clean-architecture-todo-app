@@ -112,22 +112,12 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
         ),
       );
     } catch (e) {
-      // Even on error, show success if wishlist has items (offline mode)
-      if (state.buyJewelryWishList.isNotEmpty) {
-        emit(
-          state.copyWith(
-            screenStatus: BuyJewelryScreenStatus.success,
-            errorMessage: () => null,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            screenStatus: BuyJewelryScreenStatus.error,
-            errorMessage: () => _getErrorMessage(e),
-          ),
-        );
-      }
+      emit(
+        state.copyWith(
+          screenStatus: BuyJewelryScreenStatus.error,
+          errorMessage: () => _getErrorMessage(e),
+        ),
+      );
     }
   }
 
@@ -136,10 +126,9 @@ class BuyJewelryBloc extends BaseCubit<BuyJewelryState> {
   }
 
   Future<void> toggleFavorite(int index) async {
-    final displayList = state.displayList;
-    if (index >= displayList.length) return;
+    if (index >= state.buyJewelryList.length) return;
 
-    final item = displayList[index];
+    final item = state.buyJewelryList[index];
     final isAdding = !item.isFavorite;
 
     // UI is updated locally in BuyJewelryCard via setState

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/presentation/navigation/app_navigation.dart';
 
 import '../../../../application/resource/colors/app_colors.dart';
 import '../../../../application/resource/fonts/app_font.dart';
@@ -7,6 +6,9 @@ import '../../../../application/resource/strings/app_strings.dart';
 import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 import '../../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
+import '../../../custom_widgets/button/custom_filled_button.dart';
+import '../../../custom_widgets/button/custom_outline_button.dart';
+import '../../../navigation/app_navigation.dart';
 
 enum PriceRange { all, under10m, from10mTo30m, from30mTo50m, above50m }
 
@@ -86,13 +88,14 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
     AppNavigation.pop(context);
   }
 
+  // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         children: [
@@ -123,6 +126,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
     );
   }
 
+  // ==================== Drag Handle ====================
   Widget _buildDragHandle() {
     return Container(
       margin: const EdgeInsets.only(top: MarginApp.m12),
@@ -135,6 +139,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
     );
   }
 
+  // ==================== Header ====================
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -177,6 +182,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
     );
   }
 
+  // ==================== Filter Sections ====================
   Widget _buildShowFavoritesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +255,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
     );
   }
 
+  // ==================== Helpers ====================
   Widget _buildSectionHeader({
     required IconData icon,
     required String title,
@@ -293,12 +300,12 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
               label,
               style: AppTextStyles.medium(
                 fontSize: AppFontSize.s14,
-                color: isSelected ? Colors.white : AppColors.textDarkGray,
+                color: isSelected ? AppColors.textWhite : AppColors.textDarkGray,
               ),
             ),
             Icon(
               icon,
-              color: isSelected ? Colors.white : AppColors.textGray,
+              color: isSelected ? AppColors.textWhite : AppColors.textGray,
               size: SizeApp.s20,
             ),
           ],
@@ -328,7 +335,7 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
           label,
           style: AppTextStyles.medium(
             fontSize: AppFontSize.s14,
-            color: isSelected ? Colors.white : AppColors.textDarkGray,
+            color: isSelected ? AppColors.textWhite : AppColors.textDarkGray,
           ),
         ),
       ),
@@ -356,18 +363,19 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
           label,
           style: AppTextStyles.medium(
             fontSize: AppFontSize.s14,
-            color: isSelected ? Colors.white : AppColors.textDarkGray,
+            color: isSelected ? AppColors.textWhite : AppColors.textDarkGray,
           ),
         ),
       ),
     );
   }
 
+  // ==================== Bottom Buttons ====================
   Widget _buildBottomButtons() {
     return Container(
       padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.bgWhite,
         border: Border(
           top: BorderSide(color: AppColors.bgLightGray, width: 1),
         ),
@@ -375,46 +383,18 @@ class _BuyJewelryFilterBottomSheetState extends State<BuyJewelryFilterBottomShee
       child: Row(
         children: [
           Expanded(
-            child: GestureDetector(
-              onTap: _resetFilters,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p14),
-                decoration: BoxDecoration(
-                  color: AppColors.bgLightGray,
-                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                ),
-                child: Center(
-                  child: Text(
-                    AppStrings.resetAll,
-                    style: AppTextStyles.semiBold(
-                      fontSize: AppFontSize.s16,
-                      color: AppColors.textDarkGray,
-                    ),
-                  ),
-                ),
-              ),
+            child: CustomOutlinedButton(
+              label: AppStrings.resetAll,
+              onPressed: _resetFilters,
+              colorText: AppColors.textDarkGray,
+              borderColor: AppColors.bgLightGray,
             ),
           ),
           const SizedBox(width: SizeApp.s12),
           Expanded(
-            child: GestureDetector(
-              onTap: _applyFilters,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p14),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                ),
-                child: Center(
-                  child: Text(
-                    AppStrings.applyFilters,
-                    style: AppTextStyles.semiBold(
-                      fontSize: AppFontSize.s16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+            child: CustomFilledButton(
+              label: AppStrings.applyFilters,
+              onPressed: _applyFilters,
             ),
           ),
         ],

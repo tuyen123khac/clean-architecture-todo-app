@@ -823,6 +823,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sale failed. Please try again.'**
   String get saleFailed;
+
+  /// No description provided for @bulkDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Delete'**
+  String get bulkDelete;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get selectAll;
+
+  /// No description provided for @itemsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items selected'**
+  String itemsSelected(int count);
+
+  /// No description provided for @itemsDeletedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items deleted'**
+  String itemsDeletedCount(int count);
+
+  /// No description provided for @deleteItemsConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {count} items?'**
+  String deleteItemsConfirmation(int count);
+
+  /// No description provided for @thisFieldIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get thisFieldIsRequired;
+
+  /// No description provided for @enterExample.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. {example}'**
+  String enterExample(String example);
+
+  /// No description provided for @noItemsInWishlist.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in wishlist'**
+  String get noItemsInWishlist;
+
+  /// No description provided for @noItemsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No items found'**
+  String get noItemsFound;
+
+  /// No description provided for @addToWishlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Add items to your wishlist'**
+  String get addToWishlist;
+
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
+  /// No description provided for @syncSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync your data with server'**
+  String get syncSubtitle;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get syncNow;
+
+  /// No description provided for @syncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing...'**
+  String get syncing;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed'**
+  String get syncFailed;
+
+  /// No description provided for @syncSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync completed'**
+  String get syncSuccess;
+
+  /// No description provided for @tapToRetrySync.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to retry sync'**
+  String get tapToRetrySync;
+
+  /// No description provided for @lastSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced: {time}'**
+  String lastSynced(String time);
+
+  /// No description provided for @neverSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Never synced'**
+  String get neverSynced;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get noNotifications;
+
+  /// No description provided for @noNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up!'**
+  String get noNotificationsSubtitle;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
+  /// No description provided for @pendingSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pendingSync;
+
+  /// No description provided for @itemsRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items restored'**
+  String itemsRestored(int count);
 }
 
 class _AppLocalizationsDelegate

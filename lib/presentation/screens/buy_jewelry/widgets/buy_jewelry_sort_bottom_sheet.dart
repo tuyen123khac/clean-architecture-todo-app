@@ -54,12 +54,13 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
     Navigator.pop(context);
   }
 
+  // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -87,6 +88,7 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
     );
   }
 
+  // ==================== Drag Handle ====================
   Widget _buildDragHandle() {
     return Container(
       margin: const EdgeInsets.only(top: MarginApp.m12),
@@ -99,6 +101,7 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
     );
   }
 
+  // ==================== Header ====================
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -141,6 +144,7 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
     );
   }
 
+  // ==================== Sort Items ====================
   Widget _buildSortItem(String label, SortBy sortBy) {
     final isSelected = _selectedSortBy == sortBy;
     return GestureDetector(
@@ -162,13 +166,13 @@ class _BuyJewelrySortBottomSheetState extends State<BuyJewelrySortBottomSheet> {
               label,
               style: AppTextStyles.medium(
                 fontSize: AppFontSize.s16,
-                color: isSelected ? Colors.white : AppColors.textDarkGray,
+                color: isSelected ? AppColors.textWhite : AppColors.textDarkGray,
               ),
             ),
             if (isSelected)
               Icon(
                 Icons.check,
-                color: Colors.white,
+                color: AppColors.textWhite,
                 size: SizeApp.s20,
               ),
           ],

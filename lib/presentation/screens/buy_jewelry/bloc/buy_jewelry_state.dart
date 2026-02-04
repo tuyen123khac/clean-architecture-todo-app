@@ -33,16 +33,6 @@ class BuyJewelryState {
     this.errorMessage,
   });
 
-  /// Returns the list to display based on selected tab
-  List<BuyJewelryEntity> get displayList {
-    if (selectedTab == BuyJewelryTab.wishlist) {
-      return buyJewelryWishList;
-    }
-    return buyJewelryList;
-  }
-
-  int get wishlistCount => buyJewelryWishList.length;
-
   BuyJewelryState copyWith({
     List<BuyJewelryEntity>? buyJewelryListOriginal,
     List<BuyJewelryEntity>? buyJewelryList,

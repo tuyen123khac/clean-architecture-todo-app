@@ -9,6 +9,7 @@ import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 import '../../../../domain/entities/buy_jewelry/jewelry_category_enum_entity.dart';
 import '../../../../domain/entities/sell_jewelry/sell_jewelry_entity.dart';
+import '../../../custom_widgets/button/custom_filled_button.dart';
 
 class AddEditJewelryBottomSheet extends StatefulWidget {
   final SellJewelryEntity? jewelry;
@@ -119,9 +120,9 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -392,7 +393,7 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
                   text: ' *',
                   style: AppTextStyles.medium(
                     fontSize: AppFontSize.s14,
-                    color: Colors.red,
+                    color: AppColors.error,
                   ),
                 ),
               ]
@@ -426,7 +427,7 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: AppColors.error),
       ),
     );
   }
@@ -434,23 +435,9 @@ class _AddEditJewelryBottomSheetState extends State<AddEditJewelryBottomSheet> {
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton(
+      child: CustomFilledButton(
+        label: isEditing ? AppStrings.saveChanges : AppStrings.addJewelry,
         onPressed: _handleSave,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: PaddingApp.p16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-          ),
-        ),
-        child: Text(
-          isEditing ? AppStrings.saveChanges : AppStrings.addJewelry,
-          style: AppTextStyles.semiBold(
-            fontSize: AppFontSize.s16,
-            color: Colors.white,
-          ),
-        ),
       ),
     );
   }

@@ -9,46 +9,44 @@ class SellJewelryState {
   final String? errorMessage;
   final bool isSelectionMode;
   final Set<String> selectedIds;
+
   /// In-memory quantities to sell (not persisted to DB)
   final Map<String, int> quantitiesToSell;
+
+  // ==================== Pre-computed Properties ====================
+
+  /// Inventory list with merged in-memory quantities
+  final List<SellJewelryEntity> inventoryWithQuantities;
+
+  /// Items with quantityToSell > 0
+  final List<SellJewelryEntity> itemsToSell;
+
+  /// Total number of items to sell
+  final int totalItemsToSell;
+
+  /// Estimated total price
+  final double estimatedTotal;
+
+  /// Items pending sync count
+  final int pendingSyncCount;
 
   const SellJewelryState({
     this.inventoryList = const [],
     this.screenStatus = SellJewelryScreenStatus.initial,
-    this.isOnline = true,
+    this.isOnline = false,
     this.errorMessage,
     this.isSelectionMode = false,
     this.selectedIds = const {},
     this.quantitiesToSell = const {},
+    this.inventoryWithQuantities = const [],
+    this.itemsToSell = const [],
+    this.totalItemsToSell = 0,
+    this.estimatedTotal = 0,
+    this.pendingSyncCount = 0,
   });
 
   /// Get quantity to sell for an item
   int getQuantityToSell(String id) => quantitiesToSell[id] ?? 0;
-
-  /// Inventory list with merged in-memory quantities
-  List<SellJewelryEntity> get inventoryWithQuantities => inventoryList.map((item) {
-    final qty = quantitiesToSell[item.id] ?? 0;
-    return item.copyWith(quantityToSell: qty);
-  }).toList();
-
-  /// Items with quantityToSell > 0
-  List<SellJewelryEntity> get itemsToSell =>
-      inventoryWithQuantities.where((item) => item.quantityToSell > 0).toList();
-
-  /// Total number of items to sell
-  int get totalItemsToSell =>
-      itemsToSell.fold(0, (sum, item) => sum + item.quantityToSell);
-
-  /// Estimated total price
-  double get estimatedTotal =>
-      itemsToSell.fold(0, (sum, item) => sum + (item.price * item.quantityToSell));
-
-  /// Items pending sync
-  int get pendingSyncCount =>
-      inventoryList.where((item) => !item.isSynced).length;
-
-  /// Selected items count
-  int get selectedCount => selectedIds.length;
 
   SellJewelryState copyWith({
     List<SellJewelryEntity>? inventoryList,
@@ -58,6 +56,11 @@ class SellJewelryState {
     bool? isSelectionMode,
     Set<String>? selectedIds,
     Map<String, int>? quantitiesToSell,
+    List<SellJewelryEntity>? inventoryWithQuantities,
+    List<SellJewelryEntity>? itemsToSell,
+    int? totalItemsToSell,
+    double? estimatedTotal,
+    int? pendingSyncCount,
   }) {
     return SellJewelryState(
       inventoryList: inventoryList ?? this.inventoryList,
@@ -67,6 +70,11 @@ class SellJewelryState {
       isSelectionMode: isSelectionMode ?? this.isSelectionMode,
       selectedIds: selectedIds ?? this.selectedIds,
       quantitiesToSell: quantitiesToSell ?? this.quantitiesToSell,
+      inventoryWithQuantities: inventoryWithQuantities ?? this.inventoryWithQuantities,
+      itemsToSell: itemsToSell ?? this.itemsToSell,
+      totalItemsToSell: totalItemsToSell ?? this.totalItemsToSell,
+      estimatedTotal: estimatedTotal ?? this.estimatedTotal,
+      pendingSyncCount: pendingSyncCount ?? this.pendingSyncCount,
     );
   }
 }

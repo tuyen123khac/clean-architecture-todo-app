@@ -22,4 +22,10 @@ abstract class SellJewelryLocalDatasource {
   Future<int> deleteById(String id);
 
   Future<void> deleteAll();
+
+  /// Get all items with pending sync status
+  Future<List<SellJewelryTableData>> getPendingSyncItems();
+
+  /// Update sync status to synced
+  Future<int> markAsSynced(String id);
 }

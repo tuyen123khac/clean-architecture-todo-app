@@ -7,6 +7,8 @@ import '../../../../application/resource/styles/app_text_style.dart';
 import '../../../../application/resource/value_manager.dart';
 import '../../../../application/util/number_utils.dart';
 import '../../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
+import '../../../custom_widgets/button/custom_filled_button.dart';
+import '../../../custom_widgets/button/custom_outline_button.dart';
 import '../../../navigation/app_navigation.dart';
 
 class PurchaseConfirmationBottomSheet extends StatefulWidget {
@@ -77,12 +79,13 @@ class _PurchaseConfirmationBottomSheetState
     }
   }
 
+  // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.bgWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -101,6 +104,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Drag Handle ====================
   Widget _buildDragHandle() {
     return Container(
       margin: const EdgeInsets.only(top: MarginApp.m12),
@@ -113,6 +117,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Header ====================
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
@@ -139,6 +144,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Product Info ====================
   Widget _buildProductInfo() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -195,6 +201,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Quantity Section ====================
   Widget _buildQuantitySection() {
     return Padding(
       padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
@@ -236,6 +243,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Helpers ====================
   Widget _buildQuantityButton(IconData icon, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -248,6 +256,7 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Total Section ====================
   Widget _buildTotalSection() {
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -280,62 +289,27 @@ class _PurchaseConfirmationBottomSheetState
     );
   }
 
+  // ==================== Buttons ====================
   Widget _buildButtons() {
     return Padding(
       padding: const EdgeInsets.all(ScreenPaddingApp.horizontal),
       child: Row(
         children: [
           Expanded(
-            child: GestureDetector(
-              onTap: () => AppNavigation.pop(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p16),
-                decoration: BoxDecoration(
-                  color: AppColors.bgLightGray,
-                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                ),
-                child: Center(
-                  child: Text(
-                    AppStrings.cancel,
-                    style: AppTextStyles.semiBold(
-                      fontSize: AppFontSize.s16,
-                      color: AppColors.textDarkGray,
-                    ),
-                  ),
-                ),
-              ),
+            child: CustomOutlinedButton(
+              label: AppStrings.cancel,
+              onPressed: () => AppNavigation.pop(context),
+              colorText: AppColors.textDarkGray,
+              borderColor: AppColors.bgLightGray,
             ),
           ),
           const SizedBox(width: SizeApp.s12),
           Expanded(
             flex: 2,
-            child: GestureDetector(
-              onTap: _isLoading ? null : _handlePayment,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: PaddingApp.p16),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                ),
-                child: Center(
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: SizeApp.s20,
-                          height: SizeApp.s20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(
-                          AppStrings.payment,
-                          style: AppTextStyles.semiBold(
-                            fontSize: AppFontSize.s16,
-                            color: Colors.white,
-                          ),
-                        ),
-                ),
-              ),
+            child: CustomFilledButton(
+              label: AppStrings.payment,
+              onPressed: _isLoading ? null : _handlePayment,
+              isLoading: _isLoading,
             ),
           ),
         ],

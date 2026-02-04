@@ -7,6 +7,7 @@ import 'endpoints/network_urls.dart';
 import 'models/buy_jewelry/buy_jewelry_item_dto.dart';
 import 'models/paginated_res_wrapper.dart';
 import 'models/res_wrapper.dart';
+import 'models/sell_jewelry/sell_jewelry_sync_request_dto.dart';
 
 part 'remote_data_source.g.dart';
 
@@ -25,4 +26,7 @@ abstract class RemoteDataSource {
 
   @GET(NetworkUrls.jewelry)
   Future<ResWrapper<List<BuyJewelryItemDto>>> getJewelry();
+
+  @POST(NetworkUrls.sellJewelry)
+  Future<void> syncSellJewelry(@Body() SellJewelrySyncRequestDto request);
 }

@@ -109,6 +109,18 @@ class $SellJewelryTableTable extends SellJewelryTable
     requiredDuringInsert: false,
     defaultValue: const Constant('synced'),
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -121,6 +133,7 @@ class $SellJewelryTableTable extends SellJewelryTable
     size,
     material,
     syncStatus,
+    createdAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -199,6 +212,12 @@ class $SellJewelryTableTable extends SellJewelryTable
         syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
       );
     }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
     return context;
   }
 
@@ -248,6 +267,10 @@ class $SellJewelryTableTable extends SellJewelryTable
         DriftSqlType.string,
         data['${effectivePrefix}sync_status'],
       )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -269,6 +292,7 @@ class SellJewelryTableData extends DataClass
   final String? size;
   final String? material;
   final String syncStatus;
+  final DateTime createdAt;
   const SellJewelryTableData({
     required this.id,
     required this.name,
@@ -280,6 +304,7 @@ class SellJewelryTableData extends DataClass
     this.size,
     this.material,
     required this.syncStatus,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -302,6 +327,7 @@ class SellJewelryTableData extends DataClass
       map['material'] = Variable<String>(material);
     }
     map['sync_status'] = Variable<String>(syncStatus);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -323,6 +349,7 @@ class SellJewelryTableData extends DataClass
           ? const Value.absent()
           : Value(material),
       syncStatus: Value(syncStatus),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -342,6 +369,7 @@ class SellJewelryTableData extends DataClass
       size: serializer.fromJson<String?>(json['size']),
       material: serializer.fromJson<String?>(json['material']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -358,6 +386,7 @@ class SellJewelryTableData extends DataClass
       'size': serializer.toJson<String?>(size),
       'material': serializer.toJson<String?>(material),
       'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
@@ -372,6 +401,7 @@ class SellJewelryTableData extends DataClass
     Value<String?> size = const Value.absent(),
     Value<String?> material = const Value.absent(),
     String? syncStatus,
+    DateTime? createdAt,
   }) => SellJewelryTableData(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -383,6 +413,7 @@ class SellJewelryTableData extends DataClass
     size: size.present ? size.value : this.size,
     material: material.present ? material.value : this.material,
     syncStatus: syncStatus ?? this.syncStatus,
+    createdAt: createdAt ?? this.createdAt,
   );
   SellJewelryTableData copyWithCompanion(SellJewelryTableCompanion data) {
     return SellJewelryTableData(
@@ -398,6 +429,7 @@ class SellJewelryTableData extends DataClass
       syncStatus: data.syncStatus.present
           ? data.syncStatus.value
           : this.syncStatus,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -413,7 +445,8 @@ class SellJewelryTableData extends DataClass
           ..write('weight: $weight, ')
           ..write('size: $size, ')
           ..write('material: $material, ')
-          ..write('syncStatus: $syncStatus')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -430,6 +463,7 @@ class SellJewelryTableData extends DataClass
     size,
     material,
     syncStatus,
+    createdAt,
   );
   @override
   bool operator ==(Object other) =>
@@ -444,7 +478,8 @@ class SellJewelryTableData extends DataClass
           other.weight == this.weight &&
           other.size == this.size &&
           other.material == this.material &&
-          other.syncStatus == this.syncStatus);
+          other.syncStatus == this.syncStatus &&
+          other.createdAt == this.createdAt);
 }
 
 class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
@@ -458,6 +493,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
   final Value<String?> size;
   final Value<String?> material;
   final Value<String> syncStatus;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const SellJewelryTableCompanion({
     this.id = const Value.absent(),
@@ -470,6 +506,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     this.size = const Value.absent(),
     this.material = const Value.absent(),
     this.syncStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SellJewelryTableCompanion.insert({
@@ -483,6 +520,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     this.size = const Value.absent(),
     this.material = const Value.absent(),
     this.syncStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
@@ -499,6 +537,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     Expression<String>? size,
     Expression<String>? material,
     Expression<String>? syncStatus,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -512,6 +551,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
       if (size != null) 'size': size,
       if (material != null) 'material': material,
       if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -527,6 +567,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     Value<String?>? size,
     Value<String?>? material,
     Value<String>? syncStatus,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return SellJewelryTableCompanion(
@@ -540,6 +581,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
       size: size ?? this.size,
       material: material ?? this.material,
       syncStatus: syncStatus ?? this.syncStatus,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -577,6 +619,9 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
     if (syncStatus.present) {
       map['sync_status'] = Variable<String>(syncStatus.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -596,6 +641,7 @@ class SellJewelryTableCompanion extends UpdateCompanion<SellJewelryTableData> {
           ..write('size: $size, ')
           ..write('material: $material, ')
           ..write('syncStatus: $syncStatus, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1493,6 +1539,7 @@ typedef $$SellJewelryTableTableCreateCompanionBuilder =
       Value<String?> size,
       Value<String?> material,
       Value<String> syncStatus,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 typedef $$SellJewelryTableTableUpdateCompanionBuilder =
@@ -1507,6 +1554,7 @@ typedef $$SellJewelryTableTableUpdateCompanionBuilder =
       Value<String?> size,
       Value<String?> material,
       Value<String> syncStatus,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -1566,6 +1614,11 @@ class $$SellJewelryTableTableFilterComposer
 
   ColumnFilters<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1628,6 +1681,11 @@ class $$SellJewelryTableTableOrderingComposer
     column: $table.syncStatus,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$SellJewelryTableTableAnnotationComposer
@@ -1670,6 +1728,9 @@ class $$SellJewelryTableTableAnnotationComposer
     column: $table.syncStatus,
     builder: (column) => column,
   );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$SellJewelryTableTableTableManager
@@ -1719,6 +1780,7 @@ class $$SellJewelryTableTableTableManager
                 Value<String?> size = const Value.absent(),
                 Value<String?> material = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SellJewelryTableCompanion(
                 id: id,
@@ -1731,6 +1793,7 @@ class $$SellJewelryTableTableTableManager
                 size: size,
                 material: material,
                 syncStatus: syncStatus,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1745,6 +1808,7 @@ class $$SellJewelryTableTableTableManager
                 Value<String?> size = const Value.absent(),
                 Value<String?> material = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SellJewelryTableCompanion.insert(
                 id: id,
@@ -1757,6 +1821,7 @@ class $$SellJewelryTableTableTableManager
                 size: size,
                 material: material,
                 syncStatus: syncStatus,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

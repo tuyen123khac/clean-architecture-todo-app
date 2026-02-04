@@ -389,4 +389,91 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get saleFailed => 'Sale failed. Please try again.';
+
+  @override
+  String get bulkDelete => 'Bulk Delete';
+
+  @override
+  String get selectAll => 'Select All';
+
+  @override
+  String itemsSelected(int count) {
+    return '$count items selected';
+  }
+
+  @override
+  String itemsDeletedCount(int count) {
+    return '$count items deleted';
+  }
+
+  @override
+  String deleteItemsConfirmation(int count) {
+    return 'Are you sure you want to delete $count items?';
+  }
+
+  @override
+  String get thisFieldIsRequired => 'This field is required';
+
+  @override
+  String enterExample(String example) {
+    return 'e.g. $example';
+  }
+
+  @override
+  String get noItemsInWishlist => 'No items in wishlist';
+
+  @override
+  String get noItemsFound => 'No items found';
+
+  @override
+  String get addToWishlist => 'Add items to your wishlist';
+
+  @override
+  String get sync => 'Đồng bộ';
+
+  @override
+  String get syncSubtitle => 'Đồng bộ dữ liệu với máy chủ';
+
+  @override
+  String get syncNow => 'Đồng bộ ngay';
+
+  @override
+  String get syncing => 'Đang đồng bộ...';
+
+  @override
+  String get syncFailed => 'Đồng bộ thất bại';
+
+  @override
+  String get syncSuccess => 'Đồng bộ hoàn tất';
+
+  @override
+  String get tapToRetrySync => 'Nhấn để thử lại';
+
+  @override
+  String lastSynced(String time) {
+    return 'Đồng bộ lần cuối: $time';
+  }
+
+  @override
+  String get neverSynced => 'Chưa đồng bộ';
+
+  @override
+  String get notifications => 'Thông báo';
+
+  @override
+  String get noNotifications => 'Không có thông báo';
+
+  @override
+  String get noNotificationsSubtitle => 'Bạn đã xem hết thông báo!';
+
+  @override
+  String get clearAll => 'Xóa tất cả';
+
+  @override
+  String get pendingSync => 'Pending';
+
+  @override
+  String itemsRestored(int count) {
+    return '$count items restored';
+  }
 }

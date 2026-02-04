@@ -11,25 +11,33 @@ import 'package:todo_app/data/data_source/local/drift/sell_jewelry/sell_jewelry_
 import 'package:todo_app/data/data_source/local/drift/sell_jewelry/sell_jewelry_local_datasource_impl.dart';
 import 'package:todo_app/data/data_source/network/remote_data_source.dart';
 import 'package:todo_app/data/data_source/network/dio_client.dart';
+import 'package:todo_app/presentation/globals/global_states/global_background/global_background_bloc.dart';
 import 'package:todo_app/presentation/globals/global_states/global_ui/global_ui_bloc.dart';
 import 'package:todo_app/presentation/screens/buy_jewelry/bloc/buy_jewelry_bloc.dart';
+import 'package:todo_app/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:todo_app/presentation/screens/jewelry_detail/bloc/jewelry_detail_bloc.dart';
+import 'package:todo_app/presentation/globals/global_states/global_notification/global_notification_bloc.dart';
 import 'package:todo_app/presentation/screens/sales_team/bloc/sales_team_bloc.dart';
 import 'package:todo_app/presentation/screens/sell_jewelry/bloc/sell_jewelry_bloc.dart';
 
 
 import '../../domain/repositories/buy_jewelry/buy_jewelry_repository.dart';
+import '../../domain/repositories/marketing_notification/marketing_notification_repository.dart';
 import '../../domain/use_cases/buy_jewelry/add_to_wishlist.dart';
 import '../../domain/use_cases/buy_jewelry/get_all_wishlist.dart';
 import '../../domain/use_cases/buy_jewelry/get_jewelry_list.dart';
 import '../../domain/use_cases/buy_jewelry/remove_from_wishlist.dart';
 import '../../domain/use_cases/buy_jewelry/watch_wishlist.dart';
+import '../../domain/use_cases/marketing_notification/watch_marketing_notifications.dart';
 import '../../domain/use_cases/sales_member/get_sales_members.dart';
 import '../../domain/use_cases/sell_jewelry/add_sell_jewelry.dart';
 import '../../domain/use_cases/sell_jewelry/delete_sell_jewelry.dart';
+import '../../domain/use_cases/sell_jewelry/sync_sell_jewelry.dart';
 import '../../domain/use_cases/sell_jewelry/update_sell_jewelry.dart';
 import '../../domain/use_cases/sell_jewelry/watch_sell_jewelry.dart';
+import '../data_source/local/mock/marketing_notification_mock_data.dart';
 import '../repositories/buy_jewelry/buy_jewelry_repository_impl.dart';
+import '../repositories/marketing_notification/marketing_notification_repository_impl.dart';
 import '../../domain/repositories/sales_member/sales_member_repository.dart';
 import '../repositories/sales_member/sales_member_repository.impl.dart';
 import '../../domain/repositories/sell_jewelry/sell_jewelry_repository.dart';
@@ -91,7 +99,21 @@ void _registerRepositories() {
   );
 
   serviceLocator.registerSingleton<SellJewelryRepository>(
-    SellJewelryRepositoryImpl(serviceLocator.get<SellJewelryLocalDatasource>()),
+    SellJewelryRepositoryImpl(
+      serviceLocator.get<SellJewelryLocalDatasource>(),
+      serviceLocator.get<RemoteDataSource>(),
+    ),
+  );
+
+  // Marketing Notification
+  serviceLocator.registerSingleton<MarketingNotificationMockData>(
+    MarketingNotificationMockData(),
+  );
+
+  serviceLocator.registerSingleton<MarketingNotificationRepository>(
+    MarketingNotificationRepositoryImpl(
+      serviceLocator.get<MarketingNotificationMockData>(),
+    ),
   );
 }
 
@@ -136,6 +158,17 @@ void _registerUseCases() {
   serviceLocator.registerLazySingleton<DeleteSellJewelry>(
     () => DeleteSellJewelry(serviceLocator.get<SellJewelryRepository>()),
   );
+
+  serviceLocator.registerLazySingleton<SyncSellJewelry>(
+    () => SyncSellJewelry(serviceLocator.get<SellJewelryRepository>()),
+  );
+
+  // Marketing Notification Use Cases
+  serviceLocator.registerLazySingleton<WatchMarketingNotifications>(
+    () => WatchMarketingNotifications(
+      serviceLocator.get<MarketingNotificationRepository>(),
+    ),
+  );
 }
 
 void _registerStates() {
@@ -145,8 +178,29 @@ void _registerStates() {
     GlobalUiBloc(locale: const Locale('en')),
   );
 
+  serviceLocator.registerSingleton<GlobalBackgroundBloc>(
+    GlobalBackgroundBloc(
+      serviceLocator.get<SyncSellJewelry>(),
+      serviceLocator.get<InternetConnection>(),
+    ),
+  );
+
+  serviceLocator.registerSingleton<GlobalNotificationBloc>(
+    GlobalNotificationBloc(
+      serviceLocator.get<WatchMarketingNotifications>(),
+    ),
+  );
+
 
   // ******************* Screen States *******************
+
+  serviceLocator.registerFactory(() {
+    return HomeBloc(
+      serviceLocator.get<WatchWishlist>(),
+      serviceLocator.get<WatchSellJewelry>(),
+      serviceLocator.get<WatchMarketingNotifications>(),
+    );
+  });
 
   serviceLocator.registerFactory(() {
     return SalesTeamBloc(serviceLocator.get<GetSalesMembers>());
@@ -177,6 +231,7 @@ void _registerStates() {
       serviceLocator.get<UpdateSellJewelry>(),
       serviceLocator.get<DeleteSellJewelry>(),
       serviceLocator.get<InternetConnection>(),
+      serviceLocator.get<GlobalBackgroundBloc>(),
     );
   });
 }

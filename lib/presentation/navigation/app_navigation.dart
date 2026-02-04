@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/buy_jewelry/buy_jewelry_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/jewelry_detail/jewelry_detail_screen.dart';
+import '../screens/notification/notification_screen.dart';
 import '../screens/sales_team/sales_team_screen.dart';
 import '../screens/sell_jewelry/sell_jewelry_screen.dart';
 import '../screens/splash/splash_screen.dart';
@@ -59,6 +60,12 @@ class AppNavigation {
           settings: routeSettings,
         );
 
+      case AppRoutes.notification:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationScreen(),
+          settings: routeSettings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => const Placeholder(),
@@ -81,6 +88,8 @@ class AppNavigation {
         return const JewelryDetailScreen();
       case AppRoutes.sellJewelry:
         return const SellJewelryScreen();
+      case AppRoutes.notification:
+        return const NotificationScreen();
       default:
         return const Placeholder();
     }

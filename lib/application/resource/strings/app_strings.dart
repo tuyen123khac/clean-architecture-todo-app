@@ -135,4 +135,35 @@ class AppStrings {
   static String get confirmSell => getLocalization().confirmSell;
   static String get saleSuccess => getLocalization().saleSuccess;
   static String get saleFailed => getLocalization().saleFailed;
+  static String get bulkDelete => getLocalization().bulkDelete;
+  static String get selectAll => getLocalization().selectAll;
+  static String itemsSelected(int count) => getLocalization().itemsSelected(count);
+  static String itemsDeletedCount(int count) => getLocalization().itemsDeletedCount(count);
+  static String deleteItemsConfirmation(int count) => getLocalization().deleteItemsConfirmation(count);
+  static String get thisFieldIsRequired => getLocalization().thisFieldIsRequired;
+  static String enterExample(String example) => getLocalization().enterExample(example);
+
+  // Buy Jewelry
+  static String get noItemsInWishlist => getLocalization().noItemsInWishlist;
+  static String get noItemsFound => getLocalization().noItemsFound;
+  static String get addToWishlist => getLocalization().addToWishlist;
+
+  // Sync
+  static String get sync => getLocalization().sync;
+  static String get syncSubtitle => getLocalization().syncSubtitle;
+  static String get syncNow => getLocalization().syncNow;
+  static String get syncing => getLocalization().syncing;
+  static String get syncFailed => getLocalization().syncFailed;
+  static String get syncSuccess => getLocalization().syncSuccess;
+  static String get tapToRetrySync => getLocalization().tapToRetrySync;
+  static String lastSynced(String time) => getLocalization().lastSynced(time);
+  static String get neverSynced => getLocalization().neverSynced;
+
+  // Notifications
+  static String get notifications => getLocalization().notifications;
+  static String get noNotifications => getLocalization().noNotifications;
+  static String get noNotificationsSubtitle => getLocalization().noNotificationsSubtitle;
+  static String get clearAll => getLocalization().clearAll;
+  static String get pendingSync => getLocalization().pendingSync;
+  static String itemsRestored(int count) => getLocalization().itemsRestored(count);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'application/resource/styles/theme_manager.dart';
+import 'application/util/notification_util.dart';
 import 'data/di/service_locator.dart';
 import 'presentation/globals/providers/global_bloc_provider.dart';
 import 'presentation/l10n/support_locales.dart';
@@ -14,8 +15,13 @@ void main() async {
   // Initialize service locator
   await injectDependencies();
 
+  // Initialize notifications
+  await NotificationUtil.initialize();
+
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

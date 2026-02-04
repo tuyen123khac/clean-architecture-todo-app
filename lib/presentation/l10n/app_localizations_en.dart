@@ -389,4 +389,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saleFailed => 'Sale failed. Please try again.';
+
+  @override
+  String get bulkDelete => 'Bulk Delete';
+
+  @override
+  String get selectAll => 'Select All';
+
+  @override
+  String itemsSelected(int count) {
+    return '$count items selected';
+  }
+
+  @override
+  String itemsDeletedCount(int count) {
+    return '$count items deleted';
+  }
+
+  @override
+  String deleteItemsConfirmation(int count) {
+    return 'Are you sure you want to delete $count items?';
+  }
+
+  @override
+  String get thisFieldIsRequired => 'This field is required';
+
+  @override
+  String enterExample(String example) {
+    return 'e.g. $example';
+  }
+
+  @override
+  String get noItemsInWishlist => 'No items in wishlist';
+
+  @override
+  String get noItemsFound => 'No items found';
+
+  @override
+  String get addToWishlist => 'Add items to your wishlist';
+
+  @override
+  String get sync => 'Sync';
+
+  @override
+  String get syncSubtitle => 'Sync your data with server';
+
+  @override
+  String get syncNow => 'Sync Now';
+
+  @override
+  String get syncing => 'Syncing...';
+
+  @override
+  String get syncFailed => 'Sync failed';
+
+  @override
+  String get syncSuccess => 'Sync completed';
+
+  @override
+  String get tapToRetrySync => 'Tap to retry sync';
+
+  @override
+  String lastSynced(String time) {
+    return 'Last synced: $time';
+  }
+
+  @override
+  String get neverSynced => 'Never synced';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get noNotifications => 'No notifications';
+
+  @override
+  String get noNotificationsSubtitle => 'You\'re all caught up!';
+
+  @override
+  String get clearAll => 'Clear All';
+
+  @override
+  String get pendingSync => 'Pending';
+
+  @override
+  String itemsRestored(int count) {
+    return '$count items restored';
+  }
 }

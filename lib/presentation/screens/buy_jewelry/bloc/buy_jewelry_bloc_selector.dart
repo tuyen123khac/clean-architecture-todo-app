@@ -16,17 +16,6 @@ class BuyJewelryStatusSelector
         );
 }
 
-class BuyJewelryListSelector
-    extends BlocSelector<BuyJewelryBloc, BuyJewelryState, List<BuyJewelryEntity>> {
-  BuyJewelryListSelector({
-    super.key,
-    required Widget Function(List<BuyJewelryEntity>) builder,
-  }) : super(
-          selector: (state) => state.displayList,
-          builder: (_, jewelryList) => builder(jewelryList),
-        );
-}
-
 class BuyJewelryAllItemsSelector
     extends BlocSelector<BuyJewelryBloc, BuyJewelryState, List<BuyJewelryEntity>> {
   BuyJewelryAllItemsSelector({
@@ -55,7 +44,7 @@ class BuyJewelryTabSelector
     super.key,
     required Widget Function(BuyJewelryTab tab, int wishlistCount) builder,
   }) : super(
-          selector: (state) => (tab: state.selectedTab, wishlistCount: state.wishlistCount),
+          selector: (state) => (tab: state.selectedTab, wishlistCount: state.buyJewelryWishList.length),
           builder: (_, data) => builder(data.tab, data.wishlistCount),
         );
 }

@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/application/resource/strings/app_strings.dart';
-import 'package:todo_app/data/di/service_locator.dart';
 
 import '../../../application/resource/colors/app_colors.dart';
 import '../../../application/resource/fonts/app_font.dart';
+import '../../../application/resource/strings/app_strings.dart';
 import '../../../application/resource/styles/app_text_style.dart';
 import '../../../application/resource/value_manager.dart';
+import '../../../data/di/service_locator.dart';
 import '../../../domain/entities/buy_jewelry/buy_jewelry_entity.dart';
 import '../../custom_widgets/app_bar/custom_app_bar.dart';
+import '../../custom_widgets/button/custom_filled_button.dart';
 import '../../navigation/app_navigation.dart';
-import '../jewelry_detail/jewelry_detail_screen.dart';
 import '../../navigation/app_routes.dart';
+import '../jewelry_detail/jewelry_detail_screen.dart';
 import 'bloc/buy_jewelry_bloc.dart';
 import 'bloc/buy_jewelry_bloc_selector.dart';
 import 'bloc/buy_jewelry_state.dart';
@@ -28,8 +29,10 @@ class BuyJewelryScreen extends StatefulWidget {
 }
 
 class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
+  // ==================== Variables ====================
   final BuyJewelryBloc _bloc = serviceLocator.get<BuyJewelryBloc>();
 
+  // ==================== Lifecycle ====================
   @override
   void initState() {
     super.initState();
@@ -42,6 +45,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     super.dispose();
   }
 
+  // ==================== Build ====================
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -54,6 +58,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== App Bar ====================
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
       backgroundColor: AppColors.bgWhite,
@@ -75,6 +80,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Body ====================
   Widget _buildBody() {
     return SafeArea(
       child: Column(
@@ -84,6 +90,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Tab Selector ====================
   Widget _buildTabSelector() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -108,7 +115,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
                   style: AppTextStyles.medium(
                     fontSize: AppFontSize.s14,
                     color: selectedTab == BuyJewelryTab.allItems
-                        ? Colors.white
+                        ? AppColors.textWhite
                         : AppColors.textDarkGray,
                   ),
                 ),
@@ -123,7 +130,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
                   style: AppTextStyles.medium(
                     fontSize: AppFontSize.s14,
                     color: selectedTab == BuyJewelryTab.wishlist
-                        ? Colors.white
+                        ? AppColors.textWhite
                         : AppColors.textDarkGray,
                   ),
                 ),
@@ -140,6 +147,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Tab Content ====================
   Widget _buildTabContent() {
     return Expanded(
       child: BuyJewelryTabSelector(
@@ -151,10 +159,12 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== All Items Tab ====================
   Widget _buildAllItemsTab() {
     return Column(children: [_buildFilterSection(), _buildAllItemsBody()]);
   }
 
+  // ==================== Wishlist Tab ====================
   Widget _buildWishlistTab() {
     return BuyJewelryWishlistSelector(
       builder: (wishlist) {
@@ -181,6 +191,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Filter Section ====================
   Widget _buildFilterSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -231,6 +242,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Empty States ====================
   Widget _buildEmptyWishlistView() {
     return Center(
       child: Column(
@@ -243,10 +255,18 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
           ),
           const SizedBox(height: SizeApp.s16),
           Text(
-            'No items in wishlist',
+            AppStrings.noItemsInWishlist,
             style: AppTextStyles.medium(
               fontSize: AppFontSize.s16,
               color: AppColors.textDarkGray,
+            ),
+          ),
+          const SizedBox(height: SizeApp.s8),
+          Text(
+            AppStrings.addToWishlist,
+            style: AppTextStyles.regular(
+              fontSize: AppFontSize.s14,
+              color: AppColors.textGray,
             ),
           ),
         ],
@@ -254,6 +274,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== Actions ====================
   void _showFilterBottomSheet() {
     BuyJewelryFilterBottomSheet.show(
       context,
@@ -274,6 +295,15 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  void _viewJewelryDetail(BuyJewelryEntity jewelry) {
+    AppNavigation.routeTo(
+      context,
+      AppRoutes.jewelryDetail,
+      args: JewelryDetailArgs(jewelry: jewelry),
+    );
+  }
+
+  // ==================== Status Views ====================
   Widget _buildAllItemsBody() {
     return Expanded(
       child: BuyJewelryStatusSelector(
@@ -320,21 +350,10 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: SizeApp.s24),
-              ElevatedButton.icon(
+              CustomFilledButton(
+                label: AppStrings.retry,
+                icon: Icons.refresh,
                 onPressed: () => _bloc.retry(),
-                icon: const Icon(Icons.refresh),
-                label: Text(AppStrings.retry),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PaddingApp.p24,
-                    vertical: PaddingApp.p12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(BorderRadiusApp.r12),
-                  ),
-                ),
               ),
             ],
           ),
@@ -343,6 +362,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
     );
   }
 
+  // ==================== List Views ====================
   Widget _buildAllItemsListView() {
     return BuyJewelryAllItemsSelector(
       builder: (jewelryList) {
@@ -380,7 +400,7 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
           ),
           const SizedBox(height: SizeApp.s16),
           Text(
-            'No items found',
+            AppStrings.noItemsFound,
             style: AppTextStyles.medium(
               fontSize: AppFontSize.s16,
               color: AppColors.textDarkGray,
@@ -388,14 +408,6 @@ class _BuyJewelryScreenState extends State<BuyJewelryScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  void _viewJewelryDetail(BuyJewelryEntity jewelry) {
-    AppNavigation.routeTo(
-      context,
-      AppRoutes.jewelryDetail,
-      args: JewelryDetailArgs(jewelry: jewelry),
     );
   }
 }

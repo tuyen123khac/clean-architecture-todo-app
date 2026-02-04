@@ -20,8 +20,13 @@ class AppColors {
   static Color textWhite = HexColor.fromHex("#F2F2F2");
 
   static Color success = HexColor.fromHex("#25B84C");
+  static Color successLight = HexColor.fromHex("#E8F5E9");
   static Color error = HexColor.fromHex("#E12424");
-  
+  static Color errorLight = HexColor.fromHex("#FFEBEE");
+  static Color warning = HexColor.fromHex("#F57C00");
+  static Color warningLight = HexColor.fromHex("#FFF3E0");
+  static Color info = HexColor.fromHex("#00897B");
+  static Color infoLight = HexColor.fromHex("#E0F2F1");
 }
 
 extension HexColor on Color {
