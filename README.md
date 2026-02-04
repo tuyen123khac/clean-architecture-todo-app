@@ -13,6 +13,10 @@ Install fvm from https://fvm.app/documentation/getting-started/installation
 fvm install 3.38.3
 ```
 
+```bash
+fvm use 3.38.3
+```
+
 Get app dependencies:
 
 ```bash
