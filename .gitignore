@@ -44,8 +44,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-DATA_MODEL.md
-REQUIREMENT.md
-
 # FVM Version Cache
 .fvm/
